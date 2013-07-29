@@ -5,19 +5,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
 
 import com.github.axet.lookup.fnnc.FNNC;
 
@@ -71,14 +64,19 @@ public class Lookup {
     }
 
     public void load(Class<?> c, String path) {
-        String[] str = getResourceListing(c, path);
+        ClassResources e = new ClassResources(c, path);
+
+        List<String> str = e.names();
 
         for (String s : str)
             loadFont(c, path, s);
     }
 
     public void loadFont(Class<?> c, String path, String name) {
-        String[] str = getResourceListing(c, path + "/" + name);
+        ClassResources e = new ClassResources(c, path);
+        e = e.dir(name);
+
+        List<String> str = e.names();
 
         for (String s : str) {
             String f = path + "/" + name + "/" + s;
@@ -89,8 +87,8 @@ public class Lookup {
 
             try {
                 symbol = URLDecoder.decode(symbol, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
+            } catch (UnsupportedEncodingException ee) {
+                throw new RuntimeException(ee);
             }
 
             loadFontSymbol(name, symbol, is);
@@ -129,80 +127,6 @@ public class Lookup {
         FontSymbol f = new FontSymbol(ff, fontSymbol, b);
 
         ff.add(f);
-    }
-
-    // 1) under debugger, /Users/axet/source/mircle/play/target/classes/
-    //
-    // 2) app packed as one jar, mac osx wihtout debugger path -
-    // /Users/axet/source/mircle/mircle/macosx/Mircle.app/Contents/Resources/Java/mircle.jar
-    // case above 1) works prefectly
-    //
-    // 3) if it is a separate library packed with maven under debugger
-    // /Users/axet/.m2/repository/com/github/axet/play/0.0.3/play-0.0.3.jar
-    File getPath(Class<?> cls) {
-        String path;
-
-        CodeSource src = cls.getProtectionDomain().getCodeSource();
-
-        if (src == null)
-            return null;
-
-        return new File(src.getLocation().getPath());
-    }
-
-    String getClassPath(Class c) {
-        return new File(c.getCanonicalName().replace('.', '/')).getParent();
-    }
-
-    String getClassPath(Class c, String path) {
-        return new File(c.getCanonicalName().replace('.', '/')).getParent() + "/" + path;
-    }
-
-    String[] getResourceListing(Class clazz, String path) {
-        try {
-            // clazz.getClassLoader().getResource(pp) may return system library
-            // if path is common (Like "/com")
-            File pp = getPath(clazz);
-            if (pp.isDirectory()) {
-                if (path.startsWith("/"))
-                    pp = new File(pp, path);
-                else
-                    pp = new File(pp, getClassPath(clazz, path));
-
-                return new File(pp.toURI()).list();
-            }
-
-            if (pp.isFile()) {
-                String p;
-
-                if (path.startsWith("/"))
-                    p = StringUtils.stripStart(path, "/");
-                else
-                    p = getClassPath(clazz, path);
-
-                JarFile jar = new JarFile(pp);
-                Enumeration<JarEntry> entries = jar.entries();
-                Set<String> result = new HashSet<String>();
-
-                while (entries.hasMoreElements()) {
-                    String name = entries.nextElement().getName();
-                    if (name.startsWith(p)) {
-                        String a = name.substring(p.length());
-                        a = StringUtils.stripStart(a, "/");
-                        a = a.trim();
-                        if (!a.isEmpty())
-                            result.add(a);
-                    }
-                }
-                return result.toArray(new String[result.size()]);
-            }
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return null;
     }
 
     List<FontSymbol> getSymbols() {
@@ -266,9 +190,9 @@ public class Lookup {
     }
 
     static public void main(String[] args) {
-        
+
         FNNC f = new FNNC(null, null);
-        
+
         Lookup l = new Lookup();
 
         String str = l.recognize(LookupMethods.load(new File("/Users/axet/Desktop/test.png")));
