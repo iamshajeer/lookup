@@ -5,6 +5,7 @@
   <groupId>com.github.axet</groupId>
   <artifactId>lookup</artifactId>
   <version>0.0.1</version>
+  <name>lookup</name>
   <packaging>jar</packaging>
 
   <description>lookup java OCR / sub image find library</description>
