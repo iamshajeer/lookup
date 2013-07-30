@@ -1,15 +1,11 @@
-package com.github.axet.lookup.fnnc;
+package com.github.axet.lookup.common;
 
 import java.awt.image.BufferedImage;
 
-public class Integral extends IntegralArray {
+public class IntegralImage extends IntegralArray {
 
-    public Integral(BufferedImage buf) {
+    public IntegralImage(BufferedImage buf) {
         super(buf);
-
-        cx = buf.getWidth();
-        cy = buf.getHeight();
-        s = new int[cx * cy];
 
         for (int x = 1; x < cx; x++) {
             for (int y = 1; y < cy; y++) {

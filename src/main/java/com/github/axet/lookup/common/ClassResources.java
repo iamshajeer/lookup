@@ -1,4 +1,4 @@
-package com.github.axet.lookup;
+package com.github.axet.lookup.common;
 
 import java.io.File;
 import java.security.CodeSource;

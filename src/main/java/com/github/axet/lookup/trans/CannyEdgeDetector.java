@@ -1,4 +1,4 @@
-package com.github.axet.lookup;
+package com.github.axet.lookup.trans;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;

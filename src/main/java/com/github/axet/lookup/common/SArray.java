@@ -1,4 +1,4 @@
-package com.github.axet.lookup.fnnc;
+package com.github.axet.lookup.common;
 
 public class SArray {
     public int cx;
@@ -6,7 +6,7 @@ public class SArray {
 
     public int s[];
 
-    int s(int x, int y) {
+    public int s(int x, int y) {
         if (x < 0)
             return 0;
         if (y < 0)
@@ -24,10 +24,20 @@ public class SArray {
      * @return
      */
     public int sigma(int x1, int y1, int x2, int y2) {
-        int a = x1 > 0 && y1 > 0 ? s(x1 - 1, y1 - 1) : 0;
-        int b = y1 > 0 ? s(x2, y1 - 1) : 0;
-        int c = x1 > 0 ? s(x1 - 1, y2) : 0;
+        int a = s(x1 - 1, y1 - 1);
+        int b = s(x2, y1 - 1);
+        int c = s(x1 - 1, y2);
         int d = s(x2, y2);
         return a - b - c + d;
+    }
+
+    public void printDebug() {
+        for (int y = 0; y < cy; y++) {
+            for (int x = 0; x < cx; x++) {
+                System.out.print(s(x, y));
+                System.out.print("\t");
+            }
+            System.out.println("");
+        }
     }
 }

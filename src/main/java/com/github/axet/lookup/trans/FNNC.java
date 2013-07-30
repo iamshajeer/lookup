@@ -1,6 +1,10 @@
-package com.github.axet.lookup.fnnc;
+package com.github.axet.lookup.trans;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+
+import com.github.axet.lookup.common.IntegralImage;
+import com.github.axet.lookup.common.IntegralImage2;
 
 /**
  * http://isas.uka.de/Material/AltePublikationen/briechle_spie2001.pdf
@@ -10,10 +14,11 @@ import java.awt.image.BufferedImage;
  */
 public class FNNC {
 
-    Integral imageIntegral;
-    Integral2 imageIntegral2;
+    IntegralImage imageIntegral;
+    IntegralImage2 imageIntegral2;
 
-    Integral templateIntegral;
+    IntegralImage templateIntegral;
+    IntegralImage2 templateIntegral2;
 
     int Nx;
     int Ny;
@@ -22,10 +27,11 @@ public class FNNC {
     int My;
 
     public FNNC(BufferedImage image, BufferedImage template) {
-        imageIntegral = new Integral(image);
-        imageIntegral2 = new Integral2(image);
+        imageIntegral = new IntegralImage(image);
+        imageIntegral2 = new IntegralImage2(image);
 
-        templateIntegral = new Integral(template);
+        templateIntegral = new IntegralImage(template);
+        templateIntegral2 = new IntegralImage2(template);
 
         Nx = template.getWidth();
         Ny = template.getHeight();
@@ -60,7 +66,7 @@ public class FNNC {
 
     public float f10(int u, int v) {
         return imageIntegral2.sigma(0, 0, imageIntegral2.cx, imageIntegral2.cy) - (1 / (Nx * Ny))
-                * Integral2.pow2(imageIntegral.sigma(0, 0, imageIntegral.cx, imageIntegral.cy));
+                * IntegralImage2.pow2(imageIntegral.sigma(0, 0, imageIntegral.cx, imageIntegral.cy));
     }
 
     public float numerator(int u, int v) {
@@ -73,5 +79,31 @@ public class FNNC {
 
     public float gamma(int u, int v) {
         return numerator(u, v) / denominator(u, v);
+    }
+
+    public static void main(String[] args) {
+        BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
+        image.getWritableTile(0, 0).setDataElements(0, 0, image.getWidth(), image.getHeight(), new int[] {
+
+        0, 0, 0,
+
+        0, 1, 0,
+
+        0, 0, 0
+
+        });
+
+        BufferedImage template = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
+        image.getWritableTile(0, 0).setDataElements(0, 0, image.getWidth(), image.getHeight(), new int[] {
+
+        0, 0, 0,
+
+        0, 1, 0,
+
+        0, 0, 0
+
+        });
+
+        FNNC fnnc = new FNNC(image, template);
     }
 }
