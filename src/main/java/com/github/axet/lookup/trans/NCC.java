@@ -28,11 +28,16 @@ public class NCC {
     }
 
     static public List<Point> lookup(ImageBinary image, ImageBinary template, float m) {
+        return lookup(image, 0, 0, image.getWidth() - 1, image.getHeight() - 1, template, m);
+    }
+
+    static public List<Point> lookup(ImageBinary image, int x1, int y1, int x2, int y2, ImageBinary template, float m) {
         List<Point> list = new ArrayList<Point>();
 
-        for (int x = 0; x <= image.getWidth() - template.getWidth(); x++) {
-            for (int y = 0; y <= image.getHeight() - template.getHeight(); y++) {
-                if (gamma(image, template, x, y) > m) {
+        for (int x = x1; x <= x2 - template.getWidth() + 1; x++) {
+            for (int y = y1; y <= y2 - template.getHeight() + 1; y++) {
+                double g = gamma(image, template, x, y);
+                if (g > m) {
                     list.add(new Point(x, y));
                 }
             }
@@ -41,12 +46,35 @@ public class NCC {
         return list;
     }
 
-    static public float gamma(ImageBinary image, ImageBinary template, int x, int y) {
-        ImageMultiply s = new ImageMultiply(image.zeroMean, x, y, template.zeroMean);
-        IntegralImage ss = new IntegralImage(s);
+    static public double gamma(ImageBinary image, ImageBinary template, int xx, int yy) {
+        // ImageMultiply s = new ImageMultiply(image.zeroMean, xx, yy,
+        // template.zeroMean);
+        // IntegralImage ss = new IntegralImage(s);
 
-        return (float) (ss.mean() / (image.dev(x, y, x + template.getWidth() - 1, y + template.getHeight() - 1) * template
-                .dev()));
+        // speed up
+        
+        ImageMultiply s = new ImageMultiply();
+        IntegralImage ss = new IntegralImage();
+
+        s.init(image.zeroMean, xx, yy, template.zeroMean);
+        ss.init(s);
+
+        for (int x = 0; x < template.getWidth(); x++) {
+            for (int y = 0; y < template.getHeight(); y++) {
+                s.step(x, y);
+                ss.step(x, y);
+            }
+        }
+
+        double n = ss.mean();
+        double id = image.dev(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
+        double td = template.dev();
+        double d = id * td;
+
+        if (d == 0)
+            return -1;
+
+        return (n / d);
     }
 
     public static void main(String[] args) {
@@ -72,11 +100,10 @@ public class NCC {
 
         });
 
-        image = Capture.load("/Users/axet/Desktop/4a.jpg");
-        template = Capture.load("/Users/axet/Desktop/4c.jpg");
+        image = Capture.load("/Users/axet/Desktop/cyclopst1.png");
+        template = Capture.load("/Users/axet/Desktop/cyclopst3.png");
 
-        NCC nnc = new NCC();
-        List<Point> pp = nnc.lookup(image, template, 0.7f);
+        List<Point> pp = NCC.lookup(image, template, 0.9f);
 
         for (Point p : pp) {
             System.out.println(p);

@@ -1,6 +1,8 @@
 package com.github.axet.lookup.common;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 
 public class GrayImage extends SArray {
     public BufferedImage buf;
@@ -16,7 +18,20 @@ public class GrayImage extends SArray {
         return (r + g + b) / 3;
     }
 
+    public GrayImage() {
+    }
+
     public GrayImage(BufferedImage buf) {
+        init(buf);
+
+        for (int x = 0; x < cx; x++) {
+            for (int y = 0; y < cy; y++) {
+                step(x, y);
+            }
+        }
+    }
+
+    public void init(BufferedImage buf) {
         this.buf = buf;
 
         cx = buf.getWidth();
@@ -24,10 +39,18 @@ public class GrayImage extends SArray {
 
         s = new double[cx * cy];
 
-        for (int x = 0; x < cx; x++) {
-            for (int y = 0; y < cy; y++) {
-                s[i(x, y)] = grey(x, y);
-            }
-        }
+        // if (buf.getRaster().getDataBuffer() instanceof DataBufferByte) {
+        // p = new ParserByte(((DataBufferByte)
+        // buf.getRaster().getDataBuffer()).getData());
+        // }
+        //
+        // if (buf.getRaster().getDataBuffer() instanceof DataBufferInt) {
+        // p = new ParserInt(((DataBufferInt)
+        // buf.getRaster().getDataBuffer()).getData());
+        // }
+    }
+
+    public void step(int x, int y) {
+        s[i(x, y)] = grey(x, y);
     }
 }

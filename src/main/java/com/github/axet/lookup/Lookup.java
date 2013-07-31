@@ -13,12 +13,15 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.RangeColor;
 import com.github.axet.lookup.trans.CannyEdgeDetector;
+import com.github.axet.lookup.trans.NCC;
 
 public class Lookup {
 
@@ -184,6 +187,13 @@ public class Lookup {
         return lookup(bi, icon, 0.10f);
     }
 
+    public static Point lookup(ImageBinary bi, ImageBinary icon) {
+        List<Point> list = NCC.lookup(bi, icon, 0.99f);
+        if (list.size() != 1)
+            throw new NotFound();
+        return list.get(0);
+    }
+
     public static Point lookup(BufferedImage bi, BufferedImage icon, float m) {
         for (int y = 0; y < bi.getHeight() - icon.getHeight(); y++) {
             for (int x = 0; x < bi.getWidth() - icon.getWidth(); x++) {
@@ -231,6 +241,15 @@ public class Lookup {
 
     static public Point lookupInsideRect(BufferedImage bi, BufferedImage i, Point pul, Point pdr) {
         return lookupInsideRect(bi, i, pul, pdr, 0.10f);
+    }
+
+    static public Point lookupInsideRect(ImageBinary bi, ImageBinary i, Point pul, Point pdr) {
+        List<Point> list = NCC.lookup(bi, pul.x, pul.y, pdr.x, pdr.y, i, 0.80f);
+
+        if (list.size() != 1)
+            throw new NotFound();
+
+        return list.get(0);
     }
 
     static public BufferedImage crop(BufferedImage src, Point pul, Point pdr) {

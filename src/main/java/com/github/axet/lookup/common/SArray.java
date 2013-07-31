@@ -5,19 +5,23 @@ import java.awt.image.BufferedImage;
 import com.github.axet.lookup.Capture;
 
 public class SArray {
-    public SArray image;
+    public SArray base;
 
     public int cx;
     public int cy;
 
     public double s[];
-
+    
     public SArray() {
 
     }
 
     public SArray(SArray buf) {
-        image = buf;
+        init(buf);
+    }
+
+    public void init(SArray buf) {
+        base = buf;
 
         cx = buf.cx;
         cy = buf.cy;

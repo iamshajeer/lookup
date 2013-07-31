@@ -161,12 +161,20 @@ public class OCR {
         return this.fontFamily.get(fontFamily);
     }
 
-    String recognize(BufferedImage bi) {
+    public String recognize(BufferedImage bi) {
         ImageBinary i = new ImageBinary(bi);
 
+        return recognize(i);
+    }
+
+    public String recognize(ImageBinary i) {
+        return recognize(i, 0, 0, i.getWidth() - 1, i.getHeight() - 1);
+    }
+
+    public String recognize(ImageBinary i, int x1, int y1, int x2, int y2) {
         List<FontSymbol> list = getSymbols();
 
-        List<FontSymbolLookup> all = findAll(list, i);
+        List<FontSymbolLookup> all = findAll(list, i, x1, y1, x2, y2);
 
         // bigger first.
 
@@ -206,10 +214,14 @@ public class OCR {
     }
 
     List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinary bi) {
+        return findAll(list, bi, 0, 0, bi.getWidth(), bi.getHeight());
+    }
+
+    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinary bi, int x1, int y1, int x2, int y2) {
         List<FontSymbolLookup> l = new ArrayList<FontSymbolLookup>();
 
         for (FontSymbol fs : list) {
-            List<Point> ll = NCC.lookup(bi, fs.image, threshold);
+            List<Point> ll = NCC.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
             for (Point p : ll)
                 l.add(new FontSymbolLookup(fs, p.x, p.y));
         }
@@ -231,7 +243,7 @@ public class OCR {
     static public void main(String[] args) {
         OCR l = new OCR();
 
-        String str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/4099.png")));
+        String str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/test3.png")));
 
         System.out.println(str);
     }

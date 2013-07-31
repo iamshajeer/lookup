@@ -10,9 +10,28 @@ public class ImageBinary {
     public ImageZeroMean zeroMean;
 
     public ImageBinary(BufferedImage img) {
-        gi = new GrayImage(img);
-        image = new IntegralImage(gi);
-        image2 = new IntegralImage2(gi);
+        // gi = new GrayImage(img);
+        // image = new IntegralImage(gi);
+        // image2 = new IntegralImage2(gi);
+
+        // speedup
+
+        gi = new GrayImage();
+        image = new IntegralImage();
+        image2 = new IntegralImage2();
+
+        this.gi.init(img);
+        this.image.init(gi);
+        this.image2.init(gi);
+
+        for (int x = 0; x < this.gi.cx; x++) {
+            for (int y = 0; y < this.gi.cy; y++) {
+                this.gi.step(x, y);
+                this.image.step(x, y);
+                this.image2.step(x, y);
+            }
+        }
+
         zeroMean = new ImageZeroMean(image);
     }
 
@@ -30,6 +49,10 @@ public class ImageBinary {
 
     public int getHeight() {
         return gi.cy;
+    }
+
+    public BufferedImage getImage() {
+        return gi.buf;
     }
 
 }

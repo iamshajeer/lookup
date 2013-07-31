@@ -1,10 +1,12 @@
 package com.github.axet.lookup.common;
 
-
 public class IntegralImage2 extends SArray {
 
     static public double pow2(double x) {
         return x * x;
+    }
+
+    public IntegralImage2() {
     }
 
     public IntegralImage2(SArray buf) {
@@ -12,9 +14,13 @@ public class IntegralImage2 extends SArray {
 
         for (int x = 0; x < cx; x++) {
             for (int y = 0; y < cy; y++) {
-                s[i(x, y)] = pow2(buf.s(x, y)) + s(x - 1, y) + s(x, y - 1) - s(x - 1, y - 1);
+                step(x, y);
             }
         }
+    }
+
+    public void step(int x, int y) {
+        s[i(x, y)] = pow2(base.s(x, y)) + s(x - 1, y) + s(x, y - 1) - s(x - 1, y - 1);
     }
 
     /**
