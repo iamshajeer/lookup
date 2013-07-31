@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -92,6 +94,7 @@ public class ClassResources {
             // clazz.getClassLoader().getResource(pp) may return system library
             // if path is common (Like "/com")
             File pp = getPath(clazz);
+
             if (pp.isDirectory()) {
                 if (path.startsWith(File.separator))
                     pp = new File(pp, path);
@@ -116,9 +119,14 @@ public class ClassResources {
                 while (entries.hasMoreElements()) {
                     String name = entries.nextElement().getName();
                     if (name.startsWith(p)) {
-                        String a = name.substring(p.length());
-                        a = StringUtils.stripStart(a, File.separator);
+                        String a = StringUtils.removeStart(name, p);
+                        a = StringUtils.removeStart(a, File.separator);
                         a = a.trim();
+
+                        int e = StringUtils.indexOfAny(a, new char[] { '/', '\\' });
+                        if (e != -1)
+                            a = a.substring(0, e);
+
                         if (!a.isEmpty())
                             result.add(a);
                     }
