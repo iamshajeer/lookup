@@ -14,10 +14,12 @@ import com.github.axet.lookup.common.IntegralImage;
  * 
  * http://www.fmwconcepts.com/imagemagick/similar/index.php
  * 
+ * Normalized cross correlation algorithm
+ * 
  * @author axet
  * 
  */
-public class NNC {
+public class NCC {
     public List<Point> lookup(BufferedImage i, BufferedImage t, float m) {
         ImageBinary imageBinary = new ImageBinary(i);
         ImageBinary templateBinary = new ImageBinary(t);
@@ -73,7 +75,7 @@ public class NNC {
         image = Capture.load("/Users/axet/Desktop/4a.jpg");
         template = Capture.load("/Users/axet/Desktop/4c.jpg");
 
-        NNC nnc = new NNC();
+        NCC nnc = new NCC();
         List<Point> pp = nnc.lookup(image, template, 0.7f);
 
         for (Point p : pp) {

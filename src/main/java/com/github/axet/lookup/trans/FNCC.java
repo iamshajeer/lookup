@@ -9,12 +9,15 @@ import com.github.axet.lookup.common.IntegralImage2;
 /**
  * http://isas.uka.de/Material/AltePublikationen/briechle_spie2001.pdf
  * 
- * NOT WORKING
+ * NOT WORKING (check NCC.java)
+ * 
+ * Fast Normalized cross correlation algorithm
+ * 
  * 
  * @author axet
  * 
  */
-public class FNNC {
+public class FNCC {
     IntegralImage imageIntegral;
     IntegralImage2 imageIntegral2;
 
@@ -27,7 +30,7 @@ public class FNNC {
     int Mx;
     int My;
 
-    public FNNC(BufferedImage image, BufferedImage template) {
+    public FNCC(BufferedImage image, BufferedImage template) {
         imageIntegral = new IntegralImage(new GrayImage(image));
         imageIntegral2 = new IntegralImage2(new GrayImage(image));
 
@@ -35,7 +38,7 @@ public class FNNC {
         templateIntegral2 = new IntegralImage2(new GrayImage(template));
     }
 
-    public FNNC(IntegralImage image, IntegralImage template) {
+    public FNCC(IntegralImage image, IntegralImage template) {
         Nx = template.cx;
         Ny = template.cy;
 
@@ -107,6 +110,6 @@ public class FNNC {
 
         });
 
-        FNNC fnnc = new FNNC(image, template);
+        FNCC fnnc = new FNCC(image, template);
     }
 }
