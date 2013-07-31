@@ -7,6 +7,14 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+  <licenses>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE 3.0</name>
+      <url>http://www.gnu.org/copyleft/lesser.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <name>lookup</name>
   <url>http://maven.apache.org</url>
 
