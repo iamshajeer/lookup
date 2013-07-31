@@ -6,11 +6,13 @@ public class FontSymbolLookup {
     public int x;
     public int y;
     public FontSymbol fs;
+    public double g;
 
-    public FontSymbolLookup(FontSymbol fs, int x, int y) {
+    public FontSymbolLookup(FontSymbol fs, int x, int y, double g) {
         this.fs = fs;
         this.x = x;
         this.y = y;
+        this.g = g;
     }
 
     public int size() {

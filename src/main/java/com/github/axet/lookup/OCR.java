@@ -1,6 +1,5 @@
 package com.github.axet.lookup;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
@@ -19,6 +18,7 @@ import com.github.axet.lookup.common.ClassResources;
 import com.github.axet.lookup.common.FontFamily;
 import com.github.axet.lookup.common.FontSymbol;
 import com.github.axet.lookup.common.FontSymbolLookup;
+import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.trans.CannyEdgeDetector;
 import com.github.axet.lookup.trans.NCC;
@@ -29,7 +29,13 @@ public class OCR {
 
         @Override
         public int compare(FontSymbolLookup arg0, FontSymbolLookup arg1) {
-            return new Integer(arg1.size()).compareTo(new Integer(arg0.size()));
+            int r = new Integer(arg1.size()).compareTo(new Integer(arg0.size()));
+
+            // beeter qulity goes first
+            if (r == 0)
+                r = new Double(arg1.g).compareTo(new Double(arg0.g));
+
+            return r;
         }
 
     }
@@ -142,6 +148,8 @@ public class OCR {
             fontFamily.put(fontName, ff);
         }
 
+        // b = prepareImageCrop(b);
+
         FontSymbol f = new FontSymbol(ff, fontSymbol, b);
 
         ff.add(f);
@@ -162,6 +170,7 @@ public class OCR {
     }
 
     public String recognize(BufferedImage bi) {
+        // bi = prepareImage(bi);
         ImageBinary i = new ImageBinary(bi);
 
         return recognize(i);
@@ -221,9 +230,9 @@ public class OCR {
         List<FontSymbolLookup> l = new ArrayList<FontSymbolLookup>();
 
         for (FontSymbol fs : list) {
-            List<Point> ll = NCC.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
-            for (Point p : ll)
-                l.add(new FontSymbolLookup(fs, p.x, p.y));
+            List<GPoint> ll = NCC.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
+            for (GPoint p : ll)
+                l.add(new FontSymbolLookup(fs, p.x, p.y, p.g));
         }
 
         return l;

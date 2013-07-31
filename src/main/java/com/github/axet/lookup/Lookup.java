@@ -18,6 +18,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.RangeColor;
 import com.github.axet.lookup.trans.CannyEdgeDetector;
@@ -188,7 +189,7 @@ public class Lookup {
     }
 
     public static Point lookup(ImageBinary bi, ImageBinary icon) {
-        List<Point> list = NCC.lookup(bi, icon, 0.80f);
+        List<GPoint> list = NCC.lookup(bi, icon, 0.80f);
         if (list.size() != 1)
             throw new NotFound();
         return list.get(0);
@@ -244,7 +245,7 @@ public class Lookup {
     }
 
     static public Point lookupInsideRect(ImageBinary bi, ImageBinary i, Point pul, Point pdr) {
-        List<Point> list = NCC.lookup(bi, pul.x, pul.y, pdr.x, pdr.y, i, 0.80f);
+        List<GPoint> list = NCC.lookup(bi, pul.x, pul.y, pdr.x, pdr.y, i, 0.80f);
 
         if (list.size() != 1)
             throw new NotFound();
