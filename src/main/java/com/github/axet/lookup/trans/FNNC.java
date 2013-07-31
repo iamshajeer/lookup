@@ -1,19 +1,20 @@
 package com.github.axet.lookup.trans;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 
+import com.github.axet.lookup.common.GrayImage;
 import com.github.axet.lookup.common.IntegralImage;
 import com.github.axet.lookup.common.IntegralImage2;
 
 /**
  * http://isas.uka.de/Material/AltePublikationen/briechle_spie2001.pdf
  * 
+ * NOT WORKING
+ * 
  * @author axet
  * 
  */
 public class FNNC {
-
     IntegralImage imageIntegral;
     IntegralImage2 imageIntegral2;
 
@@ -27,17 +28,19 @@ public class FNNC {
     int My;
 
     public FNNC(BufferedImage image, BufferedImage template) {
-        imageIntegral = new IntegralImage(image);
-        imageIntegral2 = new IntegralImage2(image);
+        imageIntegral = new IntegralImage(new GrayImage(image));
+        imageIntegral2 = new IntegralImage2(new GrayImage(image));
 
-        templateIntegral = new IntegralImage(template);
-        templateIntegral2 = new IntegralImage2(template);
+        templateIntegral = new IntegralImage(new GrayImage(template));
+        templateIntegral2 = new IntegralImage2(new GrayImage(template));
+    }
 
-        Nx = template.getWidth();
-        Ny = template.getHeight();
+    public FNNC(IntegralImage image, IntegralImage template) {
+        Nx = template.cx;
+        Ny = template.cy;
 
-        Mx = image.getWidth();
-        My = image.getHeight();
+        Mx = image.cx;
+        My = image.cy;
 
         int cx = Mx + Nx - 1;
         int cy = My + Ny - 1;
@@ -51,20 +54,20 @@ public class FNNC {
         }
     }
 
-    public float f2(int u, int v) {
-        float f7 = imageIntegral.s(u + Nx - 1, v + Ny - 1) - imageIntegral.s(u - 1, v + Ny - 1)
+    public double f2(int u, int v) {
+        double f7 = imageIntegral.s(u + Nx - 1, v + Ny - 1) - imageIntegral.s(u - 1, v + Ny - 1)
                 - imageIntegral.s(u + Nx - 1, v - 1) + imageIntegral.s(u - 1, v - 1);
 
         return (1 / (Nx * Ny)) * f7;
     }
 
-    public float t2() {
-        float t7 = templateIntegral.sigma(0, 0, templateIntegral.cx, templateIntegral.cy);
+    public double t2() {
+        double t7 = templateIntegral.sigma(0, 0, templateIntegral.cx, templateIntegral.cy);
 
         return (1 / (Nx * Ny)) * t7;
     }
 
-    public float f10(int u, int v) {
+    public double f10(int u, int v) {
         return imageIntegral2.sigma(0, 0, imageIntegral2.cx, imageIntegral2.cy) - (1 / (Nx * Ny))
                 * IntegralImage2.pow2(imageIntegral.sigma(0, 0, imageIntegral.cx, imageIntegral.cy));
     }

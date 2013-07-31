@@ -13,45 +13,12 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 
 import com.github.axet.lookup.common.ClassResources;
+import com.github.axet.lookup.common.FontFamily;
+import com.github.axet.lookup.common.FontSymbol;
+import com.github.axet.lookup.common.FontSymbolLookup;
 import com.github.axet.lookup.trans.CannyEdgeDetector;
-import com.github.axet.lookup.trans.FNNC;
 
 public class OCR {
-
-    public static class FontFamily extends ArrayList<FontSymbol> {
-        private static final long serialVersionUID = 3279037448543102425L;
-
-        public String name;
-
-        public FontFamily(String name) {
-            this.name = name;
-        }
-    }
-
-    public static class FontSymbol {
-        public FontFamily fontFamily;
-        public String fontSymbol;
-        public BufferedImage image;
-
-        public FontSymbol(FontFamily ff, String fs, BufferedImage i) {
-            this.fontFamily = ff;
-            this.fontSymbol = fs;
-            this.image = i;
-        }
-    }
-
-    public static class FontSymbolLookup {
-        public int x;
-        public int y;
-        public FontSymbol fs;
-
-        public FontSymbolLookup(FontSymbol fs, int x, int y) {
-            this.fs = fs;
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     Map<String, FontFamily> fontFamily = new HashMap<String, FontFamily>();
 
     CannyEdgeDetector detector = new CannyEdgeDetector();
@@ -167,11 +134,11 @@ public class OCR {
         Lookup.write(bi, new File("/Users/axet/Desktop/1.png"));
 
         for (FontSymbol fs : list) {
-            Lookup.write(fs.image, new File("/Users/axet/Desktop/2.png"));
+            Lookup.write(fs.image.gi.buf, new File("/Users/axet/Desktop/2.png"));
 
             for (int y = 0; y < bi.getHeight() - fs.image.getHeight(); y++) {
                 for (int x = 0; x < bi.getWidth() - fs.image.getWidth(); x++) {
-                    if (Lookup.findCount(bi, x, y, fs.image, m))
+                    if (Lookup.findCount(bi, x, y, fs.image.gi.buf, m))
                         l.add(new FontSymbolLookup(fs, x, y));
                 }
             }

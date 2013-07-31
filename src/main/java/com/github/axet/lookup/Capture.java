@@ -79,7 +79,7 @@ public class Capture {
     }
 
     static public void writeDesktop(BufferedImage img) {
-        writeDesktop(img, Long.toString(System.currentTimeMillis()));
+        writeDesktop(img, Long.toString(System.currentTimeMillis()) + ".png");
     }
 
     static public void writeDesktop(BufferedImage img, String file) {
