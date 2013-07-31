@@ -20,14 +20,14 @@ import com.github.axet.lookup.common.IntegralImage;
  * 
  */
 public class NCC {
-    public List<Point> lookup(BufferedImage i, BufferedImage t, float m) {
+    static public List<Point> lookup(BufferedImage i, BufferedImage t, float m) {
         ImageBinary imageBinary = new ImageBinary(i);
         ImageBinary templateBinary = new ImageBinary(t);
 
         return lookup(imageBinary, templateBinary, m);
     }
 
-    public List<Point> lookup(ImageBinary image, ImageBinary template, float m) {
+    static public List<Point> lookup(ImageBinary image, ImageBinary template, float m) {
         List<Point> list = new ArrayList<Point>();
 
         for (int x = 0; x <= image.getWidth() - template.getWidth(); x++) {
@@ -41,7 +41,7 @@ public class NCC {
         return list;
     }
 
-    float gamma(ImageBinary image, ImageBinary template, int x, int y) {
+    static public float gamma(ImageBinary image, ImageBinary template, int x, int y) {
         ImageMultiply s = new ImageMultiply(image.zeroMean, x, y, template.zeroMean);
         IntegralImage ss = new IntegralImage(s);
 
