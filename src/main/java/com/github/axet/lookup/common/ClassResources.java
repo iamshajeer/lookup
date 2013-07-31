@@ -59,7 +59,7 @@ public class ClassResources {
      * @return
      */
     public ClassResources dir(String path) {
-        return new ClassResources(c, path + "/" + path);
+        return new ClassResources(c, this.path + "/" + path);
     }
 
     // 1) under debugger, /Users/axet/source/mircle/play/target/classes/
