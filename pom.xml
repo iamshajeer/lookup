@@ -4,12 +4,13 @@
 
   <groupId>com.github.axet</groupId>
   <artifactId>lookup</artifactId>
-  <version>0.0.1</version>
-  <name>lookup</name>
+  <version>0.0.2</version>
   <packaging>jar</packaging>
+  <name>lookup</name>
 
   <description>lookup java OCR / sub image find library</description>
   <url>https://github.com/axet/lookup</url>
+
   <licenses>
     <license>
       <name>GNU LESSER GENERAL PUBLIC LICENSE 3.0</name>
@@ -17,6 +18,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <scm>
     <url>https://github.com/axet/lookup</url>
     <connection>scm:git:https://github.com/axet/lookup</connection>

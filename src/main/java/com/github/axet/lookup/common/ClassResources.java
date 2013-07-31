@@ -1,4 +1,4 @@
-package com.github.axet.lookup;
+package com.github.axet.lookup.common;
 
 import java.io.File;
 import java.security.CodeSource;
@@ -59,7 +59,7 @@ public class ClassResources {
      * @return
      */
     public ClassResources dir(String path) {
-        return new ClassResources(c, path + "/" + path);
+        return new ClassResources(c, this.path + "/" + path);
     }
 
     // 1) under debugger, /Users/axet/source/mircle/play/target/classes/

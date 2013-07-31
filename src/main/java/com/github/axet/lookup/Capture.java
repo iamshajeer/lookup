@@ -78,6 +78,10 @@ public class Capture {
         writeDesktop(i, file);
     }
 
+    static public void writeDesktop(BufferedImage img) {
+        writeDesktop(img, Long.toString(System.currentTimeMillis()) + ".png");
+    }
+
     static public void writeDesktop(BufferedImage img, String file) {
         DesktopFolders d = Desktop.getDesktopFolders();
         File f = FileUtils.getFile(d.getDesktop(), file);
