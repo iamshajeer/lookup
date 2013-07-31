@@ -188,7 +188,7 @@ public class Lookup {
     }
 
     public static Point lookup(ImageBinary bi, ImageBinary icon) {
-        List<Point> list = NCC.lookup(bi, icon, 0.99f);
+        List<Point> list = NCC.lookup(bi, icon, 0.80f);
         if (list.size() != 1)
             throw new NotFound();
         return list.get(0);
