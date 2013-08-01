@@ -58,8 +58,10 @@ public class OCR {
         public int compare(FontSymbolLookup arg0, FontSymbolLookup arg1) {
             int r = 0;
 
-            if (r == 0)
-                r = compare(arg0.y, arg1.y, rowHeight);
+            if (r == 0) {
+                if (!arg0.cross(arg1))
+                    r = compare(arg0.y, arg1.y, rowHeight);
+            }
 
             if (r == 0)
                 r = compare(arg0.x, arg1.x);
@@ -211,10 +213,17 @@ public class OCR {
         String str = "";
         {
             int x = 0;
+            int cx = 0;
             for (FontSymbolLookup s : all) {
+                int maxCX = Math.max(cx, s.getWidth());
+
+                if (s.x - (x + cx) > maxCX)
+                    str += " ";
+
                 if (s.x < x)
                     str += "\n";
                 x = s.x;
+                cx = s.getWidth();
                 str += s.fs.fontSymbol;
             }
         }
