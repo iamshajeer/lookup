@@ -7,10 +7,10 @@ It is a nice, simple and friendly to use library which helps you to lookup objec
 
 		    // will go to com/github/axet/lookup/fonts folder and load all font
 		    // familys (here is only font_1 family in this library)
-		    l.loadFonts(OCR.class, new File("fonts"));
+		    l.loadFontsDirectory(OCR.class, new File("fonts"));
 
 		    // example how to load only one family "com/github/axet/lookup/fonts/font_1"
-		    l.loadFonts(OCR.class, new File("fonts", "font_1"));
+		    l.loadFont(OCR.class, new File("fonts", "font_1"));
 
 		    String str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/test3.png")));
     

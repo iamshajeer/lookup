@@ -88,7 +88,7 @@ public class OCR {
         detector.setGaussianKernelWidth(2);
         detector.setGaussianKernelRadius(1f);
 
-        loadFonts(getClass(), new File("fonts"));
+        loadFontsDirectory(getClass(), new File("fonts"));
     }
 
     /**
@@ -102,7 +102,7 @@ public class OCR {
      *            folders with fonts which to load
      * 
      */
-    public void loadFonts(Class<?> c, File path) {
+    public void loadFontsDirectory(Class<?> c, File path) {
         ClassResources e = new ClassResources(c, path);
 
         List<String> str = e.names();
@@ -290,10 +290,10 @@ public class OCR {
 
         // will go to com/github/axet/lookup/fonts folder and load all font
         // familys (here is only font_1 family in this library)
-        l.loadFonts(OCR.class, new File("fonts"));
+        l.loadFontsDirectory(OCR.class, new File("fonts"));
 
         // example how to load only one family "com/github/axet/lookup/fonts/font_1"
-        l.loadFonts(OCR.class, new File("fonts", "font_1"));
+        l.loadFont(OCR.class, new File("fonts", "font_1"));
 
         String str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/test3.png")));
         

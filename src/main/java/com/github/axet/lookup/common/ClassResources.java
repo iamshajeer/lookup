@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -103,7 +101,15 @@ public class ClassResources {
                 else
                     pp = new File(pp, getClassPath(clazz, strPath));
 
-                return Arrays.asList(new File(pp.toURI()).list());
+                File r = new File(pp.toURI());
+
+                if (!r.exists())
+                    throw new RuntimeException("File not found: " + r);
+
+                String[] ss = r.list();
+                if (ss == null)
+                    return new ArrayList<String>();
+                return Arrays.asList(ss);
             }
 
             if (pp.isFile()) {
