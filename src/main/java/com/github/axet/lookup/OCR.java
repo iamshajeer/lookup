@@ -217,9 +217,12 @@ public class OCR {
             for (FontSymbolLookup s : all) {
                 int maxCX = Math.max(cx, s.getWidth());
 
+                // if distance betten end of previous symbol and begining of the
+                // current is larger then a char size, then it is a space
                 if (s.x - (x + cx) > maxCX)
                     str += " ";
 
+                // if we drop back, then we have a end of line
                 if (s.x < x)
                     str += "\n";
                 x = s.x;
