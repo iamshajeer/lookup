@@ -37,5 +37,5 @@ It is a nice, simple and friendly to use library which helps you to lookup objec
         <dependency>
           <groupId>com.github.axet</groupId>
           <artifactId>lookup</artifactId>
-          <version>0.0.5</version>
+          <version>0.0.6</version>
         </dependency>
