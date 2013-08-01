@@ -2,6 +2,7 @@ package com.github.axet.lookup.trans;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import com.github.axet.lookup.common.IntegralImage;
  * 
  */
 public class NCC {
-    
+
     static public List<GPoint> lookup(BufferedImage i, BufferedImage t, float m) {
         ImageBinary imageBinary = new ImageBinary(i);
         ImageBinary templateBinary = new ImageBinary(t);
@@ -102,8 +103,8 @@ public class NCC {
 
         });
 
-        image = Capture.load("/Users/axet/Desktop/cyclopst1.png");
-        template = Capture.load("/Users/axet/Desktop/cyclopst3.png");
+        image = Capture.load(new File("/Users/axet/Desktop/cyclopst1.png"));
+        template = Capture.load(new File("/Users/axet/Desktop/cyclopst3.png"));
 
         List<GPoint> pp = NCC.lookup(image, template, 0.9f);
 
