@@ -24,3 +24,11 @@ It is a nice, simple and friendly to use library which helps you to lookup objec
             // str = recognized string
             System.out.println(str);
         }
+
+## Central Maven Repo
+
+        <dependency>
+          <groupId>com.github.axet</groupId>
+          <artifactId>lookup</artifactId>
+          <version>0.0.5</version>
+        </dependency>
