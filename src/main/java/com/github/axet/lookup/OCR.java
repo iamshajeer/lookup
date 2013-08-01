@@ -155,7 +155,7 @@ public class OCR extends OCRCore {
 
         String str = "";
         {
-            int x = 0;
+            int x = all.get(0).x;
             int cx = 0;
             for (FontSymbolLookup s : all) {
                 int maxCX = Math.max(cx, s.getWidth());
@@ -195,6 +195,10 @@ public class OCR extends OCRCore {
 
         // recognize using only one family set
         str = l.recognize("font_1", Capture.load(new File("/Users/axet/Desktop/test3.png")));
+
+        // recognize using only one family set and rectangle
+        ImageBinary i = new ImageBinary(Capture.load(new File("/Users/axet/Desktop/1374947452667.png")));
+        str = l.recognize(i, 1285, 654, 1343, 677, l.getSymbols("font_1"));
 
         // str = recognized string
         System.out.println(str);
