@@ -109,6 +109,10 @@ public class ClassResources {
                 String[] ss = r.list();
                 if (ss == null)
                     return new ArrayList<String>();
+
+                if (ss.length == 0)
+                    throw new RuntimeException("Font directory is empy: " + r);
+
                 return Arrays.asList(ss);
             }
 
@@ -124,9 +128,11 @@ public class ClassResources {
                 Enumeration<JarEntry> entries = jar.entries();
                 Set<String> result = new HashSet<String>();
 
+                boolean f = false;
                 while (entries.hasMoreElements()) {
                     String name = entries.nextElement().getName();
                     if (name.startsWith(p)) {
+                        f = true;
                         String a = StringUtils.removeStart(name, p);
                         a = StringUtils.removeStart(a, File.separator);
                         a = a.trim();
@@ -139,6 +145,13 @@ public class ClassResources {
                             result.add(a);
                     }
                 }
+
+                if (!f)
+                    throw new RuntimeException("Jar file: " + pp + " has no entry: " + p);
+
+                if (result.isEmpty())
+                    throw new RuntimeException("Jar file: " + pp + " has empty folder: " + p);
+
                 return new ArrayList<String>(result);
             }
         } catch (RuntimeException e) {
