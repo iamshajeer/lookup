@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -34,13 +32,13 @@ import org.apache.commons.lang.StringUtils;
 public class ClassResources {
 
     Class<?> c;
-    String path;
+    File path;
 
     public ClassResources(Class<?> c) {
         this.c = c;
     }
 
-    public ClassResources(Class<?> c, String path) {
+    public ClassResources(Class<?> c, File path) {
         this.c = c;
         this.path = path;
     }
@@ -60,8 +58,8 @@ public class ClassResources {
      * @param path
      * @return
      */
-    public ClassResources dir(String path) {
-        return new ClassResources(c, this.path + "/" + path);
+    public ClassResources dir(File path) {
+        return new ClassResources(c, new File(this.path, path.getPath()));
     }
 
     // 1) under debugger, /Users/axet/source/mircle/play/target/classes/
@@ -89,36 +87,52 @@ public class ClassResources {
         return new File(c.getCanonicalName().replace('.', File.separatorChar)).getParent() + File.separator + path;
     }
 
-    List<String> getResourceListing(Class<?> clazz, String path) {
+    List<String> getResourceListing(Class<?> clazz, File path) {
         try {
             // clazz.getClassLoader().getResource(pp) may return system library
             // if path is common (Like "/com")
             File pp = getPath(clazz);
 
-            if (pp.isDirectory()) {
-                if (path.startsWith(File.separator))
-                    pp = new File(pp, path);
-                else
-                    pp = new File(pp, getClassPath(clazz, path));
+            String strPath = path.getPath();
 
-                return Arrays.asList(new File(pp.toURI()).list());
+            if (pp.isDirectory()) {
+                if (strPath.startsWith(File.separator))
+                    pp = new File(pp, strPath);
+                else
+                    pp = new File(pp, getClassPath(clazz, strPath));
+
+                File r = new File(pp.toURI());
+
+                if (!r.exists())
+                    throw new RuntimeException("File not found: " + r);
+
+                String[] ss = r.list();
+                if (ss == null)
+                    return new ArrayList<String>();
+
+                if (ss.length == 0)
+                    throw new RuntimeException("Font directory is empy: " + r);
+
+                return Arrays.asList(ss);
             }
 
             if (pp.isFile()) {
                 String p;
 
-                if (path.startsWith(File.separator))
-                    p = StringUtils.removeStart(path, File.separator);
+                if (strPath.startsWith(File.separator))
+                    p = StringUtils.removeStart(strPath, File.separator);
                 else
-                    p = getClassPath(clazz, path);
+                    p = getClassPath(clazz, strPath);
 
                 JarFile jar = new JarFile(pp);
                 Enumeration<JarEntry> entries = jar.entries();
                 Set<String> result = new HashSet<String>();
 
+                boolean f = false;
                 while (entries.hasMoreElements()) {
                     String name = entries.nextElement().getName();
                     if (name.startsWith(p)) {
+                        f = true;
                         String a = StringUtils.removeStart(name, p);
                         a = StringUtils.removeStart(a, File.separator);
                         a = a.trim();
@@ -131,6 +145,13 @@ public class ClassResources {
                             result.add(a);
                     }
                 }
+
+                if (!f)
+                    throw new RuntimeException("Jar file: " + pp + " has no entry: " + p);
+
+                if (result.isEmpty())
+                    throw new RuntimeException("Jar file: " + pp + " has empty folder: " + p);
+
                 return new ArrayList<String>(result);
             }
         } catch (RuntimeException e) {

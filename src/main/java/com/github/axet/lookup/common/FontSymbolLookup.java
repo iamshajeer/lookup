@@ -25,4 +25,12 @@ public class FontSymbolLookup {
 
         return r.intersects(r2);
     }
+
+    public int getWidth() {
+        return fs.image.getWidth();
+    }
+
+    public int getHeight() {
+        return fs.image.getHeight();
+    }
 }

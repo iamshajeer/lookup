@@ -2,7 +2,7 @@ package com.github.axet.lookup.common;
 
 public class ImageMultiply extends SArray {
 
-    ImageZeroMean m;
+    SArray m;
     int xx;
     int yy;
 
@@ -23,7 +23,7 @@ public class ImageMultiply extends SArray {
         }
     }
 
-    public void init(ImageZeroMean image, int xx, int yy, ImageZeroMean template) {
+    public void init(SArray image, int xx, int yy, SArray template) {
         super.init(template);
 
         this.m = image;
