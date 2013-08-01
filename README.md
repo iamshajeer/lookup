@@ -1,7 +1,12 @@
 ## Lookup
 
-UNDER DEVELOPMENT
+It is a nice, simple and friendly to use library which helps you to lookup objects on a screen. Also it has a OCR functionality.
 
-It is going to be a nice friendly library which helps you to lookup objects on a screen. Also I plan to add OCR functionality into this library.
+		static public void main(String[] args) {
+		    OCR l = new OCR();
 
-Right now you can read conecept located in 'doc' folder
+		    String str = l.recognize(Lookup.load(new File("/file_to_recognize.png")));
+				// str - recognized string
+
+		    System.out.println(str);
+		}
