@@ -80,7 +80,7 @@ public class OCR extends OCRCore {
     }
 
     public void loadFontSymbol(String fontName, String fontSymbol, InputStream is) {
-        BufferedImage b = Lookup.load(is);
+        BufferedImage b = Capture.load(is);
 
         FontFamily ff = fontFamily.get(fontName);
         if (ff == null) {
@@ -191,10 +191,10 @@ public class OCR extends OCRCore {
         String str = "";
 
         // recognize using all familys set
-        str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/test3.png")));
+        str = l.recognize(Capture.load(new File("/Users/axet/Desktop/test3.png")));
 
         // recognize using only one family set
-        str = l.recognize("font_1", Lookup.load(new File("/Users/axet/Desktop/test3.png")));
+        str = l.recognize("font_1", Capture.load(new File("/Users/axet/Desktop/test3.png")));
 
         // str = recognized string
         System.out.println(str);
