@@ -34,13 +34,13 @@ import org.apache.commons.lang.StringUtils;
 public class ClassResources {
 
     Class<?> c;
-    String path;
+    File path;
 
     public ClassResources(Class<?> c) {
         this.c = c;
     }
 
-    public ClassResources(Class<?> c, String path) {
+    public ClassResources(Class<?> c, File path) {
         this.c = c;
         this.path = path;
     }
@@ -60,8 +60,8 @@ public class ClassResources {
      * @param path
      * @return
      */
-    public ClassResources dir(String path) {
-        return new ClassResources(c, this.path + "/" + path);
+    public ClassResources dir(File path) {
+        return new ClassResources(c, new File(this.path, path.getPath()));
     }
 
     // 1) under debugger, /Users/axet/source/mircle/play/target/classes/
@@ -89,17 +89,19 @@ public class ClassResources {
         return new File(c.getCanonicalName().replace('.', File.separatorChar)).getParent() + File.separator + path;
     }
 
-    List<String> getResourceListing(Class<?> clazz, String path) {
+    List<String> getResourceListing(Class<?> clazz, File path) {
         try {
             // clazz.getClassLoader().getResource(pp) may return system library
             // if path is common (Like "/com")
             File pp = getPath(clazz);
 
+            String strPath = path.getPath();
+
             if (pp.isDirectory()) {
-                if (path.startsWith(File.separator))
-                    pp = new File(pp, path);
+                if (strPath.startsWith(File.separator))
+                    pp = new File(pp, strPath);
                 else
-                    pp = new File(pp, getClassPath(clazz, path));
+                    pp = new File(pp, getClassPath(clazz, strPath));
 
                 return Arrays.asList(new File(pp.toURI()).list());
             }
@@ -107,10 +109,10 @@ public class ClassResources {
             if (pp.isFile()) {
                 String p;
 
-                if (path.startsWith(File.separator))
-                    p = StringUtils.removeStart(path, File.separator);
+                if (strPath.startsWith(File.separator))
+                    p = StringUtils.removeStart(strPath, File.separator);
                 else
-                    p = getClassPath(clazz, path);
+                    p = getClassPath(clazz, strPath);
 
                 JarFile jar = new JarFile(pp);
                 Enumeration<JarEntry> entries = jar.entries();

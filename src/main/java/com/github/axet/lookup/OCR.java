@@ -88,28 +88,51 @@ public class OCR {
         detector.setGaussianKernelWidth(2);
         detector.setGaussianKernelRadius(1f);
 
-        load(getClass(), "fonts");
+        loadFonts(getClass(), new File("fonts"));
     }
 
-    public void load(Class<?> c, String path) {
+    /**
+     * Load fonts / symbols from a class directory or jar file
+     * 
+     * @param c
+     *            class name, corresponded to the resources.
+     *            com.example.MyApp.class
+     * @param path
+     *            path to the fonts folder. directory should only contain
+     *            folders with fonts which to load
+     * 
+     */
+    public void loadFonts(Class<?> c, File path) {
         ClassResources e = new ClassResources(c, path);
 
         List<String> str = e.names();
 
         for (String s : str)
-            loadFont(c, path, s);
+            loadFont(c, new File(path, s));
     }
 
-    public void loadFont(Class<?> c, String path, String name) {
+    /**
+     * Load specified font family to load
+     * 
+     * @param c
+     *            class name, corresponded to the resources.
+     *            com.example.MyApp.class
+     * @param path
+     *            path to the fonts folder. directory should only contain
+     *            folders with fonts which to load.
+     * @param name
+     *            name of the font to load
+     * 
+     */
+    public void loadFont(Class<?> c, File path) {
         ClassResources e = new ClassResources(c, path);
-        e = e.dir(name);
 
         List<String> str = e.names();
 
         for (String s : str) {
-            String f = path + "/" + name + "/" + s;
+            File f = new File(path, s);
 
-            InputStream is = c.getResourceAsStream(f);
+            InputStream is = c.getResourceAsStream(f.getPath());
 
             String symbol = FilenameUtils.getBaseName(s);
 
@@ -119,6 +142,7 @@ public class OCR {
                 throw new RuntimeException(ee);
             }
 
+            String name = path.getName();
             loadFontSymbol(name, symbol, is);
         }
     }
@@ -264,8 +288,16 @@ public class OCR {
     static public void main(String[] args) {
         OCR l = new OCR();
 
-        String str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/test3.png")));
+        // will go to com/github/axet/lookup/fonts folder and load all font
+        // familys (here is only font_1 family in this library)
+        l.loadFonts(OCR.class, new File("fonts"));
 
+        // example how to load only one family "com/github/axet/lookup/fonts/font_1"
+        l.loadFonts(OCR.class, new File("fonts", "font_1"));
+
+        String str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/test3.png")));
+        
+        // str = recognized string
         System.out.println(str);
     }
 }

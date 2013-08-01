@@ -5,8 +5,15 @@ It is a nice, simple and friendly to use library which helps you to lookup objec
 		static public void main(String[] args) {
 		    OCR l = new OCR();
 
-		    String str = l.recognize(Lookup.load(new File("/file_to_recognize.png")));
-				// str - recognized string
+		    // will go to com/github/axet/lookup/fonts folder and load all font
+		    // familys (here is only font_1 family in this library)
+		    l.loadFonts(OCR.class, new File("fonts"));
 
+		    // example how to load only one family "com/github/axet/lookup/fonts/font_1"
+		    l.loadFonts(OCR.class, new File("fonts", "font_1"));
+
+		    String str = l.recognize(Lookup.load(new File("/Users/axet/Desktop/test3.png")));
+    
+		    // str = recognized string
 		    System.out.println(str);
 		}
