@@ -26,6 +26,22 @@ public class FontSymbolLookup {
         return r.intersects(r2);
     }
 
+    public boolean yCross(FontSymbolLookup f) {
+        int y1 = y;
+        int y2 = y1 + fs.image.getHeight();
+
+        int yy1 = f.y;
+        int yy2 = yy1 + f.fs.image.getHeight();
+
+        if (y1 >= yy1 && y1 <= yy2)
+            return true;
+
+        if (y2 >= yy1 && y2 <= yy2)
+            return true;
+
+        return false;
+    }
+
     public int getWidth() {
         return fs.image.getWidth();
     }
