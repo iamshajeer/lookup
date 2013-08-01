@@ -2,6 +2,9 @@
 
 It is a nice, simple and friendly to use library which helps you to lookup objects on a screen. Also it has a OCR functionality.
 
+
+## OCR functionality
+
         static public void main(String[] args) {
             OCR l = new OCR();
     
@@ -24,6 +27,10 @@ It is a nice, simple and friendly to use library which helps you to lookup objec
             // str = recognized string
             System.out.println(str);
         }
+        
+## Lookup methods
+
+// cleaning up
 
 ## Central Maven Repo
 
