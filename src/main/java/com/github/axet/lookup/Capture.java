@@ -80,7 +80,7 @@ public class Capture {
         return dest;
     }
 
-    public BufferedImage crop(BufferedImage image, Rectangle r) {
+    static public BufferedImage crop(BufferedImage image, Rectangle r) {
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
                 BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = bufferedImage.createGraphics();
