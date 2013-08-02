@@ -80,36 +80,4 @@ public class NCC {
         return (n / d);
     }
 
-    public static void main(String[] args) {
-        BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
-        image.getWritableTile(0, 0).setDataElements(0, 0, image.getWidth(), image.getHeight(), new int[] {
-
-        1, 0, 0,
-
-        0, 1, 2,
-
-        0, 0, 255
-
-        });
-
-        BufferedImage template = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
-        template.getWritableTile(0, 0).setDataElements(0, 0, template.getWidth(), template.getHeight(), new int[] {
-
-        0, 0, 0,
-
-        0, 255, 0,
-
-        0, 0, 0
-
-        });
-
-        image = Capture.load(new File("/Users/axet/Desktop/cyclopst1.png"));
-        template = Capture.load(new File("/Users/axet/Desktop/cyclopst3.png"));
-
-        List<GPoint> pp = NCC.lookup(image, template, 0.9f);
-
-        for (Point p : pp) {
-            System.out.println(p);
-        }
-    }
 }
