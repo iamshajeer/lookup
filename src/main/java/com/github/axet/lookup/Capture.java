@@ -143,6 +143,10 @@ public class Capture {
         }
     }
 
+    static public BufferedImage load(Class<?> c, String path) {
+        return load(c.getResourceAsStream(path));
+    }
+    
     static public BufferedImage load(InputStream path) {
         BufferedImage img = null;
         try {

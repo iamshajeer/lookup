@@ -20,7 +20,6 @@ import com.github.axet.lookup.common.ImageBinary;
 public class OCR extends OCRCore {
 
     public OCR() {
-        loadFontsDirectory(getClass(), new File("fonts"));
     }
 
     /**
@@ -177,30 +176,4 @@ public class OCR extends OCRCore {
         return str;
     }
 
-    static public void main(String[] args) {
-        OCR l = new OCR();
-
-        // will go to com/github/axet/lookup/fonts folder and load all font
-        // familys (here is only font_1 family in this library)
-        l.loadFontsDirectory(OCR.class, new File("fonts"));
-
-        // example how to load only one family
-        // "com/github/axet/lookup/fonts/font_1"
-        l.loadFont(OCR.class, new File("fonts", "font_1"));
-
-        String str = "";
-
-        // recognize using all familys set
-        str = l.recognize(Capture.load(new File("/Users/axet/Desktop/test3.png")));
-
-        // recognize using only one family set
-        str = l.recognize("font_1", Capture.load(new File("/Users/axet/Desktop/test3.png")));
-
-        // recognize using only one family set and rectangle
-        ImageBinary i = new ImageBinary(Capture.load(new File("/Users/axet/Desktop/1374947452667.png")));
-        str = l.recognize(i, 1285, 654, 1343, 677, l.getSymbols("font_1"));
-
-        // str = recognized string
-        System.out.println(str);
-    }
 }

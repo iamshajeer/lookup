@@ -87,29 +87,4 @@ public class FNCC {
         return numerator(u, v) / denominator(u, v);
     }
 
-    public static void main(String[] args) {
-        BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
-        image.getWritableTile(0, 0).setDataElements(0, 0, image.getWidth(), image.getHeight(), new int[] {
-
-        0, 0, 0,
-
-        0, 1, 0,
-
-        0, 0, 0
-
-        });
-
-        BufferedImage template = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
-        image.getWritableTile(0, 0).setDataElements(0, 0, image.getWidth(), image.getHeight(), new int[] {
-
-        0, 0, 0,
-
-        0, 1, 0,
-
-        0, 0, 0
-
-        });
-
-        FNCC fnnc = new FNCC(image, template);
-    }
 }
