@@ -23,6 +23,20 @@ public class OCR extends OCRCore {
     }
 
     /**
+     * set sensitivity
+     * 
+     * @param threshold
+     *            1 - exact match. 0 - not match. -1 - opposite difference
+     */
+    public void setThreshold(float threshold) {
+        this.threshold = threshold;
+    }
+
+    public float getThreshold() {
+        return threshold;
+    }
+
+    /**
      * Load fonts / symbols from a class directory or jar file
      * 
      * @param c
