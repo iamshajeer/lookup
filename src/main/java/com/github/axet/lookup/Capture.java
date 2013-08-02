@@ -94,18 +94,6 @@ public class Capture {
     // load / save
     //
 
-    static public BufferedImage load(File path, Rectangle rect) {
-        BufferedImage src = load(path);
-
-        BufferedImage dest = new BufferedImage((int) rect.getWidth(), (int) rect.getHeight(), src.getType());
-        Graphics g = dest.getGraphics();
-        g.drawImage(src, 0, 0, (int) rect.getWidth(), (int) rect.getHeight(), (int) rect.getX(), (int) rect.getY(),
-                (int) rect.getX() + (int) rect.getWidth(), (int) rect.getY() + (int) rect.getHeight(), null);
-        g.dispose();
-
-        return dest;
-    }
-
     static public void writeDesktop(BufferedImage img, Rectangle rr, String file) {
         BufferedImage i = new BufferedImage(rr.width, rr.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = i.getGraphics();
@@ -133,6 +121,18 @@ public class Capture {
         }
     }
 
+    static public BufferedImage load(File path, Rectangle rect) {
+        BufferedImage src = load(path);
+
+        BufferedImage dest = new BufferedImage((int) rect.getWidth(), (int) rect.getHeight(), src.getType());
+        Graphics g = dest.getGraphics();
+        g.drawImage(src, 0, 0, (int) rect.getWidth(), (int) rect.getHeight(), (int) rect.getX(), (int) rect.getY(),
+                (int) rect.getX() + (int) rect.getWidth(), (int) rect.getY() + (int) rect.getHeight(), null);
+        g.dispose();
+
+        return dest;
+    }
+    
     static public BufferedImage load(File path) {
         BufferedImage img = null;
         try {
@@ -163,18 +163,6 @@ public class Capture {
         Graphics g = bi.createGraphics();
         icon.paintIcon(null, g, 0, 0);
         g.dispose();
-        return bi;
-    }
-
-    static public BufferedImage createImageIcon(String path) {
-        java.net.URL imgURL = Lookup.class.getResource(path);
-        ImageIcon icon = new ImageIcon(imgURL);
-
-        BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = bi.createGraphics();
-        icon.paintIcon(null, g, 0, 0);
-        g.dispose();
-
         return bi;
     }
 
