@@ -1,12 +1,9 @@
 package com.github.axet.lookup.trans;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.axet.lookup.Capture;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageMultiply;
@@ -49,7 +46,7 @@ public class NCC {
         return list;
     }
 
-    static public double gamma(ImageBinary image, ImageBinary template, int xx, int yy) {
+    static double numerator(ImageBinary image, ImageBinary template, int xx, int yy) {
         // ImageMultiply s = new ImageMultiply(image.zeroMean, xx, yy,
         // template.zeroMean);
         // IntegralImage ss = new IntegralImage(s);
@@ -69,13 +66,22 @@ public class NCC {
             }
         }
 
-        double n = ss.mean();
+        return ss.mean();
+    }
+
+    static double denominator(ImageBinary image, ImageBinary template, int xx, int yy) {
         double id = image.dev(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
         double td = template.dev();
-        double d = id * td;
+        return id * td;
+    }
+
+    static public double gamma(ImageBinary image, ImageBinary template, int xx, int yy) {
+        double d = denominator(image, template, xx, yy);
 
         if (d == 0)
             return -1;
+
+        double n = numerator(image, template, xx, yy);
 
         return (n / d);
     }

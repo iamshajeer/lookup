@@ -68,6 +68,7 @@ public class OCRCore {
     Map<String, FontFamily> fontFamily = new HashMap<String, FontFamily>();
 
     CannyEdgeDetector detector = new CannyEdgeDetector();
+    NCC ncc = new NCC();
 
     // 1.0f == exact match, -1.0f - completely different images
     float threshold = 0.80f;
@@ -119,7 +120,7 @@ public class OCRCore {
         List<FontSymbolLookup> l = new ArrayList<FontSymbolLookup>();
 
         for (FontSymbol fs : list) {
-            List<GPoint> ll = NCC.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
+            List<GPoint> ll = ncc.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
             for (GPoint p : ll)
                 l.add(new FontSymbolLookup(fs, p.x, p.y, p.g));
         }

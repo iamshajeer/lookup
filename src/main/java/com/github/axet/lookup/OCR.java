@@ -23,6 +23,20 @@ public class OCR extends OCRCore {
     }
 
     /**
+     * set sensitivity
+     * 
+     * @param threshold
+     *            1 - exact match. 0 - not match. -1 - opposite difference
+     */
+    public void setThreshold(float threshold) {
+        this.threshold = threshold;
+    }
+
+    public float getThreshold() {
+        return threshold;
+    }
+
+    /**
      * Load fonts / symbols from a class directory or jar file
      * 
      * @param c
@@ -124,6 +138,12 @@ public class OCR extends OCRCore {
         List<FontSymbol> list = getSymbols(fontSet);
 
         return recognize(i, 0, 0, i.getWidth() - 1, i.getHeight() - 1, list);
+    }
+
+    public String recognize(ImageBinary i, int x1, int y1, int x2, int y2) {
+        List<FontSymbol> list = getSymbols();
+
+        return recognize(i, x1, y1, x2, y2, list);
     }
 
     public String recognize(ImageBinary i, int x1, int y1, int x2, int y2, List<FontSymbol> list) {
