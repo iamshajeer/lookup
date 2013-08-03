@@ -70,17 +70,21 @@ public class Capture {
     // crop
     //
 
-    static public BufferedImage crop(BufferedImage src, Point pul, Point pdr) {
-        BufferedImage dest = new BufferedImage(pdr.x - pul.x, pdr.y - pul.y, src.getType());
+    static public BufferedImage crop(BufferedImage image, Rectangle r) {
+        return crop(image, r.x, r.y, r.x + r.width, r.y + r.height);
+    }
+
+    static public BufferedImage crop(BufferedImage src, int x1, int y1, int x2, int y2) {
+        BufferedImage dest = new BufferedImage(x2 - x1, y2 - y1, src.getType());
         Graphics g = dest.getGraphics();
-        g.drawImage(src, 0, 0, (int) dest.getWidth(), (int) dest.getHeight(), pul.x, pul.y, pul.x + dest.getWidth(),
-                pul.y + dest.getHeight(), null);
+        g.drawImage(src, 0, 0, (int) dest.getWidth(), (int) dest.getHeight(), x1, y1, x1 + dest.getWidth(),
+                y1 + dest.getHeight(), null);
         g.dispose();
 
         return dest;
     }
 
-    static public BufferedImage crop(BufferedImage image, Rectangle r) {
+    static public BufferedImage fill(BufferedImage image, Rectangle r) {
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
                 BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = bufferedImage.createGraphics();
@@ -132,7 +136,7 @@ public class Capture {
 
         return dest;
     }
-    
+
     static public BufferedImage load(File path) {
         BufferedImage img = null;
         try {
@@ -146,7 +150,7 @@ public class Capture {
     static public BufferedImage load(Class<?> c, String path) {
         return load(c.getResourceAsStream(path));
     }
-    
+
     static public BufferedImage load(InputStream path) {
         BufferedImage img = null;
         try {
