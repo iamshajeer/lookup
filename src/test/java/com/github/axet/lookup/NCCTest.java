@@ -45,7 +45,9 @@ public class NCCTest {
         image = Capture.load(OCRTest.class, "cyclopst1.png");
         template = Capture.load(OCRTest.class, "cyclopst3.png");
 
-        List<GPoint> pp = NCC.lookup(image, template, 0.9f);
+        NCC ncc = new NCC();
+        
+        List<GPoint> pp = ncc.lookup(image, template, 0.9f);
 
         for (Point p : pp) {
             System.out.println(p);

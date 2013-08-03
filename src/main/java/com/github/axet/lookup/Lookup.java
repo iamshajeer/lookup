@@ -9,13 +9,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
-import java.util.List;
 
-import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.RangeColor;
 import com.github.axet.lookup.trans.CannyEdgeDetector;
-import com.github.axet.lookup.trans.NCC;
 
 public class Lookup {
 
@@ -183,40 +180,34 @@ public class Lookup {
         return true;
     }
 
-    static boolean findCount(BufferedImage bi, int x, int y, BufferedImage icon, float m) {
-        int c = 1;
-        int t = 1;
-        for (int yy = 0; yy < icon.getHeight(); yy++) {
-            for (int xx = 0; xx < icon.getWidth(); xx++) {
-                int rgb1 = icon.getRGB(xx, yy);
-                int rgb2 = bi.getRGB(x + xx, y + yy);
-                if ((rgb1 & 0xffffff) > 0 || (rgb2 & 0xffffff) > 0) {
-                    t++;
-                    if (rgb1 != rgb2) {
-                        c++;
-                    }
-                }
+    public static boolean find(ImageBinary image, int x, int y, ImageBinary template, double m) {
+        m = m * 255;
+        for (int yy = 0; yy < template.getHeight(); yy++) {
+            for (int xx = 0; xx < template.getWidth(); xx++) {
+                double rgb1 = template.zeroMean.s(xx, yy);
+                double rgb2 = image.zeroMean.s(x + xx, y + yy);
+                double min = rgb1 - m;
+                double max = rgb1 + m;
+                if (rgb2 < min || rgb2 > max)
+                    return false;
             }
         }
 
-        return (c / (float) t) < m;
+        return true;
     }
 
     public static Point lookup(BufferedImage bi, BufferedImage icon) {
-        return lookup(bi, icon, 0.10f);
+        return lookupUL(bi, icon, 0.10f);
     }
 
-    public static Point lookup(ImageBinary bi, ImageBinary icon) {
-        List<GPoint> list = NCC.lookup(bi, icon, 0.80f);
-        if (list.size() != 1)
-            throw new NotFound();
-        return list.get(0);
+    public static Point lookupUL(BufferedImage image, BufferedImage template, float m) {
+        return lookupUL(image, template, 0, 0, image.getWidth() - 1, image.getHeight() - 1, m);
     }
 
-    public static Point lookup(BufferedImage bi, BufferedImage icon, float m) {
-        for (int y = 0; y < bi.getHeight() - icon.getHeight(); y++) {
-            for (int x = 0; x < bi.getWidth() - icon.getWidth(); x++) {
-                if (find(bi, x, y, icon, m))
+    public static Point lookupUL(BufferedImage image, BufferedImage template, int x1, int y1, int x2, int y2, float m) {
+        for (int y = y1; y < y2 - template.getHeight(); y++) {
+            for (int x = x1; x < x2 - template.getWidth(); x++) {
+                if (find(image, x, y, template, m))
                     return new Point(x, y);
             }
         }
@@ -224,8 +215,15 @@ public class Lookup {
         return null;
     }
 
-    static public Point lookupImage(BufferedImage bi, BufferedImage exit) {
-        return lookupImage(bi, exit, 0.10f);
+    public static Point lookupUL(ImageBinary image, ImageBinary template, float m) {
+        for (int y = 0; y < image.getHeight() - template.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth() - template.getWidth(); x++) {
+                if (find(image, x, y, template, m))
+                    return new Point(x, y);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -236,8 +234,12 @@ public class Lookup {
      * @param m
      * @return
      */
-    static public Point lookupImage(BufferedImage bi, BufferedImage exit, float m) {
-        Point pul = lookup(bi, exit, m);
+    static public Point lookup(BufferedImage bi, BufferedImage exit, float m) {
+        return lookup(bi, exit, 0, 0, bi.getWidth() - 1, bi.getHeight() - 1, m);
+    }
+
+    static public Point lookup(BufferedImage bi, BufferedImage exit, int x1, int y1, int x2, int y2, float m) {
+        Point pul = lookupUL(bi, exit, x1, y1, x2, y2, m);
         if (pul == null)
             throw new NotFound();
 
@@ -246,26 +248,14 @@ public class Lookup {
         return new Point(x, y);
     }
 
-    static public Point lookupInsideRect(BufferedImage bi, BufferedImage i, Point pul, Point pdr) {
-        return lookupInsideRect(bi, i, pul, pdr, 0.10f);
-    }
-
-    static public Point lookupInsideRect(ImageBinary bi, ImageBinary i, Point pul, Point pdr) {
-        List<GPoint> list = NCC.lookup(bi, pul.x, pul.y, pdr.x, pdr.y, i, 0.80f);
-
-        if (list.size() != 1)
+    static public Point lookupMeanImage(ImageBinary bi, ImageBinary i, int x1, int y1, int x2, int y2, float p) {
+        Point pul = lookupUL(bi, i, p);
+        if (pul == null)
             throw new NotFound();
 
-        return list.get(0);
-    }
-
-    static public Point lookupInsideRect(BufferedImage bi, BufferedImage i, Point pul, Point pdr, float p) {
-        bi = Capture.crop(bi, pul, pdr);
-        Point p3 = lookupImage(bi, i, p);
-        p3.x += pul.x;
-        p3.y += pul.y;
-
-        return p3;
+        int x = pul.x + i.getWidth() / 2;
+        int y = pul.y + i.getHeight() / 2;
+        return new Point(x, y);
     }
 
 }

@@ -40,6 +40,6 @@ public class FNCCTest {
 
         });
 
-        FNCC fnnc = new FNCC(image, template);
+        FNCC fnnc = new FNCC();
     }
 }
