@@ -17,34 +17,45 @@ import com.github.axet.lookup.trans.NCC;
 
 public class OCRCore {
 
+    static public int compareBigFirst(int o1, int o2, int val) {
+        if (Math.abs(o1 - o2) < val)
+            return 0;
+
+        return compareBigFirst(o1, o2);
+    }
+
+    static public int compareBigFirst(int o1, int o2) {
+        return new Integer(o2).compareTo(new Integer(o1));
+    }
+
+    static public int compareBigFirst(double o1, double o2) {
+        return new Double(o2).compareTo(new Double(o1));
+    }
+
+    static public int compareSmallFirst(double o1, double o2) {
+        return new Double(o1).compareTo(new Double(o2));
+    }
+
     static class BiggerFirst implements Comparator<FontSymbolLookup> {
 
         @Override
         public int compare(FontSymbolLookup arg0, FontSymbolLookup arg1) {
-            int r = new Integer(arg1.size()).compareTo(new Integer(arg0.size()));
+            int o = Math.max(arg0.size(), arg1.size());
+
+            int r = OCRCore.compareBigFirst(arg0.size(), arg1.size(), o / 2);
 
             // beeter qulity goes first
             if (r == 0)
-                r = new Double(arg1.g).compareTo(new Double(arg0.g));
+                r = OCRCore.compareBigFirst(arg0.g, arg1.g);
+
+            if (r == 0)
+                r = OCRCore.compareBigFirst(arg0.size(), arg1.size());
 
             return r;
         }
-
     }
 
     class Left2Right implements Comparator<FontSymbolLookup> {
-
-        public int compare(int o1, int o2, int val) {
-            if (Math.abs(o1 - o2) < val)
-                return 0;
-
-            return compare(o1, o2);
-        }
-
-        // desc algorithm (high comes at first [0])
-        public int compare(int o1, int o2) {
-            return new Integer(o1).compareTo(new Integer(o2));
-        }
 
         @Override
         public int compare(FontSymbolLookup arg0, FontSymbolLookup arg1) {
@@ -52,14 +63,14 @@ public class OCRCore {
 
             if (r == 0) {
                 if (!arg0.yCross(arg1))
-                    r = compare(arg0.y, arg1.y);
+                    r = OCRCore.compareSmallFirst(arg0.y, arg1.y);
             }
 
             if (r == 0)
-                r = compare(arg0.x, arg1.x);
+                r = OCRCore.compareSmallFirst(arg0.x, arg1.x);
 
             if (r == 0)
-                r = compare(arg0.y, arg1.y);
+                r = OCRCore.compareSmallFirst(arg0.y, arg1.y);
 
             return r;
         }
@@ -68,10 +79,9 @@ public class OCRCore {
     Map<String, FontFamily> fontFamily = new HashMap<String, FontFamily>();
 
     CannyEdgeDetector detector = new CannyEdgeDetector();
-    NCC ncc = new NCC();
 
     // 1.0f == exact match, -1.0f - completely different images
-    float threshold = 0.80f;
+    float threshold = 0.70f;
 
     public OCRCore() {
         detector.setLowThreshold(3f);
@@ -120,7 +130,7 @@ public class OCRCore {
         List<FontSymbolLookup> l = new ArrayList<FontSymbolLookup>();
 
         for (FontSymbol fs : list) {
-            List<GPoint> ll = ncc.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
+            List<GPoint> ll = NCC.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
             for (GPoint p : ll)
                 l.add(new FontSymbolLookup(fs, p.x, p.y, p.g));
         }

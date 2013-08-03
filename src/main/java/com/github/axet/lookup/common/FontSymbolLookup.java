@@ -33,10 +33,10 @@ public class FontSymbolLookup {
         int yy1 = f.y;
         int yy2 = yy1 + f.fs.image.getHeight();
 
-        if (y1 >= yy1 && y1 <= yy2)
+        if (y1 <= yy1 && yy1 <= y2)
             return true;
 
-        if (y2 >= yy1 && y2 <= yy2)
+        if (y1 <= yy2 && yy2 <= y2)
             return true;
 
         return false;
