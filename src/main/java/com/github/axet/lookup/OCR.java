@@ -140,6 +140,12 @@ public class OCR extends OCRCore {
         return recognize(i, 0, 0, i.getWidth() - 1, i.getHeight() - 1, list);
     }
 
+    public String recognize(ImageBinary i, int x1, int y1, int x2, int y2) {
+        List<FontSymbol> list = getSymbols();
+
+        return recognize(i, x1, y1, x2, y2, list);
+    }
+
     public String recognize(ImageBinary i, int x1, int y1, int x2, int y2, List<FontSymbol> list) {
         List<FontSymbolLookup> all = findAll(list, i, x1, y1, x2, y2);
 
