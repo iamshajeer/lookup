@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -128,13 +129,13 @@ public class OCR extends OCRCore {
      * @param bi
      * @return
      */
-    public String recognize(String fontSet, BufferedImage bi) {
+    public String recognize(BufferedImage bi, String fontSet) {
         ImageBinary i = new ImageBinary(bi);
 
-        return recognize(fontSet, i);
+        return recognize(i, fontSet);
     }
 
-    public String recognize(String fontSet, ImageBinary i) {
+    public String recognize(ImageBinary i, String fontSet) {
         List<FontSymbol> list = getSymbols(fontSet);
 
         return recognize(i, 0, 0, i.getWidth() - 1, i.getHeight() - 1, list);

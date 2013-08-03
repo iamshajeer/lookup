@@ -24,7 +24,7 @@ public class OCRTest {
         System.out.println(str);
 
         // recognize using only one family set
-        str = l.recognize("font_1", Capture.load(OCRTest.class, "test3.png"));
+        str = l.recognize(Capture.load(OCRTest.class, "test3.png"), "font_1");
         System.out.println(str);
 
         // recognize using only one family set and rectangle

@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.RangeColor;
@@ -226,6 +228,19 @@ public class Lookup {
         return null;
     }
 
+    public static List<Point> lookupAllUL(BufferedImage image, BufferedImage template, float m) {
+        List<Point> list = new ArrayList<Point>();
+
+        for (int y = 0; y < image.getHeight() - template.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth() - template.getWidth(); x++) {
+                if (find(image, x, y, template, m))
+                    list.add(new Point(x, y));
+            }
+        }
+
+        return list;
+    }
+
     /**
      * lookup center of image
      * 
@@ -256,6 +271,27 @@ public class Lookup {
         int x = pul.x + i.getWidth() / 2;
         int y = pul.y + i.getHeight() / 2;
         return new Point(x, y);
+    }
+
+    static public List<Point> lookupAll(BufferedImage bi, BufferedImage i) {
+        return lookupAll(bi, i, 0.10f);
+    }
+
+    static public List<Point> lookupAll(BufferedImage bi, BufferedImage i, float p) {
+        return lookupAll(bi, i, 0, 0, bi.getWidth(), bi.getHeight(), p);
+    }
+
+    static public List<Point> lookupAll(BufferedImage bi, BufferedImage i, int x1, int y1, int x2, int y2, float p) {
+        List<Point> pul = lookupAllUL(bi, i, p);
+        if (pul.size() == 0)
+            throw new NotFound();
+
+        for (Point pp : pul) {
+            pp.x += i.getWidth() / 2;
+            pp.y += i.getHeight() / 2;
+        }
+
+        return pul;
     }
 
 }
