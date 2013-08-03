@@ -53,5 +53,5 @@ usefull for debuging or automating things.
         <dependency>
           <groupId>com.github.axet</groupId>
           <artifactId>lookup</artifactId>
-          <version>0.0.7</version>
+          <version>0.0.8</version>
         </dependency>
