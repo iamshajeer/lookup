@@ -12,8 +12,8 @@ import com.github.axet.lookup.common.FontSymbol;
 import com.github.axet.lookup.common.FontSymbolLookup;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
-import com.github.axet.lookup.trans.CannyEdgeDetector;
-import com.github.axet.lookup.trans.NCC;
+import com.github.axet.lookup.proc.CannyEdgeDetector;
+import com.github.axet.lookup.proc.NCC;
 
 public class OCRCore {
 

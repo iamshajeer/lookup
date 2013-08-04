@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.RangeColor;
-import com.github.axet.lookup.trans.CannyEdgeDetector;
+import com.github.axet.lookup.proc.CannyEdgeDetector;
 
 public class Lookup {
 

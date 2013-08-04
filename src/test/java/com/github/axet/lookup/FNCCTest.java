@@ -2,7 +2,7 @@ package com.github.axet.lookup;
 
 import java.awt.image.BufferedImage;
 
-import com.github.axet.lookup.trans.FNCC;
+import com.github.axet.lookup.proc.FNCC;
 
 /**
  * http://isas.uka.de/Material/AltePublikationen/briechle_spie2001.pdf

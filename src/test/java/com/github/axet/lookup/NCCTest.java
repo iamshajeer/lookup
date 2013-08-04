@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.List;
 
 import com.github.axet.lookup.common.GPoint;
-import com.github.axet.lookup.trans.NCC;
+import com.github.axet.lookup.proc.NCC;
 
 /**
  * 
@@ -45,9 +45,7 @@ public class NCCTest {
         image = Capture.load(OCRTest.class, "cyclopst1.png");
         template = Capture.load(OCRTest.class, "cyclopst3.png");
 
-        NCC ncc = new NCC();
-        
-        List<GPoint> pp = ncc.lookup(image, template, 0.9f);
+        List<GPoint> pp = NCC.lookup(image, template, 0.9f);
 
         for (Point p : pp) {
             System.out.println(p);

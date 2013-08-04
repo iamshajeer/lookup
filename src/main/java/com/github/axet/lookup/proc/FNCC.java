@@ -1,4 +1,4 @@
-package com.github.axet.lookup.trans;
+package com.github.axet.lookup.proc;
 
 import com.github.axet.lookup.common.ImageBinary;
 
