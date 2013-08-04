@@ -1,5 +1,11 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Sum Table.
+ * 
+ * @author axet
+ * 
+ */
 public class IntegralImage extends SArray {
 
     public IntegralImage() {

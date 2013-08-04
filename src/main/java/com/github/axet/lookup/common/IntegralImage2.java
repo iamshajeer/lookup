@@ -1,5 +1,11 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Image Energy. Squared Image Function f^2(x,y).
+ * 
+ * @author axet
+ * 
+ */
 public class IntegralImage2 extends SArray {
 
     static public double pow2(double x) {
