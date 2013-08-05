@@ -4,6 +4,20 @@ public class FeatureSetDefault extends FeatureSet {
     private static final long serialVersionUID = -4442575077693435100L;
 
     public FeatureSetDefault() {
+        add(new Feature(5, 5, new double[] {
+
+        0, 0, 0, 0, 0,
+
+        0, 0, 0, 0, 0,
+
+        0, 0, 1, 0, 0,
+
+        0, 0, 0, 0, 0,
+
+        0, 0, 0, 0, 0,
+
+        }));
+
         add(new Feature(3, 3, new double[] {
 
         0, 0, 0,
@@ -59,5 +73,4 @@ public class FeatureSetDefault extends FeatureSet {
         }));
 
     }
-
 }
