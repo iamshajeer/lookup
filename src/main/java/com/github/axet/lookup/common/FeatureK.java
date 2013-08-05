@@ -6,49 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class FeatureK {
-
-    static class RectK implements Comparable<RectK> {
-        public int x1;
-        public int y1;
-        public int x2;
-        public int y2;
-
-        public double scaleX;
-        public double scaleY;
-
-        public double k;
-
-        public RectK(int x, int y) {
-            x1 = x;
-            y1 = y;
-            x2 = x;
-            y2 = y;
-        }
-
-        public boolean equal(RectK k) {
-            return x1 == k.x1 && x2 == k.x2 && y1 == k.y1 && y2 == k.y2;
-        }
-
-        @Override
-        public int compareTo(RectK arg0) {
-            int r = 0;
-            if (r == 0)
-                r = new Integer(x1).compareTo(arg0.x1);
-            if (r == 0)
-                r = new Integer(y1).compareTo(arg0.y1);
-            if (r == 0)
-                r = new Integer(x2).compareTo(arg0.x2);
-            if (r == 0)
-                r = new Integer(y2).compareTo(arg0.y2);
-            return r;
-        }
-    }
-
     public Feature f;
-    public int x1;
-    public int y1;
-    public int x2;
-    public int y2;
     public List<RectK> list;
 
     IntegralImage image;
@@ -59,9 +17,15 @@ public class FeatureK {
 
         Set<RectK> list = new TreeSet<RectK>();
 
+        // f.cx = image.cx;
+        // f.cy = image.cy;
+
         for (int x = 0; x < f.cx; x++) {
             for (int y = 0; y < f.cy; y++) {
                 RectK k = rectNearFill(x, y);
+                // RectK k = new RectK(x, y);
+                // k.scaleX = 1.0 / image.cx;
+                // k.scaleY = 1.0 / image.cy;
                 list.add(k);
             }
         }
@@ -69,12 +33,18 @@ public class FeatureK {
         this.list = Arrays.asList(list.toArray(new RectK[] {}));
 
         for (RectK k : this.list) {
-            double dx = image.cx / f.cx;
-            double sx = k.scaleX * dx;
-            double dy = image.cy / f.cy;
-            double sy = k.scaleY * dy;
-            
-            ;
+            double dx = image.cx / (double) f.cx;
+            double dy = image.cy / (double) f.cy;
+
+            int w = k.x2 - k.x1 + 1;
+            int h = k.y2 - k.y1 + 1;
+
+            k.x1 *= dx;
+            k.y1 *= dy;
+            k.x2 = (int) (k.x1 + w * dx - 1);
+            k.y2 = (int) (k.y1 + h * dy - 1);
+
+            k.k = image.sigma(k.x1, k.y1, k.x2, k.y2);
         }
     }
 
@@ -105,6 +75,9 @@ public class FeatureK {
     }
 
     RectK near(int x, int y) {
+        if (test(x, y))
+            return new RectK(x, y);
+
         int m = Math.max(f.cx, f.cy);
         for (int r = 1; r < m; r++) {
             int xx;
@@ -146,6 +119,11 @@ public class FeatureK {
     }
 
     boolean test(int x, int y) {
+        if (x >= f.cx)
+            return false;
+        if (y >= f.cy)
+            return false;
+
         if (f.s(x, y) == 1)
             return true;
 
@@ -165,7 +143,7 @@ public class FeatureK {
             k.x2++;
         }
 
-        while (test(k.x2, k.y1 + 1)) {
+        while (test(k.x2, k.y2 + 1)) {
             k.y2++;
         }
 

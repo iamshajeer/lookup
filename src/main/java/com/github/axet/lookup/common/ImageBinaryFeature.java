@@ -5,12 +5,14 @@ import java.util.List;
 
 public class ImageBinaryFeature extends ImageBinary {
 
-    List<FeatureK> k;
+    public List<FeatureK> k;
+    public IntegralImage zeroMeanIntegral;
 
     public ImageBinaryFeature(BufferedImage img, FeatureSet list) {
         super(img);
 
-        k = list.k(image);
+        zeroMeanIntegral = new IntegralImage(zeroMean);
+        k = list.k(zeroMeanIntegral);
     }
 
 }

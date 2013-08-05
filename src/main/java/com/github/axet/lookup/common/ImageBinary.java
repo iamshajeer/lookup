@@ -51,6 +51,10 @@ public class ImageBinary {
         return gi.cy;
     }
 
+    public int size() {
+        return gi.cx * gi.cy;
+    }
+
     public BufferedImage getImage() {
         return gi.buf;
     }
