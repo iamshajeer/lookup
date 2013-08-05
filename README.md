@@ -4,7 +4,6 @@ It is a nice, simple and friendly to use library which helps you to lookup objec
 Using Lookup you can do Java OCR tricks like recognizing any infromation from your Robot application. Which can be
 usefull for debuging or automating things.
 
-
 ## OCR functionality
 
     package com.github.axet.lookup;
