@@ -40,10 +40,10 @@ public class IntegralImage2 extends SArray {
      * @return
      */
     public double dev2(IntegralImage i, int x1, int y1, int x2, int y2) {
-        double diff = i.sigma(x1, y1, x2, y2);
-        int area = (x2 - x1 + 1) * (y2 - y1 + 1);
-        double sqdiff = sigma(x1, y1, x2, y2);
-        return (sqdiff - pow2(diff) / area) / (area - 1);
+        double sum = i.sigma(x1, y1, x2, y2);
+        int size = (x2 - x1 + 1) * (y2 - y1 + 1);
+        double sum2 = sigma(x1, y1, x2, y2);
+        return (sum2 - pow2(sum) / size) / (size - 1);
     }
 
     public double dev(IntegralImage i, int x1, int y1, int x2, int y2) {
