@@ -12,7 +12,7 @@ import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryFeature;
 import com.github.axet.lookup.common.ImageBinaryZeroIntegral;
 import com.github.axet.lookup.common.ImageMultiply;
-import com.github.axet.lookup.common.ImageMultiplyIntegral;
+import com.github.axet.lookup.common.ImageMultiplyMean;
 import com.github.axet.lookup.common.RectK;
 
 /**
@@ -76,8 +76,8 @@ public class FNCC {
 
         //n /= ns;
 
-        ImageMultiplyIntegral m = new ImageMultiplyIntegral(image.zeroMean, xx, yy, template.zeroMean);
-        double q = m.mean();
+        ImageMultiplyMean m = new ImageMultiplyMean(image.zeroMean, xx, yy, template.zeroMean);
+        double q = m.mean;
 
         return n;
     }

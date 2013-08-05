@@ -9,23 +9,17 @@ public class FeatureK {
     public Feature f;
     public List<RectK> list;
 
-    IntegralImage image;
+    IntegralImage template;
 
-    public FeatureK(Feature f, IntegralImage image) {
-        this.image = image;
+    public FeatureK(Feature f, IntegralImage template) {
+        this.template = template;
         this.f = f;
 
         Set<RectK> list = new TreeSet<RectK>();
 
-        // f.cx = image.cx;
-        // f.cy = image.cy;
-
         for (int x = 0; x < f.cx; x++) {
             for (int y = 0; y < f.cy; y++) {
                 RectK k = rectNearFill(x, y);
-                // RectK k = new RectK(x, y);
-                // k.scaleX = 1.0 / image.cx;
-                // k.scaleY = 1.0 / image.cy;
                 list.add(k);
             }
         }
@@ -33,8 +27,8 @@ public class FeatureK {
         this.list = Arrays.asList(list.toArray(new RectK[] {}));
 
         for (RectK k : this.list) {
-            double dx = image.cx / (double) f.cx;
-            double dy = image.cy / (double) f.cy;
+            double dx = template.cx / (double) f.cx;
+            double dy = template.cy / (double) f.cy;
 
             int w = k.x2 - k.x1 + 1;
             int h = k.y2 - k.y1 + 1;
@@ -44,7 +38,7 @@ public class FeatureK {
             k.x2 = (int) (k.x1 + w * dx - 1);
             k.y2 = (int) (k.y1 + h * dy - 1);
 
-            k.k = image.sigma(k.x1, k.y1, k.x2, k.y2);
+            k.k = template.sigma(k.x1, k.y1, k.x2, k.y2);
         }
     }
 
