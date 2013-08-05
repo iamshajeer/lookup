@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 public class ImageBinary {
 
     public GrayImage gi;
-    public IntegralImage image;
-    public IntegralImage2 image2;
+    public IntegralImage integral;
+    public IntegralImage2 integral2;
     public ImageZeroMean zeroMean;
 
     public ImageBinary(BufferedImage img) {
@@ -17,30 +17,38 @@ public class ImageBinary {
         // speedup
 
         gi = new GrayImage();
-        image = new IntegralImage();
-        image2 = new IntegralImage2();
+        integral = new IntegralImage();
+        integral2 = new IntegralImage2();
 
         this.gi.init(img);
-        this.image.init(gi);
-        this.image2.init(gi);
+        this.integral.init(gi);
+        this.integral2.init(gi);
 
         for (int x = 0; x < this.gi.cx; x++) {
             for (int y = 0; y < this.gi.cy; y++) {
                 this.gi.step(x, y);
-                this.image.step(x, y);
-                this.image2.step(x, y);
+                this.integral.step(x, y);
+                this.integral2.step(x, y);
             }
         }
 
-        zeroMean = new ImageZeroMean(image);
+        zeroMean = new ImageZeroMean(integral);
     }
 
     public double dev() {
-        return image2.dev(image);
+        return integral2.dev(integral);
+    }
+
+    public double dev2() {
+        return integral2.dev2(integral);
+    }
+
+    public double dev2(int x1, int y1, int x2, int y2) {
+        return integral2.dev2(integral, x1, y1, x2, y2);
     }
 
     public double dev(int x1, int y1, int x2, int y2) {
-        return image2.dev(image, x1, y1, x2, y2);
+        return integral2.dev(integral, x1, y1, x2, y2);
     }
 
     public int getWidth() {
