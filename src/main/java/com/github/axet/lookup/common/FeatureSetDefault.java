@@ -46,6 +46,18 @@ public class FeatureSetDefault extends FeatureSet {
 
         }));
 
+        add(new Feature(3, 3, new double[] {
+
+        1, 0, 1, 0, 1,
+
+        0, 1, 0, 1, 0,
+
+        1, 0, 1, 0, 1,
+
+        0, 1, 0, 1, 0,
+
+        }));
+
     }
 
 }

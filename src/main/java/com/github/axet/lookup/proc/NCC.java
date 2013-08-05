@@ -6,9 +6,7 @@ import java.util.List;
 
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
-import com.github.axet.lookup.common.ImageMultiply;
 import com.github.axet.lookup.common.ImageMultiplyIntegral;
-import com.github.axet.lookup.common.IntegralImage;
 
 /**
  * 

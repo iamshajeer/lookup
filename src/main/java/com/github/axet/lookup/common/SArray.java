@@ -15,7 +15,7 @@ public class SArray {
     public SArray() {
 
     }
-
+    
     public SArray(SArray buf) {
         init(buf);
     }

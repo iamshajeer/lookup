@@ -10,6 +10,6 @@ public class FeatureK {
     public int y2;
 
     public FeatureK(Feature f, IntegralImage image) {
-        // TODO calulate new rect and vaues;
+        ;
     }
 }
