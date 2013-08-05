@@ -1,6 +1,10 @@
 package com.github.axet.lookup.proc;
 
+import com.github.axet.lookup.common.FeatureSet;
+import com.github.axet.lookup.common.FeatureSetDefault;
 import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryFeature;
+import com.github.axet.lookup.common.ImageMultiplyIntegral;
 
 /**
  * http://isas.uka.de/Material/AltePublikationen/briechle_spie2001.pdf
@@ -14,13 +18,18 @@ import com.github.axet.lookup.common.ImageBinary;
  * 
  */
 public class FNCC extends NCC {
-
-    // FNCC needs only new numerator function
-    static double numerator(ImageBinary image, ImageBinary template, int xx, int yy) {
-        return 0;
+    
+    FeatureSet features = new FeatureSetDefault();
+    
+    public FNCC() {
     }
 
-    static public double gamma(ImageBinary image, ImageBinary template, int xx, int yy) {
+    static double numerator(ImageBinary image, ImageBinaryFeature template, int xx, int yy) {
+        ImageMultiplyIntegral m = new ImageMultiplyIntegral(image.zeroMean, xx, yy, template.zeroMean);
+        return m.mean();
+    }
+
+    static public double gamma(ImageBinary image, ImageBinaryFeature template, int xx, int yy) {
         double d = denominator(image, template, xx, yy);
 
         if (d == 0)

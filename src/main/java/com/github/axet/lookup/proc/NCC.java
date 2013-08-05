@@ -7,6 +7,7 @@ import java.util.List;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageMultiply;
+import com.github.axet.lookup.common.ImageMultiplyIntegral;
 import com.github.axet.lookup.common.IntegralImage;
 
 /**
@@ -47,26 +48,8 @@ public class NCC {
     }
 
     static double numerator(ImageBinary image, ImageBinary template, int xx, int yy) {
-        // ImageMultiply s = new ImageMultiply(image.zeroMean, xx, yy,
-        // template.zeroMean);
-        // IntegralImage ss = new IntegralImage(s);
-
-        // speed up
-
-        ImageMultiply s = new ImageMultiply();
-        IntegralImage ss = new IntegralImage();
-
-        s.init(image.zeroMean, xx, yy, template.zeroMean);
-        ss.init(s);
-
-        for (int x = 0; x < template.getWidth(); x++) {
-            for (int y = 0; y < template.getHeight(); y++) {
-                s.step(x, y);
-                ss.step(x, y);
-            }
-        }
-
-        return ss.mean();
+        ImageMultiplyIntegral m = new ImageMultiplyIntegral(image.zeroMean, xx, yy, template.zeroMean);
+        return m.mean();
     }
 
     static double denominator(ImageBinary image, ImageBinary template, int xx, int yy) {
