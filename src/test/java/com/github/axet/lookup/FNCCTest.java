@@ -15,24 +15,30 @@ public class FNCCTest {
         BufferedImage image = Capture.load(OCRTest.class, "cyclopst1.png");
         BufferedImage template = Capture.load(OCRTest.class, "cyclopst3.png");
 
-        ImageBinaryFeature bf = new ImageBinaryFeature(template, 30000);
+        {
+            // lookup images using threshold == 300000 (bigger is faster)
+            // and match quality 0.53f (high is more accurate match)
+            List<GPoint> pp = FNCC.lookup(image, template, 300000, 0.54f);
 
-        List<GPoint> pp;
+            for (Point p : pp) {
+                System.out.println(p);
+            }
+        }
 
-        Point p1 = new Point(21, 7);
+        System.out.println();
+        System.out.println("Manual mode");
+        System.out.println();
 
-        // pp = FNCC.lookup(new ImageBinary(image), p1.x, p1.y, p1.x +
-        // template.getWidth() - 1,
-        // p1.y + template.getHeight(), bf, 0.9f);
-        //
-        // for (Point p : pp) {
-        // System.out.println(p);
-        // }
+        {
+            ImageBinaryFeature bf = new ImageBinaryFeature(template, 300000);
 
-        pp = FNCC.lookup(image, template, 0.01f);
+            System.out.println("Features: " + bf.k.size());
 
-        for (Point p : pp) {
-            System.out.println(p);
+            List<GPoint> pp = FNCC.lookup(new ImageBinary(image), bf, 0.54f);
+
+            for (Point p : pp) {
+                System.out.println(p);
+            }
         }
     }
 

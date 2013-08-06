@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.github.axet.lookup.common.FeatureK;
 import com.github.axet.lookup.common.FeatureSet;
+import com.github.axet.lookup.common.FeatureSetAuto;
 import com.github.axet.lookup.common.FeatureSetDefault;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
@@ -27,11 +28,9 @@ import com.github.axet.lookup.common.RectK;
  */
 public class FNCC {
 
-    static FeatureSet features = new FeatureSetDefault();
-
-    static public List<GPoint> lookup(BufferedImage i, BufferedImage t, float m) {
+    static public List<GPoint> lookup(BufferedImage i, BufferedImage t, double threshold, float m) {
         ImageBinary imageBinary = new ImageBinary(i);
-        ImageBinaryFeature templateBinary = new ImageBinaryFeature(t, features);
+        ImageBinaryFeature templateBinary = new ImageBinaryFeature(t, threshold);
 
         return lookup(imageBinary, templateBinary, m);
     }

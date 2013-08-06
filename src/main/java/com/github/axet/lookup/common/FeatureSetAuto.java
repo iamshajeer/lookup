@@ -15,10 +15,6 @@ public class FeatureSetAuto extends FeatureSet {
 
         FeatureSet s = j(template, k, threshold);
 
-        for (Feature ff : s) {
-            ff.writeDesktop();
-        }
-
         addAll(s);
     }
 
