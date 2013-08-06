@@ -30,7 +30,7 @@ public class IntegralImage2 extends SArray {
     }
 
     /**
-     * Standard deviation no square and mean
+     * Standard deviation no sqrt and no mean
      * 
      * @param i
      * @param x1
@@ -48,7 +48,7 @@ public class IntegralImage2 extends SArray {
     }
 
     /**
-     * Standard deviation no square
+     * Standard deviation no sqrt
      * 
      * @param i
      * @param x1
