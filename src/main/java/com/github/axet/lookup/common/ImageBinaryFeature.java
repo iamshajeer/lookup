@@ -17,18 +17,17 @@ public class ImageBinaryFeature extends ImageBinary {
         init(list);
     }
 
-    public ImageBinaryFeature(BufferedImage template) {
+    public ImageBinaryFeature(BufferedImage template, double threshold) {
         super(template);
 
         zeroMeanIntegral = new IntegralImage(zeroMean);
 
-        FeatureSet list = new FeatureSetAuto(this);
+        FeatureSet list = new FeatureSetAuto(this, threshold);
 
         init(list);
     }
 
     void init(FeatureSet list) {
-
         k = list.k(zeroMeanIntegral);
     }
 

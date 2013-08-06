@@ -6,7 +6,7 @@ public class ImageMultiplySum {
 
     public double sum = 0;
 
-    public ImageMultiplySum(ImageZeroMean image, int xx, int yy, ImageZeroMean template) {
+    public ImageMultiplySum(SArray image, int xx, int yy, SArray template) {
         // ImageMultiply s = new ImageMultiply(image.zeroMean, xx, yy,
         // template.zeroMean);
         // IntegralImage ss = new IntegralImage(s);

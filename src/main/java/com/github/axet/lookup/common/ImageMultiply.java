@@ -9,11 +9,11 @@ public class ImageMultiply extends SArray {
     public ImageMultiply() {
     }
 
-    public ImageMultiply(ImageZeroMean s1, ImageZeroMean s2) {
+    public ImageMultiply(SArray s1, SArray s2) {
         this(s1, 0, 0, s2);
     }
 
-    public ImageMultiply(ImageZeroMean image, int xx, int yy, ImageZeroMean template) {
+    public ImageMultiply(SArray image, int xx, int yy, SArray template) {
         init(image, xx, yy, template);
 
         for (int x = 0; x < cx; x++) {

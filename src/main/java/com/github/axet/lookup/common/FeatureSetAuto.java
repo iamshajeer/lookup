@@ -3,7 +3,7 @@ package com.github.axet.lookup.common;
 public class FeatureSetAuto extends FeatureSet {
     private static final long serialVersionUID = -4442575077693435100L;
 
-    public FeatureSetAuto(ImageBinaryFeature template) {
+    public FeatureSetAuto(ImageBinaryFeature template, double threshold) {
 
         Feature f = new Feature(1, 1, new double[] {
 
@@ -13,7 +13,11 @@ public class FeatureSetAuto extends FeatureSet {
 
         FeatureK k = new FeatureK(f, template.zeroMeanIntegral);
 
-        FeatureSet s = j(template, k, 10);
+        FeatureSet s = j(template, k, threshold);
+
+        for (Feature ff : s) {
+            ff.writeDesktop();
+        }
 
         addAll(s);
     }
@@ -42,8 +46,10 @@ public class FeatureSetAuto extends FeatureSet {
         if (j > threshold) {
             RectK[] rr = r.devide();
             for (RectK rrr : rr) {
-                s.addAll(j(template, threshold, r));
+                s.addAll(j(template, threshold, rrr));
             }
+        } else {
+            s.add(r.getFeature());
         }
 
         return s;

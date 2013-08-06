@@ -15,7 +15,7 @@ public class SArray {
     public SArray() {
 
     }
-    
+
     public SArray(SArray buf) {
         init(buf);
     }
@@ -63,8 +63,8 @@ public class SArray {
     }
 
     public double mean(int x1, int y1, int x2, int y2) {
-        int area = (x2 - x1 + 1) * (y2 - y1 + 1);
-        return sigma(x1, y1, x2, y2) / (double) area;
+        double size = (x2 - x1 + 1) * (y2 - y1 + 1);
+        return sigma(x1, y1, x2, y2) / size;
     }
 
     public double mean() {

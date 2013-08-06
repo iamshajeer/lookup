@@ -1,5 +1,6 @@
 package com.github.axet.lookup.proc;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +57,9 @@ public class FNCC {
     }
 
     static double denominator(ImageBinary image, ImageBinary template, int xx, int yy) {
-        double id = image.dev2n(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
-        double td = template.dev2n();
-        return Math.sqrt(id * td);
+        double di = image.dev2n(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
+        double dt = template.dev2n();
+        return Math.sqrt(di * dt);
     }
 
     static double numerator(ImageBinary image, ImageBinaryFeature template, int xx, int yy) {
@@ -74,7 +75,8 @@ public class FNCC {
 
         // n /= ns;
 
-        ImageMultiplySum m = new ImageMultiplySum(image.zeroMean, xx, yy, template.zeroMean);
+        // multiply sum[f(x,y) * t'mean]
+        ImageMultiplySum m = new ImageMultiplySum(image.gi, xx, yy, template.zeroMean);
         double q = m.sum;
 
         return n;

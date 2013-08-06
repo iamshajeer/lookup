@@ -28,11 +28,11 @@ public class RectK implements Comparable<RectK> {
     }
 
     public int getWidth() {
-        return x2 - x1;
+        return x2 - x1 + 1;
     }
 
     public int getHeight() {
-        return y2 - y1;
+        return y2 - y1 + 1;
     }
 
     public int size() {
@@ -44,16 +44,21 @@ public class RectK implements Comparable<RectK> {
     }
 
     @Override
-    public int compareTo(RectK arg0) {
+    public int compareTo(RectK k) {
         int r = 0;
+
         if (r == 0)
-            r = new Integer(x1).compareTo(arg0.x1);
+            r = new Integer(x1).compareTo(k.x1);
+
         if (r == 0)
-            r = new Integer(y1).compareTo(arg0.y1);
+            r = new Integer(y1).compareTo(k.y1);
+
         if (r == 0)
-            r = new Integer(x2).compareTo(arg0.x2);
+            r = new Integer(x2).compareTo(k.x2);
+
         if (r == 0)
-            r = new Integer(y2).compareTo(arg0.y2);
+            r = new Integer(y2).compareTo(k.y2);
+
         return r;
     }
 
@@ -61,12 +66,64 @@ public class RectK implements Comparable<RectK> {
         int w = getWidth();
         int h = getHeight();
         if (w > h) {
-            w /= 2;
+            w = w / 2;
+
+            RectK r1 = new RectK(x1, y1, x1 + w - 1, y1 + h - 1, scaleX / (getWidth() / (double) w), scaleY
+                    / (getHeight() / (double) h));
+
+            int r2x1 = r1.x2 + 1;
+            int r2y1 = r1.y1;
+            int r2cx = getWidth() - r1.getWidth();
+            int r2cy = getHeight();
+
+            RectK r2 = new RectK(r2x1, r2y1, r2x1 + r2cx - 1, r2y1 + r2cy - 1, scaleX / (getWidth() / (double) r2cx),
+                    scaleY / (getHeight() / (double) r2cy));
+
+            if (r1.getWidth() <= 0 || r1.getHeight() <= 0)
+                throw new RuntimeException("unable to devide rect");
+            if (r2.getWidth() <= 0 || r2.getHeight() <= 0)
+                throw new RuntimeException("unable to devide rect");
+
+            return new RectK[] { r1, r2 };
         } else {
-            h /= 2;
+            h = h / 2;
+
+            RectK r1 = new RectK(x1, y1, x1 + w - 1, y1 + h - 1, scaleX / (getWidth() / (double) w), scaleY
+                    / (getHeight() / (double) h));
+
+            int r2x1 = r1.x1;
+            int r2y1 = r1.y2 + 1;
+            int r2cx = getWidth();
+            int r2cy = getHeight() - r1.getHeight();
+
+            RectK r2 = new RectK(r2x1, r2y1, r2x1 + r2cx - 1, r2y1 + r2cy - 1, scaleX / (getWidth() / (double) r2cx),
+                    scaleY / (getHeight() / (double) r2cy));
+
+            if (r1.getWidth() <= 0 || r1.getHeight() <= 0)
+                throw new RuntimeException("unable to devide rect");
+            if (r2.getWidth() <= 0 || r2.getHeight() <= 0)
+                throw new RuntimeException("unable to devide rect");
+
+            return new RectK[] { r1, r2 };
+        }
+    }
+
+    public Feature getFeature() {
+        int cx = (int) ((x2 - x1 + 1) / scaleX);
+        int cy = (int) ((y2 - y1 + 1) / scaleY);
+
+        if (cx <= 0 || cy <= 0)
+            throw new RuntimeException("unable to devide rect");
+
+        double[] s = new double[cx * cy];
+
+        for (int x = 0; x < cx; x++) {
+            for (int y = 0; y < cy; y++) {
+                boolean test = x >= x1 && x <= x2 && y >= y1 && y <= y2;
+                s[y * cx + x] = test ? 1 : 0;
+            }
         }
 
-        return new RectK[] { new RectK(x1, y1, x1 + w, y1 + h, scaleX / (getWidth() / w), scaleY / (getHeight() / h)),
-                new RectK(x1 + w, y1 + h, x1 + w, y1 + h, scaleX / (getWidth() / w), scaleY / (getHeight() / h)) };
+        return new Feature(cx, cy, s);
     }
 }

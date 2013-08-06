@@ -57,9 +57,9 @@ public class NCC {
     }
 
     static double denominator(ImageBinary image, ImageBinary template, int xx, int yy) {
-        double id = image.dev2n(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
-        double td = template.dev2n();
-        return Math.sqrt(id * td);
+        double di = image.dev2n(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
+        double dt = template.dev2n();
+        return Math.sqrt(di * dt);
     }
 
     static public double gamma(ImageBinary image, ImageBinary template, int xx, int yy) {
