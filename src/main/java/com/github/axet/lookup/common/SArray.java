@@ -24,11 +24,7 @@ public class SArray {
         this.s = new double[cx * cy];
     }
 
-    public SArray(SArray buf) {
-        init(buf);
-    }
-
-    public void init(SArray buf) {
+    public void initBase(SArray buf) {
         base = buf;
 
         cx = buf.cx;
@@ -42,7 +38,7 @@ public class SArray {
             return 0;
         if (y < 0)
             return 0;
-        return s[i(x, y)];
+        return s[y * cx + x];
     }
 
     public void s(int x, int y, double v) {
@@ -50,11 +46,7 @@ public class SArray {
             throw new RuntimeException("bad dim");
         if (y < 0)
             throw new RuntimeException("bad dim");
-        s[i(x, y)] = v;
-    }
-
-    public int i(int x, int y) {
-        return y * cx + x;
+        s[y * cx + x] = v;
     }
 
     /**

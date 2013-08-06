@@ -16,7 +16,7 @@ public class IntegralImage2 extends SArray {
     }
 
     public IntegralImage2(SArray buf) {
-        super(buf);
+        initBase(buf);
 
         for (int x = 0; x < cx; x++) {
             for (int y = 0; y < cy; y++) {
@@ -26,7 +26,7 @@ public class IntegralImage2 extends SArray {
     }
 
     public void step(int x, int y) {
-        s[i(x, y)] = pow2(base.s(x, y)) + s(x - 1, y) + s(x, y - 1) - s(x - 1, y - 1);
+        s(x, y, pow2(base.s(x, y)) + s(x - 1, y) + s(x, y - 1) - s(x - 1, y - 1));
     }
 
     /**

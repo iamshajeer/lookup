@@ -14,9 +14,8 @@ public class ImageZeroMean extends SArray {
 
         for (int x = 0; x < cx; x++) {
             for (int y = 0; y < cy; y++) {
-                s[i(x, y)] = image.s(x, y) - m;
+                s(x, y, image.s(x, y) - m);
             }
         }
     }
-
 }

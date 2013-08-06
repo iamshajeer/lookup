@@ -24,7 +24,7 @@ public class SArrayTest {
 
         for (int y = 0; y < a.cy; y++) {
             for (int x = 0; x < a.cx; x++) {
-                a.s[a.i(x, y)] = s[a.i(x, y)] + a.s(x - 1, y) + a.s(x, y - 1) - a.s(x - 1, y - 1);
+                a.s(x, y, a.s(x, y) + a.s(x - 1, y) + a.s(x, y - 1) - a.s(x - 1, y - 1));
             }
         }
 

@@ -21,8 +21,8 @@ public class ImageBinary {
         integral2 = new IntegralImage2();
 
         this.gi.init(img);
-        this.integral.init(gi);
-        this.integral2.init(gi);
+        this.integral.initBase(gi);
+        this.integral2.initBase(gi);
 
         for (int x = 0; x < this.gi.cx; x++) {
             for (int y = 0; y < this.gi.cy; y++) {

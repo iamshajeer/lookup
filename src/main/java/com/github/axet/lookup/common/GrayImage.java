@@ -49,6 +49,6 @@ public class GrayImage extends SArray {
     }
 
     public void step(int x, int y) {
-        s[i(x, y)] = grey(x, y);
+        s(x, y, grey(x, y));
     }
 }

@@ -24,7 +24,7 @@ public class ImageMultiply extends SArray {
     }
 
     public void init(SArray image, int xx, int yy, SArray template) {
-        super.init(template);
+        super.initBase(template);
 
         this.m = image;
         this.xx = xx;
@@ -32,6 +32,6 @@ public class ImageMultiply extends SArray {
     }
 
     public void step(int x, int y) {
-        s[i(x, y)] = m.s(xx + x, yy + y) * base.s(x, y);
+        s(x, y, m.s(xx + x, yy + y) * base.s(x, y));
     }
 }
