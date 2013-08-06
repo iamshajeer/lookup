@@ -13,7 +13,7 @@ public class NCCTest {
         BufferedImage image = Capture.load(OCRTest.class, "cyclopst1.png");
         BufferedImage template = Capture.load(OCRTest.class, "cyclopst3.png");
 
-        List<GPoint> pp = NCC.lookup(image, template, 0.9f);
+        List<GPoint> pp = NCC.lookupAll(image, template, 0.9f);
 
         for (Point p : pp) {
             System.out.println(p);

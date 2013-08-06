@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.github.axet.lookup.Lookup.NotFound;
 import com.github.axet.lookup.common.FeatureK;
+import com.github.axet.lookup.common.GFirst;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryFeature;
@@ -26,15 +27,7 @@ import com.github.axet.lookup.common.RectK;
  */
 public class FNCC {
 
-    static class GFirst implements Comparator<GPoint> {
-        @Override
-        public int compare(GPoint arg0, GPoint arg1) {
-            return new Double(arg1.g).compareTo(new Double(arg0.g));
-        }
-
-    }
-
-    static public List<GPoint> lookupAll(BufferedImage i, BufferedImage t, double threshold, float m) {
+   static public List<GPoint> lookupAll(BufferedImage i, BufferedImage t, double threshold, float m) {
         ImageBinary imageBinary = new ImageBinary(i);
         ImageBinaryFeature templateBinary = new ImageBinaryFeature(t, threshold);
 

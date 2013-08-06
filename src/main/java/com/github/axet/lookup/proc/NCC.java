@@ -2,8 +2,11 @@ package com.github.axet.lookup.proc;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import com.github.axet.lookup.Lookup.NotFound;
+import com.github.axet.lookup.common.GFirst;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageMultiplySum;
@@ -13,9 +16,13 @@ import com.github.axet.lookup.common.ImageMultiplySum;
  * http://www.fmwconcepts.com/imagemagick/similar/index.php
  * 
  * 1) mean && stddev
+ * 
  * 2) image1(x,y) - mean1 && image2(x,y) - mean2
+ * 
  * 3) [3] = (image1(x,y) - mean)(x,y) * (image2(x,y) - mean)(x,y)
+ * 
  * 4) [4] = mean([3])
+ * 
  * 5) [4] / (stddev1 * stddev2)
  * 
  * Normalized cross correlation algorithm
@@ -25,18 +32,52 @@ import com.github.axet.lookup.common.ImageMultiplySum;
  */
 public class NCC {
 
-    static public List<GPoint> lookup(BufferedImage i, BufferedImage t, float m) {
+    static public GPoint lookup(BufferedImage i, BufferedImage t, float m) {
+        List<GPoint> list = lookupAll(i, t, m);
+
+        if (list.size() == 0)
+            throw new NotFound();
+
+        Collections.sort(list, new GFirst());
+
+        return list.get(0);
+    }
+
+    static public List<GPoint> lookupAll(BufferedImage i, BufferedImage t, float m) {
         ImageBinary imageBinary = new ImageBinary(i);
         ImageBinary templateBinary = new ImageBinary(t);
 
-        return lookup(imageBinary, templateBinary, m);
+        return lookupAll(imageBinary, templateBinary, m);
     }
 
-    static public List<GPoint> lookup(ImageBinary image, ImageBinary template, float m) {
-        return lookup(image, 0, 0, image.getWidth() - 1, image.getHeight() - 1, template, m);
+    static public GPoint lookup(ImageBinary image, ImageBinary template, float m) {
+        List<GPoint> list = lookupAll(image, template, m);
+
+        if (list.size() == 0)
+            throw new NotFound();
+
+        Collections.sort(list, new GFirst());
+
+        return list.get(0);
     }
 
-    static public List<GPoint> lookup(ImageBinary image, int x1, int y1, int x2, int y2, ImageBinary template, float m) {
+    static public List<GPoint> lookupAll(ImageBinary image, ImageBinary template, float m) {
+        return lookupAll(image, 0, 0, image.getWidth() - 1, image.getHeight() - 1, template, m);
+    }
+
+    static public GPoint lookup(ImageBinary image, int x1, int y1, int x2, int y2, ImageBinary template, float m) {
+        List<GPoint> list = lookupAll(image, x1, y1, x2, y2, template, m);
+
+        if (list.size() == 0)
+            throw new NotFound();
+
+        Collections.sort(list, new GFirst());
+
+        return list.get(0);
+    }
+
+    static public List<GPoint> lookupAll(ImageBinary image, int x1, int y1, int x2, int y2, ImageBinary template,
+            float m) {
         List<GPoint> list = new ArrayList<GPoint>();
 
         for (int x = x1; x <= x2 - template.getWidth() + 1; x++) {
