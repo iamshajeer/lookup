@@ -18,6 +18,23 @@ public class RectK implements Comparable<RectK> {
         y2 = y;
     }
 
+    public RectK(int x1, int y1, int x2, int y2, double sx, double sy) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+        this.scaleX = sx;
+        this.scaleY = sy;
+    }
+
+    public int getWidth() {
+        return x2 - x1;
+    }
+
+    public int getHeight() {
+        return y2 - y1;
+    }
+
     public int size() {
         return (x2 - x1 + 1) * (y2 - y1 + 1);
     }
@@ -38,5 +55,18 @@ public class RectK implements Comparable<RectK> {
         if (r == 0)
             r = new Integer(y2).compareTo(arg0.y2);
         return r;
+    }
+
+    public RectK[] devide() {
+        int w = getWidth();
+        int h = getHeight();
+        if (w > h) {
+            w /= 2;
+        } else {
+            h /= 2;
+        }
+
+        return new RectK[] { new RectK(x1, y1, x1 + w, y1 + h, scaleX / (getWidth() / w), scaleY / (getHeight() / h)),
+                new RectK(x1 + w, y1 + h, x1 + w, y1 + h, scaleX / (getWidth() / w), scaleY / (getHeight() / h)) };
     }
 }

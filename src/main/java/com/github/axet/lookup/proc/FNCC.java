@@ -10,8 +10,6 @@ import com.github.axet.lookup.common.FeatureSetDefault;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryFeature;
-import com.github.axet.lookup.common.ImageBinaryZeroIntegral;
-import com.github.axet.lookup.common.ImageMultiply;
 import com.github.axet.lookup.common.ImageMultiplySum;
 import com.github.axet.lookup.common.RectK;
 
@@ -31,18 +29,18 @@ public class FNCC {
     static FeatureSet features = new FeatureSetDefault();
 
     static public List<GPoint> lookup(BufferedImage i, BufferedImage t, float m) {
-        ImageBinaryZeroIntegral imageBinary = new ImageBinaryZeroIntegral(i);
+        ImageBinary imageBinary = new ImageBinary(i);
         ImageBinaryFeature templateBinary = new ImageBinaryFeature(t, features);
 
         return lookup(imageBinary, templateBinary, m);
     }
 
-    static public List<GPoint> lookup(ImageBinaryZeroIntegral image, ImageBinaryFeature template, float m) {
+    static public List<GPoint> lookup(ImageBinary image, ImageBinaryFeature template, float m) {
         return lookup(image, 0, 0, image.getWidth() - 1, image.getHeight() - 1, template, m);
     }
 
-    static public List<GPoint> lookup(ImageBinaryZeroIntegral image, int x1, int y1, int x2, int y2,
-            ImageBinaryFeature template, float m) {
+    static public List<GPoint> lookup(ImageBinary image, int x1, int y1, int x2, int y2, ImageBinaryFeature template,
+            float m) {
         List<GPoint> list = new ArrayList<GPoint>();
 
         for (int x = x1; x <= x2 - template.getWidth() + 1; x++) {
@@ -63,16 +61,14 @@ public class FNCC {
         return Math.sqrt(id * td);
     }
 
-    static double numerator(ImageBinaryZeroIntegral image, ImageBinaryFeature template, int xx, int yy) {
+    static double numerator(ImageBinary image, ImageBinaryFeature template, int xx, int yy) {
         double n = 0;
-        double ns = 0;
 
         for (FeatureK f : template.k) {
             for (RectK k : f.list) {
-                double ii = image.zeroMeanIntegral.sigma(xx + k.x1, yy + k.y1, xx + k.x2, yy + k.y2);
+                double ii = image.integral.sigma(xx + k.x1, yy + k.y1, xx + k.x2, yy + k.y2);
                 double mt = k.k;
                 n += ii * mt;
-                ns += k.size();
             }
         }
 
@@ -84,7 +80,7 @@ public class FNCC {
         return n;
     }
 
-    static public double gamma(ImageBinaryZeroIntegral image, ImageBinaryFeature template, int xx, int yy) {
+    static public double gamma(ImageBinary image, ImageBinaryFeature template, int xx, int yy) {
         double d = denominator(image, template, xx, yy);
 
         if (d == 0)

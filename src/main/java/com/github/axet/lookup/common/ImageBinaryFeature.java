@@ -8,11 +8,26 @@ public class ImageBinaryFeature extends ImageBinary {
     public List<FeatureK> k;
 
     public IntegralImage zeroMeanIntegral;
-    
+
     public ImageBinaryFeature(BufferedImage template, FeatureSet list) {
         super(template);
-        
+
         zeroMeanIntegral = new IntegralImage(zeroMean);
+
+        init(list);
+    }
+
+    public ImageBinaryFeature(BufferedImage template) {
+        super(template);
+
+        zeroMeanIntegral = new IntegralImage(zeroMean);
+
+        FeatureSet list = new FeatureSetAuto(this);
+
+        init(list);
+    }
+
+    void init(FeatureSet list) {
 
         k = list.k(zeroMeanIntegral);
     }

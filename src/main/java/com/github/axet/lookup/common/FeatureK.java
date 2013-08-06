@@ -9,6 +9,7 @@ import java.util.TreeSet;
 public class FeatureK {
     public Feature f;
     public List<RectK> list;
+    public double k;
 
     IntegralImage template;
 
@@ -28,9 +29,9 @@ public class FeatureK {
         double dx = template.cx / (double) f.cx;
         double dy = template.cy / (double) f.cy;
 
-        this.list = fillFeature(1);
-        dx = 1;
-        dy = 1;
+        // this.list = fillFeature(3);
+        // dx = 1;
+        // dy = 1;
 
         for (RectK k : this.list) {
             int w = k.x2 - k.x1 + 1;
@@ -42,6 +43,8 @@ public class FeatureK {
             k.y2 = (int) (k.y1 + h * dy - 1);
 
             k.k = template.sigma(k.x1, k.y1, k.x2, k.y2);
+
+            this.k += k.k;
         }
     }
 
@@ -174,5 +177,9 @@ public class FeatureK {
         k.scaleY = (k.y2 - k.y1 + 1.0) / f.cy;
 
         return k;
+    }
+    
+    public void devide(RectK k) {
+        ;
     }
 }
