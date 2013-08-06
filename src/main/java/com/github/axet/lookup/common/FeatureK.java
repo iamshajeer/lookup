@@ -17,17 +17,17 @@ public class FeatureK {
 
         Set<RectK> list = new TreeSet<RectK>();
 
-        f.cx = template.cx;
-        f.cy = template.cy;
+        // f.cx = template.cx;
+        // f.cy = template.cy;
 
-        for (int x = 0; x < f.cx-2; x+=2) {
-            for (int y = 0; y < f.cy-2; y+=2) {
-                // RectK k = rectNearFill(x, y);
-                RectK k = new RectK(x, y);
-                k.x2++;
-                k.y2++;
-                k.scaleX = 2.0 / template.cx;
-                k.scaleY = 2.0 / template.cy;
+        for (int x = 0; x < f.cx - 2; x += 2) {
+            for (int y = 0; y < f.cy - 2; y += 2) {
+                RectK k = rectNearFill(x, y);
+                // RectK k = new RectK(x, y);
+                // k.x2++;
+                // k.y2++;
+                // k.scaleX = 2.0 / template.cx;
+                // k.scaleY = 2.0 / template.cy;
                 list.add(k);
             }
         }
