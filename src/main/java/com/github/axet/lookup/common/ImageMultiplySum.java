@@ -1,12 +1,12 @@
 package com.github.axet.lookup.common;
 
-public class ImageMultiplyMean {
+public class ImageMultiplySum {
 
     public ImageMultiply s = new ImageMultiply();
 
-    public double mean = 0;
+    public double sum = 0;
 
-    public ImageMultiplyMean(ImageZeroMean image, int xx, int yy, ImageZeroMean template) {
+    public ImageMultiplySum(ImageZeroMean image, int xx, int yy, ImageZeroMean template) {
         // ImageMultiply s = new ImageMultiply(image.zeroMean, xx, yy,
         // template.zeroMean);
         // IntegralImage ss = new IntegralImage(s);
@@ -19,10 +19,8 @@ public class ImageMultiplyMean {
             for (int y = 0; y < template.cy; y++) {
                 s.step(x, y);
 
-                mean += s.s(x, y);
+                sum += s.s(x, y);
             }
         }
-
-        mean /= s.s.length;
     }
 }

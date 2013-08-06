@@ -1,5 +1,6 @@
 package com.github.axet.lookup.common;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -16,28 +17,22 @@ public class FeatureK {
         this.f = f;
 
         Set<RectK> list = new TreeSet<RectK>();
-
-        // f.cx = template.cx;
-        // f.cy = template.cy;
-
         for (int x = 0; x < f.cx - 2; x += 2) {
             for (int y = 0; y < f.cy - 2; y += 2) {
                 RectK k = rectNearFill(x, y);
-                // RectK k = new RectK(x, y);
-                // k.x2++;
-                // k.y2++;
-                // k.scaleX = 2.0 / template.cx;
-                // k.scaleY = 2.0 / template.cy;
                 list.add(k);
             }
         }
-
         this.list = Arrays.asList(list.toArray(new RectK[] {}));
 
-        for (RectK k : this.list) {
-            double dx = template.cx / (double) f.cx;
-            double dy = template.cy / (double) f.cy;
+        double dx = template.cx / (double) f.cx;
+        double dy = template.cy / (double) f.cy;
 
+        this.list = fillFeature(1);
+        dx = 1;
+        dy = 1;
+
+        for (RectK k : this.list) {
             int w = k.x2 - k.x1 + 1;
             int h = k.y2 - k.y1 + 1;
 
@@ -48,6 +43,32 @@ public class FeatureK {
 
             k.k = template.sigma(k.x1, k.y1, k.x2, k.y2);
         }
+    }
+
+    /**
+     * debug. make feature exact as template image
+     * 
+     * @param step
+     * @return
+     */
+    List<RectK> fillFeature(int step) {
+        List<RectK> list = new ArrayList<RectK>();
+
+        int cx = template.cx - step;
+        int cy = template.cy - step;
+
+        for (int x = 0; x < cx; x += step) {
+            for (int y = 0; y < cy; y += step) {
+                RectK k = new RectK(x, y);
+                k.x2 += step - 1;
+                k.y2 += step - 1;
+                k.scaleX = step / (float) template.cx;
+                k.scaleY = step / (float) template.cy;
+                list.add(k);
+            }
+        }
+
+        return list;
     }
 
     RectK rectNearFill(int x, int y) {

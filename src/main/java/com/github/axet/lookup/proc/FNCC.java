@@ -12,7 +12,7 @@ import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryFeature;
 import com.github.axet.lookup.common.ImageBinaryZeroIntegral;
 import com.github.axet.lookup.common.ImageMultiply;
-import com.github.axet.lookup.common.ImageMultiplyMean;
+import com.github.axet.lookup.common.ImageMultiplySum;
 import com.github.axet.lookup.common.RectK;
 
 /**
@@ -58,8 +58,8 @@ public class FNCC {
     }
 
     static double denominator(ImageBinary image, ImageBinary template, int xx, int yy) {
-        double id = image.dev2(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
-        double td = template.dev2();
+        double id = image.dev2n(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
+        double td = template.dev2n();
         return Math.sqrt(id * td);
     }
 
@@ -69,7 +69,7 @@ public class FNCC {
 
         for (FeatureK f : template.k) {
             for (RectK k : f.list) {
-                double ii = image.integral.sigma(xx + k.x1, yy + k.y1, xx + k.x2, yy + k.y2);
+                double ii = image.zeroMeanIntegral.sigma(xx + k.x1, yy + k.y1, xx + k.x2, yy + k.y2);
                 double mt = k.k;
                 n += ii * mt;
                 ns += k.size();
@@ -78,8 +78,8 @@ public class FNCC {
 
         // n /= ns;
 
-        ImageMultiplyMean m = new ImageMultiplyMean(image.zeroMean, xx, yy, template.zeroMean);
-        double q = m.mean;
+        ImageMultiplySum m = new ImageMultiplySum(image.zeroMean, xx, yy, template.zeroMean);
+        double q = m.sum;
 
         return n;
     }

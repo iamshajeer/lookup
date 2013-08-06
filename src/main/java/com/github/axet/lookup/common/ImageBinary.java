@@ -35,12 +35,20 @@ public class ImageBinary {
         zeroMean = new ImageZeroMean(integral);
     }
 
-    public double dev() {
-        return integral2.dev(integral);
+    public double dev2n() {
+        return integral2.dev2n(integral);
     }
 
     public double dev2() {
         return integral2.dev2(integral);
+    }
+
+    public double dev() {
+        return integral2.dev(integral);
+    }
+
+    public double dev2n(int x1, int y1, int x2, int y2) {
+        return integral2.dev2n(integral, x1, y1, x2, y2);
     }
 
     public double dev2(int x1, int y1, int x2, int y2) {

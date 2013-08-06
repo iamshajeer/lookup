@@ -30,7 +30,25 @@ public class IntegralImage2 extends SArray {
     }
 
     /**
-     * Standard deviation
+     * Standard deviation no square and mean
+     * 
+     * @param i
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+
+    public double dev2n(IntegralImage i, int x1, int y1, int x2, int y2) {
+        double sum = i.sigma(x1, y1, x2, y2);
+        int size = (x2 - x1 + 1) * (y2 - y1 + 1);
+        double sum2 = sigma(x1, y1, x2, y2);
+        return sum2 - pow2(sum) / size;
+    }
+
+    /**
+     * Standard deviation no square
      * 
      * @param i
      * @param x1
@@ -40,27 +58,33 @@ public class IntegralImage2 extends SArray {
      * @return
      */
     public double dev2(IntegralImage i, int x1, int y1, int x2, int y2) {
-        double sum = i.sigma(x1, y1, x2, y2);
         int size = (x2 - x1 + 1) * (y2 - y1 + 1);
-        double sum2 = sigma(x1, y1, x2, y2);
-        return (sum2 - pow2(sum) / size) / (size - 1);
-    }
-
-    public double dev(IntegralImage i, int x1, int y1, int x2, int y2) {
-        return Math.sqrt(dev2(i, x1, y1, x2, y2));
+        return dev2n(i, x1, y1, x2, y2) / (size - 1);
     }
 
     /**
      * Standard deviation
      * 
      * @param i
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
      * @return
      */
-    public double dev(IntegralImage i) {
-        return dev(i, 0, 0, cx - 1, cy - 1);
+    public double dev(IntegralImage i, int x1, int y1, int x2, int y2) {
+        return Math.sqrt(dev2(i, x1, y1, x2, y2));
+    }
+
+    public double dev2n(IntegralImage i) {
+        return dev2n(i, 0, 0, cx - 1, cy - 1);
     }
 
     public double dev2(IntegralImage i) {
         return dev2(i, 0, 0, cx - 1, cy - 1);
+    }
+
+    public double dev(IntegralImage i) {
+        return dev(i, 0, 0, cx - 1, cy - 1);
     }
 }
