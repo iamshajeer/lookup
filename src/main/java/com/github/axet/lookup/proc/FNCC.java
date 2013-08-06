@@ -3,7 +3,6 @@ package com.github.axet.lookup.proc;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.github.axet.lookup.Lookup.NotFound;
@@ -11,7 +10,12 @@ import com.github.axet.lookup.common.FeatureK;
 import com.github.axet.lookup.common.GFirst;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryChannel;
+import com.github.axet.lookup.common.ImageBinaryChannelFeature;
 import com.github.axet.lookup.common.ImageBinaryFeature;
+import com.github.axet.lookup.common.ImageBinaryGrey;
+import com.github.axet.lookup.common.ImageBinaryRGB;
+import com.github.axet.lookup.common.ImageBinaryRGBFeature;
 import com.github.axet.lookup.common.RectK;
 
 /**
@@ -27,9 +31,9 @@ import com.github.axet.lookup.common.RectK;
  */
 public class FNCC {
 
-   static public List<GPoint> lookupAll(BufferedImage i, BufferedImage t, double threshold, float m) {
-        ImageBinary imageBinary = new ImageBinary(i);
-        ImageBinaryFeature templateBinary = new ImageBinaryFeature(t, threshold);
+    static public List<GPoint> lookupAll(BufferedImage i, BufferedImage t, double threshold, float m) {
+        ImageBinaryRGB imageBinary = new ImageBinaryRGB(i);
+        ImageBinaryRGBFeature templateBinary = new ImageBinaryRGBFeature(t, threshold);
 
         return lookupAll(imageBinary, templateBinary, m);
     }
@@ -55,9 +59,20 @@ public class FNCC {
 
         for (int x = x1; x <= x2 - template.getWidth() + 1; x++) {
             for (int y = y1; y <= y2 - template.getHeight() + 1; y++) {
-                double g = gamma(image, template, x, y);
-                if (g > m) {
-                    list.add(new GPoint(x, y, g));
+                List<ImageBinaryChannel> ci = image.getChannels();
+                List<ImageBinaryChannelFeature> ct = template.getFeatureChannels();
+
+                int ii = Math.min(ci.size(), ct.size());
+
+                double gg = 0;
+
+                for (int i = 0; i < ii; i++) {
+                    double g = gamma(ci.get(i), ct.get(i), x, y);
+                    gg += g;
+                }
+
+                if (gg > m) {
+                    list.add(new GPoint(x, y, gg));
                 }
             }
         }
@@ -65,13 +80,13 @@ public class FNCC {
         return list;
     }
 
-    static double denominator(ImageBinary image, ImageBinary template, int xx, int yy) {
+    static double denominator(ImageBinaryChannel image, ImageBinaryChannel template, int xx, int yy) {
         double di = image.dev2n(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
         double dt = template.dev2n();
         return Math.sqrt(di * dt);
     }
 
-    static double numerator(ImageBinary image, ImageBinaryFeature template, int xx, int yy) {
+    static double numerator(ImageBinaryChannel image, ImageBinaryChannelFeature template, int xx, int yy) {
         double n = 0;
 
         for (FeatureK f : template.k) {
@@ -85,7 +100,7 @@ public class FNCC {
         return n;
     }
 
-    static public double gamma(ImageBinary image, ImageBinaryFeature template, int xx, int yy) {
+    static public double gamma(ImageBinaryChannel image, ImageBinaryChannelFeature template, int xx, int yy) {
         double d = denominator(image, template, xx, yy);
 
         if (d == 0)

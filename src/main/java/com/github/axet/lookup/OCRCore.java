@@ -11,7 +11,7 @@ import com.github.axet.lookup.common.FontFamily;
 import com.github.axet.lookup.common.FontSymbol;
 import com.github.axet.lookup.common.FontSymbolLookup;
 import com.github.axet.lookup.common.GPoint;
-import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryGrey;
 import com.github.axet.lookup.proc.CannyEdgeDetector;
 import com.github.axet.lookup.proc.NCC;
 
@@ -122,11 +122,11 @@ public class OCRCore {
         return this.fontFamily.get(fontFamily);
     }
 
-    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinary bi) {
+    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinaryGrey bi) {
         return findAll(list, bi, 0, 0, bi.getWidth(), bi.getHeight());
     }
 
-    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinary bi, int x1, int y1, int x2, int y2) {
+    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinaryGrey bi, int x1, int y1, int x2, int y2) {
         List<FontSymbolLookup> l = new ArrayList<FontSymbolLookup>();
 
         for (FontSymbol fs : list) {

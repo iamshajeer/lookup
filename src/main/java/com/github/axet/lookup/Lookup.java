@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryChannel;
+import com.github.axet.lookup.common.ImageBinaryGrey;
 import com.github.axet.lookup.common.RangeColor;
 import com.github.axet.lookup.proc.CannyEdgeDetector;
 
@@ -186,12 +188,19 @@ public class Lookup {
         m = m * 255;
         for (int yy = 0; yy < template.getHeight(); yy++) {
             for (int xx = 0; xx < template.getWidth(); xx++) {
-                double rgb1 = template.zeroMean.s(xx, yy);
-                double rgb2 = image.zeroMean.s(x + xx, y + yy);
-                double min = rgb1 - m;
-                double max = rgb1 + m;
-                if (rgb2 < min || rgb2 > max)
-                    return false;
+                List<ImageBinaryChannel> ci = image.getChannels();
+                List<ImageBinaryChannel> ct = template.getChannels();
+
+                int ii = Math.min(ci.size(), ct.size());
+
+                for (int i = 0; i < ii; i++) {
+                    double rgb1 = ct.get(i).zeroMean.s(xx, yy);
+                    double rgb2 = ci.get(i).zeroMean.s(x + xx, y + yy);
+                    double min = rgb1 - m;
+                    double max = rgb1 + m;
+                    if (rgb2 < min || rgb2 > max)
+                        return false;
+                }
             }
         }
 
@@ -217,7 +226,7 @@ public class Lookup {
         return null;
     }
 
-    public static Point lookupUL(ImageBinary image, ImageBinary template, float m) {
+    public static Point lookupUL(ImageBinaryGrey image, ImageBinaryGrey template, float m) {
         for (int y = 0; y < image.getHeight() - template.getHeight(); y++) {
             for (int x = 0; x < image.getWidth() - template.getWidth(); x++) {
                 if (find(image, x, y, template, m))
@@ -263,7 +272,7 @@ public class Lookup {
         return new Point(x, y);
     }
 
-    static public Point lookupMeanImage(ImageBinary bi, ImageBinary i, int x1, int y1, int x2, int y2, float p) {
+    static public Point lookupMeanImage(ImageBinaryGrey bi, ImageBinaryGrey i, int x1, int y1, int x2, int y2, float p) {
         Point pul = lookupUL(bi, i, p);
         if (pul == null)
             throw new NotFound();
