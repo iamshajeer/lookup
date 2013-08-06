@@ -47,6 +47,9 @@ public class FeatureK {
             k.x2 = (int) (k.x1 + w * dx - 1);
             k.y2 = (int) (k.y1 + h * dy - 1);
 
+            k.cxBase = template.cx;
+            k.cyBase = template.cy;
+
             k.k = template.mean(k.x1, k.y1, k.x2, k.y2);
 
             this.k += k.k;
@@ -85,8 +88,8 @@ public class FeatureK {
                 if (k.getHeight() == 0)
                     continue;
 
-                k.scaleX = (k.x2 - k.x1 + 1) / (float) template.cx;
-                k.scaleY = (k.y2 - k.y1 + 1) / (float) template.cy;
+                k.cxBase = template.cx;
+                k.cyBase = template.cy;
 
                 k.k = template.mean(k.x1, k.y1, k.x2, k.y2);
 
@@ -196,8 +199,8 @@ public class FeatureK {
             k.y2++;
         }
 
-        k.scaleX = (k.x2 - k.x1 + 1.0) / f.cx;
-        k.scaleY = (k.y2 - k.y1 + 1.0) / f.cy;
+        k.cxBase = f.cx;
+        k.cyBase = f.cy;
 
         return k;
     }

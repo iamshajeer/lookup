@@ -13,7 +13,15 @@ public class SArray {
     public double s[];
 
     public SArray() {
+    }
 
+    public SArray(int cx, int cy) {
+        if (cx <= 0 || cy <= 0)
+            throw new RuntimeException("wrong dimenssinons");
+
+        this.cx = cx;
+        this.cy = cy;
+        this.s = new double[cx * cy];
     }
 
     public SArray(SArray buf) {
@@ -35,6 +43,14 @@ public class SArray {
         if (y < 0)
             return 0;
         return s[i(x, y)];
+    }
+
+    public void s(int x, int y, double v) {
+        if (x < 0)
+            throw new RuntimeException("bad dim");
+        if (y < 0)
+            throw new RuntimeException("bad dim");
+        s[i(x, y)] = v;
     }
 
     public int i(int x, int y) {

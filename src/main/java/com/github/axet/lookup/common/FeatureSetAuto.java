@@ -41,8 +41,12 @@ public class FeatureSetAuto extends FeatureSet {
 
         if (j > threshold) {
             RectK[] rr = r.devide();
-            for (RectK rrr : rr) {
-                s.addAll(j(template, threshold, rrr));
+            if (rr == null) {
+                s.add(r.getFeature());
+            } else {
+                for (RectK rrr : rr) {
+                    s.addAll(j(template, threshold, rrr));
+                }
             }
         } else {
             s.add(r.getFeature());

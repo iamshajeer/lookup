@@ -1,18 +1,16 @@
 package com.github.axet.lookup.proc;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import com.github.axet.lookup.Lookup.NotFound;
 import com.github.axet.lookup.common.FeatureK;
-import com.github.axet.lookup.common.FeatureSet;
-import com.github.axet.lookup.common.FeatureSetAuto;
-import com.github.axet.lookup.common.FeatureSetDefault;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryFeature;
-import com.github.axet.lookup.common.ImageMultiplySum;
 import com.github.axet.lookup.common.RectK;
 
 /**
@@ -28,19 +26,38 @@ import com.github.axet.lookup.common.RectK;
  */
 public class FNCC {
 
-    static public List<GPoint> lookup(BufferedImage i, BufferedImage t, double threshold, float m) {
+    static class GFirst implements Comparator<GPoint> {
+        @Override
+        public int compare(GPoint arg0, GPoint arg1) {
+            return new Double(arg1.g).compareTo(new Double(arg0.g));
+        }
+
+    }
+
+    static public List<GPoint> lookupAll(BufferedImage i, BufferedImage t, double threshold, float m) {
         ImageBinary imageBinary = new ImageBinary(i);
         ImageBinaryFeature templateBinary = new ImageBinaryFeature(t, threshold);
 
-        return lookup(imageBinary, templateBinary, m);
+        return lookupAll(imageBinary, templateBinary, m);
     }
 
-    static public List<GPoint> lookup(ImageBinary image, ImageBinaryFeature template, float m) {
-        return lookup(image, 0, 0, image.getWidth() - 1, image.getHeight() - 1, template, m);
+    static public GPoint lookup(ImageBinary image, ImageBinaryFeature template, float m) {
+        List<GPoint> list = lookupAll(image, template, m);
+
+        if (list.size() == 0)
+            throw new NotFound();
+
+        Collections.sort(list, new GFirst());
+
+        return list.get(0);
     }
 
-    static public List<GPoint> lookup(ImageBinary image, int x1, int y1, int x2, int y2, ImageBinaryFeature template,
-            float m) {
+    static public List<GPoint> lookupAll(ImageBinary image, ImageBinaryFeature template, float m) {
+        return lookupAll(image, 0, 0, image.getWidth() - 1, image.getHeight() - 1, template, m);
+    }
+
+    static public List<GPoint> lookupAll(ImageBinary image, int x1, int y1, int x2, int y2,
+            ImageBinaryFeature template, float m) {
         List<GPoint> list = new ArrayList<GPoint>();
 
         for (int x = x1; x <= x2 - template.getWidth() + 1; x++) {
@@ -71,12 +88,6 @@ public class FNCC {
                 n += ii * mt;
             }
         }
-
-        // n /= ns;
-
-        // multiply sum[f(x,y) * t'mean]
-        ImageMultiplySum m = new ImageMultiplySum(image.gi, xx, yy, template.zeroMean);
-        double q = m.sum;
 
         return n;
     }

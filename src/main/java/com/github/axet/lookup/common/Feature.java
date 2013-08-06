@@ -16,6 +16,12 @@ public class Feature extends SArray {
         this.s = i;
     }
 
+    public Feature(SArray s) {
+        this.cx = s.cx;
+        this.cy = s.cy;
+        this.s = s.s;
+    }
+
     public BufferedImage getImage() {
         int[] ss = new int[s.length];
         for (int i = 0; i < ss.length; i++) {

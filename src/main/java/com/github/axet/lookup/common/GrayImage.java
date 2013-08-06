@@ -1,8 +1,6 @@
 package com.github.axet.lookup.common;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 
 public class GrayImage extends SArray {
     public BufferedImage buf;

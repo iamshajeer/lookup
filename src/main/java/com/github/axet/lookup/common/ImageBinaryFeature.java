@@ -23,7 +23,7 @@ public class ImageBinaryFeature extends ImageBinary {
         zeroMeanIntegral = new IntegralImage(zeroMean);
 
         FeatureSet list = new FeatureSetAuto(this, threshold);
-
+        
         init(list);
     }
 
