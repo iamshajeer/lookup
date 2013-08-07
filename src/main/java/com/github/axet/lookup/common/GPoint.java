@@ -11,4 +11,8 @@ public class GPoint extends Point {
         super(x, y);
         this.g = g;
     }
+
+    public String toString() {
+        return "[x=" + x + ",y=" + y + ",g=" + g + "]";
+    }
 }

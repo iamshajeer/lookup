@@ -11,7 +11,7 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
     public ImageBinaryChannelFeature g;
     public ImageBinaryChannelFeature b;
 
-    List<ImageBinaryChannel> list;
+    List<ImageBinaryChannelFeature> list;
 
     public ImageBinaryRGBFeature(BufferedImage img, double threshold) {
         init(img);
@@ -38,7 +38,7 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
         b.integral = new IntegralImage();
         b.integral2 = new IntegralImage2();
 
-        list = Arrays.asList(new ImageBinaryChannel[] { r, g, b });
+        list = Arrays.asList(new ImageBinaryChannelFeature[] { r, g, b });
 
         this.image.init(img);
         this.r.initBase(this.image.r);
@@ -58,10 +58,10 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
         }
 
         r.zeroMean = new ImageZeroMean();
-        r.zeroMean.init(r.integral);
         g.zeroMean = new ImageZeroMean();
-        g.zeroMean.init(g.integral);
         b.zeroMean = new ImageZeroMean();
+        r.zeroMean.init(r.integral);
+        g.zeroMean.init(g.integral);
         b.zeroMean.init(b.integral);
 
         for (int x = 0; x < this.image.cx; x++) {
@@ -75,6 +75,9 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
         r.zeroMeanIntegral = new IntegralImage();
         g.zeroMeanIntegral = new IntegralImage();
         b.zeroMeanIntegral = new IntegralImage();
+        r.zeroMeanIntegral.initBase(r.zeroMean);
+        g.zeroMeanIntegral.initBase(g.zeroMean);
+        b.zeroMeanIntegral.initBase(b.zeroMean);
 
         for (int x = 0; x < this.image.cx; x++) {
             for (int y = 0; y < this.image.cy; y++) {
@@ -102,14 +105,8 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
     }
 
     @Override
-    public List<ImageBinaryChannel> getChannels() {
-        return list;
-    }
-
-    @Override
     public List<ImageBinaryChannelFeature> getFeatureChannels() {
-        // TODO Auto-generated method stub
-        return null;
+        return list;
     }
 
 }

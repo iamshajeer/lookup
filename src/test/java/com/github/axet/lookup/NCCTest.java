@@ -1,10 +1,11 @@
 package com.github.axet.lookup;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 import com.github.axet.lookup.common.GPoint;
+import com.github.axet.lookup.common.ImageBinaryGrey;
+import com.github.axet.lookup.common.ImageBinaryRGB;
 import com.github.axet.lookup.proc.NCC;
 
 public class NCCTest {
@@ -13,10 +14,22 @@ public class NCCTest {
         BufferedImage image = Capture.load(OCRTest.class, "cyclopst1.png");
         BufferedImage template = Capture.load(OCRTest.class, "cyclopst3.png");
 
-        List<GPoint> pp = NCC.lookupAll(image, template, 0.9f);
+        // rgb image lookup
+        {
+            List<GPoint> pp = NCC.lookupAll(new ImageBinaryRGB(image), new ImageBinaryRGB(template), 0.9f);
 
-        for (Point p : pp) {
-            System.out.println(p);
+            for (GPoint p : pp) {
+                System.out.println(p);
+            }
+        }
+        
+        // grey image lookup
+        {
+            List<GPoint> pp = NCC.lookupAll(new ImageBinaryGrey(image), new ImageBinaryGrey(template), 0.9f);
+
+            for (GPoint p : pp) {
+                System.out.println(p);
+            }
         }
     }
 }

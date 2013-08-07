@@ -36,16 +36,6 @@ public class GrayImage extends SArray {
         cy = buf.getHeight();
 
         s = new double[cx * cy];
-
-        // if (buf.getRaster().getDataBuffer() instanceof DataBufferByte) {
-        // p = new ParserByte(((DataBufferByte)
-        // buf.getRaster().getDataBuffer()).getData());
-        // }
-        //
-        // if (buf.getRaster().getDataBuffer() instanceof DataBufferInt) {
-        // p = new ParserInt(((DataBufferInt)
-        // buf.getRaster().getDataBuffer()).getData());
-        // }
     }
 
     public void step(int x, int y) {
