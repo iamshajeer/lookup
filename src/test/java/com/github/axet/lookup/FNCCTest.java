@@ -12,8 +12,8 @@ import com.github.axet.lookup.proc.FNCC;
 public class FNCCTest {
 
     public static void main(String[] args) {
-        BufferedImage image = Capture.load(OCRTest.class, "cyclopst1.png");
-        BufferedImage template = Capture.load(OCRTest.class, "cyclopst3.png");
+        BufferedImage image = Capture.load(OCRTest.class, "desktop.png");
+        BufferedImage template = Capture.load(OCRTest.class, "desktop_feature.png");
 
         {
             // lookup images using threshold == 300000 (bigger is faster)
