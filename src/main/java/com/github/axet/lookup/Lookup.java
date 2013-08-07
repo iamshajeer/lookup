@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
@@ -40,6 +41,24 @@ public class Lookup {
 
     // filter
 
+    static public BufferedImage edgeImageDouble(BufferedImage b) {
+        // b = Lookup.filterResizeDoubleCanvas(b);
+
+        b = Lookup.edge(b);
+
+        b = Lookup.filterRemoveCanvas(b);
+
+        return b;
+    }
+
+    static public BufferedImage edgeImageCrop(BufferedImage b) {
+        b = filterResizeDoubleCanvas(b);
+
+        b = Lookup.filterRemoveCanvas(b);
+
+        return b;
+    }
+
     static public BufferedImage filterSimply(BufferedImage bi) {
         BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
 
@@ -74,12 +93,27 @@ public class Lookup {
         return resizedImage;
     }
 
-    static public BufferedImage filterResizeDoubleCanvas(BufferedImage bi) {
-        int cx = bi.getWidth() * 4;
-        int cy = bi.getHeight() * 4;
+    static public BufferedImage scale(BufferedImage bi, double s) {
+        int cx = (int) (bi.getWidth() * s);
+        int cy = (int) (bi.getHeight() * s);
         BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(bi, cx / 4, cy / 4, cx / 2, cy / 2, null);
+
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g.drawImage(bi, 0, 0, cx, cy, null);
+        g.dispose();
+        return resizedImage;
+    }
+
+    static public BufferedImage filterResizeDoubleCanvas(BufferedImage bi) {
+        int cx = bi.getWidth() * 3;
+        int cy = bi.getHeight() * 3;
+        BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(bi, cx / 3, cx / 3, bi.getWidth(), bi.getHeight(), null);
         g.dispose();
 
         return resizedImage;

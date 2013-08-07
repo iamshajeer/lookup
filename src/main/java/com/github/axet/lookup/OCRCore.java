@@ -90,24 +90,6 @@ public class OCRCore {
         detector.setGaussianKernelRadius(1f);
     }
 
-    BufferedImage prepareImage(BufferedImage b) {
-        b = Lookup.toGray(b);
-
-        b = Lookup.filterResizeDoubleCanvas(b);
-
-        b = Lookup.edge(b);
-
-        return b;
-    }
-
-    BufferedImage prepareImageCrop(BufferedImage b) {
-        b = prepareImage(b);
-
-        b = Lookup.filterRemoveCanvas(b);
-
-        return b;
-    }
-
     List<FontSymbol> getSymbols() {
         List<FontSymbol> list = new ArrayList<FontSymbol>();
 
