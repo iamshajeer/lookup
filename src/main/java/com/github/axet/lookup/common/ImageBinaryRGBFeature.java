@@ -19,10 +19,10 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
         FeatureSet lr = new FeatureSetAuto(r, threshold);
         r.init(lr);
 
-        FeatureSet lg = new FeatureSetAuto(r, threshold);
+        FeatureSet lg = new FeatureSetAuto(g, threshold);
         g.init(lg);
 
-        FeatureSet lb = new FeatureSetAuto(r, threshold);
+        FeatureSet lb = new FeatureSetAuto(b, threshold);
         b.init(lb);
     }
 
