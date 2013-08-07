@@ -64,14 +64,20 @@ public class FNCC {
 
                 int ii = Math.min(ci.size(), ct.size());
 
-                double gg = 0;
+                boolean b = true;
+                double gg = Double.MAX_VALUE;
 
                 for (int i = 0; i < ii; i++) {
                     double g = gamma(ci.get(i), ct.get(i), x, y);
-                    gg += g;
+
+                    gg = Math.min(gg, g);
+
+                    if (g < m) {
+                        b = false;
+                    }
                 }
 
-                if (gg > m) {
+                if (b) {
                     list.add(new GPoint(x, y, gg));
                 }
             }

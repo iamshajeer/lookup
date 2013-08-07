@@ -2,20 +2,18 @@ package com.github.axet.lookup;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.List;
 
 import com.github.axet.lookup.common.GPoint;
-import com.github.axet.lookup.common.ImageBinaryGrey;
-import com.github.axet.lookup.common.ImageBinaryGreyFeature;
+import com.github.axet.lookup.common.ImageBinaryRGB;
+import com.github.axet.lookup.common.ImageBinaryRGBFeature;
 import com.github.axet.lookup.proc.FNCC;
 
 public class FNCCTest {
 
     public static void main(String[] args) {
-        BufferedImage image = Capture.load(OCRTest.class, "desktop.png");
-        BufferedImage template = Capture.load(OCRTest.class, "desktop_problems.png");
-        BufferedImage template2 = Capture.load(OCRTest.class, "desktop_problems.png");
+        BufferedImage image = Capture.load(OCRTest.class, "cyclopst1.png");
+        BufferedImage template = Capture.load(OCRTest.class, "cyclopst3.png");
 
         {
             // lookup images using threshold == 300000 (bigger is faster)
@@ -32,9 +30,8 @@ public class FNCCTest {
         System.out.println();
 
         {
-            ImageBinaryGreyFeature bf = new ImageBinaryGreyFeature(template, 50000);
-            ImageBinaryGreyFeature bf2 = new ImageBinaryGreyFeature(template2, 50000);
-            ImageBinaryGrey ib = new ImageBinaryGrey(image);
+            ImageBinaryRGBFeature bf = new ImageBinaryRGBFeature(template, 5000);
+            ImageBinaryRGB ib = new ImageBinaryRGB(image);
 
             long l;
 
@@ -43,19 +40,12 @@ public class FNCCTest {
             System.out.println(System.currentTimeMillis() - l);
 
             l = System.currentTimeMillis();
-            List<GPoint> pp = FNCC.lookupAll(ib, bf, 0.20f);
-            System.out.println(System.currentTimeMillis() - l);
-
-            l = System.currentTimeMillis();
-            List<GPoint> pp2 = FNCC.lookupAll(ib, bf2, 0.20f);
+            List<GPoint> pp = FNCC.lookupAll(ib, bf, 0.90f);
             System.out.println(System.currentTimeMillis() - l);
 
             System.out.println(p1);
 
             for (GPoint p : pp)
-                System.out.println(p);
-
-            for (GPoint p : pp2)
                 System.out.println(p);
         }
     }
