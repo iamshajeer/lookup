@@ -13,21 +13,17 @@ public class ImageBinaryGrey implements ImageBinary {
 
     public ImageBinaryGrey(BufferedImage img) {
         gi = new GrayImage();
-        gray = new ImageBinaryChannel(gi);
-        gray.integral = new IntegralImage();
-        gray.integral2 = new IntegralImage2();
+        gray = new ImageBinaryChannel();
 
         list = Arrays.asList(new ImageBinaryChannel[] { gray });
 
         this.gi.init(img);
-        this.gray.integral.initBase(gi);
-        this.gray.integral2.initBase(gi);
+        this.gray.initBase(gi);
 
         for (int x = 0; x < this.gi.cx; x++) {
             for (int y = 0; y < this.gi.cy; y++) {
                 this.gi.step(x, y);
-                this.gray.integral.step(x, y);
-                this.gray.integral2.step(x, y);
+                this.gray.step(x, y);
             }
         }
 

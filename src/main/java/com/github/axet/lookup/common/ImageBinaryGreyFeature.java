@@ -22,8 +22,6 @@ public class ImageBinaryGreyFeature implements ImageBinaryFeature {
     public void init(BufferedImage img) {
         image = new RGBImage();
         grey = new ImageBinaryChannelFeature();
-        grey.integral = new IntegralImage();
-        grey.integral2 = new IntegralImage2();
 
         list = Arrays.asList(new ImageBinaryChannelFeature[] { grey });
 
@@ -33,8 +31,7 @@ public class ImageBinaryGreyFeature implements ImageBinaryFeature {
         for (int x = 0; x < this.image.cx; x++) {
             for (int y = 0; y < this.image.cy; y++) {
                 this.image.step(x, y);
-                this.grey.integral.step(x, y);
-                this.grey.integral2.step(x, y);
+                this.grey.step(x, y);
             }
         }
 

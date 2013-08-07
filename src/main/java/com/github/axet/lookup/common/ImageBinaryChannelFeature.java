@@ -8,6 +8,8 @@ public class ImageBinaryChannelFeature extends ImageBinaryChannel {
     public IntegralImage zeroMeanIntegral;
 
     public ImageBinaryChannelFeature() {
+        integral = new IntegralImage();
+        integral2 = new IntegralImage2();
     }
 
     public ImageBinaryChannelFeature(SArray template, FeatureSet list) {

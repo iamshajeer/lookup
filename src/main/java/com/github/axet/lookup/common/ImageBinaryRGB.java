@@ -16,14 +16,8 @@ public class ImageBinaryRGB implements ImageBinary {
     public ImageBinaryRGB(BufferedImage img) {
         image = new RGBImage();
         r = new ImageBinaryChannel();
-        r.integral = new IntegralImage();
-        r.integral2 = new IntegralImage2();
         g = new ImageBinaryChannel();
-        g.integral = new IntegralImage();
-        g.integral2 = new IntegralImage2();
         b = new ImageBinaryChannel();
-        b.integral = new IntegralImage();
-        b.integral2 = new IntegralImage2();
 
         list = Arrays.asList(new ImageBinaryChannel[] { r, g, b });
 
@@ -35,20 +29,17 @@ public class ImageBinaryRGB implements ImageBinary {
         for (int x = 0; x < this.image.cx; x++) {
             for (int y = 0; y < this.image.cy; y++) {
                 this.image.step(x, y);
-                this.r.integral.step(x, y);
-                this.r.integral2.step(x, y);
-                this.g.integral.step(x, y);
-                this.g.integral2.step(x, y);
-                this.b.integral.step(x, y);
-                this.b.integral2.step(x, y);
+                this.r.step(x, y);
+                this.g.step(x, y);
+                this.b.step(x, y);
             }
         }
 
         r.zeroMean = new ImageZeroMean();
-        r.zeroMean.init(r.integral);
         g.zeroMean = new ImageZeroMean();
-        g.zeroMean.init(g.integral);
         b.zeroMean = new ImageZeroMean();
+        r.zeroMean.init(r.integral);
+        g.zeroMean.init(g.integral);
         b.zeroMean.init(b.integral);
 
         for (int x = 0; x < this.image.cx; x++) {

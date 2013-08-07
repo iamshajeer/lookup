@@ -29,14 +29,8 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
     public void init(BufferedImage img) {
         image = new RGBImage();
         r = new ImageBinaryChannelFeature();
-        r.integral = new IntegralImage();
-        r.integral2 = new IntegralImage2();
         g = new ImageBinaryChannelFeature();
-        g.integral = new IntegralImage();
-        g.integral2 = new IntegralImage2();
         b = new ImageBinaryChannelFeature();
-        b.integral = new IntegralImage();
-        b.integral2 = new IntegralImage2();
 
         list = Arrays.asList(new ImageBinaryChannelFeature[] { r, g, b });
 
@@ -48,12 +42,9 @@ public class ImageBinaryRGBFeature implements ImageBinaryFeature {
         for (int x = 0; x < this.image.cx; x++) {
             for (int y = 0; y < this.image.cy; y++) {
                 this.image.step(x, y);
-                this.r.integral.step(x, y);
-                this.r.integral2.step(x, y);
-                this.g.integral.step(x, y);
-                this.g.integral2.step(x, y);
-                this.b.integral.step(x, y);
-                this.b.integral2.step(x, y);
+                this.r.step(x, y);
+                this.g.step(x, y);
+                this.b.step(x, y);
             }
         }
 

@@ -7,6 +7,8 @@ public class ImageBinaryChannel {
     public ImageZeroMean zeroMean;
 
     public ImageBinaryChannel() {
+        integral = new IntegralImage();
+        integral2 = new IntegralImage2();
     }
 
     public ImageBinaryChannel(SArray img) {
@@ -19,12 +21,16 @@ public class ImageBinaryChannel {
 
         for (int x = 0; x < this.gi.cx; x++) {
             for (int y = 0; y < this.gi.cy; y++) {
-                this.integral.step(x, y);
-                this.integral2.step(x, y);
+                step(x,y);
             }
         }
 
         zeroMean = new ImageZeroMean(integral);
+    }
+    
+    public void step(int x,int y) {
+        integral.step(x, y);
+        integral2.step(x, y);
     }
 
     public void initBase(SArray img) {
