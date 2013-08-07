@@ -592,7 +592,7 @@ public class CannyEdgeDetector {
                     data[y * sourceImage.getWidth() + x] = luminance(r, g, b);
                 }
             }
-            // original exception. i prefer slow over error
+            // original exception. i prefer slow run over error
             //
             // throw new IllegalArgumentException("Unsupported image type: " +
             // type);
