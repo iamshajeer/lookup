@@ -1,5 +1,19 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Minimal Sum-Tables required for any image for NCC or FNCC algorithm.
+ * 
+ * 1) Base Image Array
+ * 
+ * 2) Integral Image
+ * 
+ * 3) Integral ^ 2 Image (Image Energy)
+ * 
+ * 4) Zero Mean Image (image where each pixel substracted with image mean value)
+ * 
+ * @author axet
+ *
+ */
 public class ImageBinaryChannel {
     public SArray gi;
     public IntegralImage integral;

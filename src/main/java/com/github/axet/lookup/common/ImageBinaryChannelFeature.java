@@ -2,6 +2,14 @@ package com.github.axet.lookup.common;
 
 import java.util.List;
 
+/**
+ * Same as ImageBinaryChannel but with addition of Integral Image over Zero Mean
+ * Image matrix.
+ * 
+ * 
+ * @author axet
+ * 
+ */
 public class ImageBinaryChannelFeature extends ImageBinaryChannel {
     public List<FeatureK> k;
 
