@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryChannel;
+import com.github.axet.lookup.common.ImageBinaryGrey;
 import com.github.axet.lookup.common.RangeColor;
 import com.github.axet.lookup.proc.CannyEdgeDetector;
 
@@ -37,6 +40,24 @@ public class Lookup {
     }
 
     // filter
+
+    static public BufferedImage edgeImageDouble(BufferedImage b) {
+        // b = Lookup.filterResizeDoubleCanvas(b);
+
+        b = Lookup.edge(b);
+
+        b = Lookup.filterRemoveCanvas(b);
+
+        return b;
+    }
+
+    static public BufferedImage edgeImageCrop(BufferedImage b) {
+        b = filterResizeDoubleCanvas(b);
+
+        b = Lookup.filterRemoveCanvas(b);
+
+        return b;
+    }
 
     static public BufferedImage filterSimply(BufferedImage bi) {
         BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
@@ -72,12 +93,27 @@ public class Lookup {
         return resizedImage;
     }
 
-    static public BufferedImage filterResizeDoubleCanvas(BufferedImage bi) {
-        int cx = bi.getWidth() * 4;
-        int cy = bi.getHeight() * 4;
+    static public BufferedImage scale(BufferedImage bi, double s) {
+        int cx = (int) (bi.getWidth() * s);
+        int cy = (int) (bi.getHeight() * s);
         BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(bi, cx / 4, cy / 4, cx / 2, cy / 2, null);
+
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g.drawImage(bi, 0, 0, cx, cy, null);
+        g.dispose();
+        return resizedImage;
+    }
+
+    static public BufferedImage filterResizeDoubleCanvas(BufferedImage bi) {
+        int cx = bi.getWidth() * 3;
+        int cy = bi.getHeight() * 3;
+        BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(bi, cx / 3, cx / 3, bi.getWidth(), bi.getHeight(), null);
         g.dispose();
 
         return resizedImage;
@@ -186,12 +222,19 @@ public class Lookup {
         m = m * 255;
         for (int yy = 0; yy < template.getHeight(); yy++) {
             for (int xx = 0; xx < template.getWidth(); xx++) {
-                double rgb1 = template.zeroMean.s(xx, yy);
-                double rgb2 = image.zeroMean.s(x + xx, y + yy);
-                double min = rgb1 - m;
-                double max = rgb1 + m;
-                if (rgb2 < min || rgb2 > max)
-                    return false;
+                List<ImageBinaryChannel> ci = image.getChannels();
+                List<ImageBinaryChannel> ct = template.getChannels();
+
+                int ii = Math.min(ci.size(), ct.size());
+
+                for (int i = 0; i < ii; i++) {
+                    double rgb1 = ct.get(i).zeroMean.s(xx, yy);
+                    double rgb2 = ci.get(i).zeroMean.s(x + xx, y + yy);
+                    double min = rgb1 - m;
+                    double max = rgb1 + m;
+                    if (rgb2 < min || rgb2 > max)
+                        return false;
+                }
             }
         }
 
@@ -217,7 +260,7 @@ public class Lookup {
         return null;
     }
 
-    public static Point lookupUL(ImageBinary image, ImageBinary template, float m) {
+    public static Point lookupUL(ImageBinaryGrey image, ImageBinaryGrey template, float m) {
         for (int y = 0; y < image.getHeight() - template.getHeight(); y++) {
             for (int x = 0; x < image.getWidth() - template.getWidth(); x++) {
                 if (find(image, x, y, template, m))
@@ -263,7 +306,7 @@ public class Lookup {
         return new Point(x, y);
     }
 
-    static public Point lookupMeanImage(ImageBinary bi, ImageBinary i, int x1, int y1, int x2, int y2, float p) {
+    static public Point lookupMeanImage(ImageBinaryGrey bi, ImageBinaryGrey i, int x1, int y1, int x2, int y2, float p) {
         Point pul = lookupUL(bi, i, p);
         if (pul == null)
             throw new NotFound();

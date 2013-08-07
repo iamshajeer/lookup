@@ -11,7 +11,7 @@ import com.github.axet.lookup.common.FontFamily;
 import com.github.axet.lookup.common.FontSymbol;
 import com.github.axet.lookup.common.FontSymbolLookup;
 import com.github.axet.lookup.common.GPoint;
-import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryGrey;
 import com.github.axet.lookup.proc.CannyEdgeDetector;
 import com.github.axet.lookup.proc.NCC;
 
@@ -90,24 +90,6 @@ public class OCRCore {
         detector.setGaussianKernelRadius(1f);
     }
 
-    BufferedImage prepareImage(BufferedImage b) {
-        b = Lookup.toGray(b);
-
-        b = Lookup.filterResizeDoubleCanvas(b);
-
-        b = Lookup.edge(b);
-
-        return b;
-    }
-
-    BufferedImage prepareImageCrop(BufferedImage b) {
-        b = prepareImage(b);
-
-        b = Lookup.filterRemoveCanvas(b);
-
-        return b;
-    }
-
     List<FontSymbol> getSymbols() {
         List<FontSymbol> list = new ArrayList<FontSymbol>();
 
@@ -122,15 +104,15 @@ public class OCRCore {
         return this.fontFamily.get(fontFamily);
     }
 
-    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinary bi) {
+    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinaryGrey bi) {
         return findAll(list, bi, 0, 0, bi.getWidth(), bi.getHeight());
     }
 
-    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinary bi, int x1, int y1, int x2, int y2) {
+    List<FontSymbolLookup> findAll(List<FontSymbol> list, ImageBinaryGrey bi, int x1, int y1, int x2, int y2) {
         List<FontSymbolLookup> l = new ArrayList<FontSymbolLookup>();
 
         for (FontSymbol fs : list) {
-            List<GPoint> ll = NCC.lookup(bi, x1, y1, x2, y2, fs.image, threshold);
+            List<GPoint> ll = NCC.lookupAll(bi, x1, y1, x2, y2, fs.image, threshold);
             for (GPoint p : ll)
                 l.add(new FontSymbolLookup(fs, p.x, p.y, p.g));
         }

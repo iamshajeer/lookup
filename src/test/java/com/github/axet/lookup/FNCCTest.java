@@ -1,45 +1,39 @@
 package com.github.axet.lookup;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
+import com.github.axet.lookup.common.GPoint;
+import com.github.axet.lookup.common.ImageBinaryGrey;
+import com.github.axet.lookup.common.ImageBinaryRGB;
+import com.github.axet.lookup.common.ImageBinaryRGBFeature;
 import com.github.axet.lookup.proc.FNCC;
 
-/**
- * http://isas.uka.de/Material/AltePublikationen/briechle_spie2001.pdf
- * 
- * NOT WORKING (check NCC.java)
- * 
- * Fast Normalized cross correlation algorithm
- * 
- * 
- * @author axet
- * 
- */
 public class FNCCTest {
 
     public static void main(String[] args) {
-        BufferedImage image = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
-        image.getWritableTile(0, 0).setDataElements(0, 0, image.getWidth(), image.getHeight(), new int[] {
+        BufferedImage image = Capture.load(OCRTest.class, "cyclopst1.png");
+        BufferedImage template = Capture.load(OCRTest.class, "cyclopst3.png");
 
-        0, 0, 0,
+        // rgb image lookup
+        {
+            List<GPoint> pp = FNCC
+                    .lookupAll(new ImageBinaryRGB(image), new ImageBinaryRGBFeature(template, 5000), 0.9f);
 
-        0, 1, 0,
+            for (GPoint p : pp) {
+                System.out.println(p);
+            }
+        }
 
-        0, 0, 0
+        // grey image lookup
+        {
+            List<GPoint> pp = FNCC.lookupAll(new ImageBinaryGrey(image), new ImageBinaryRGBFeature(template, 5000),
+                    0.9f);
 
-        });
-
-        BufferedImage template = new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB);
-        image.getWritableTile(0, 0).setDataElements(0, 0, image.getWidth(), image.getHeight(), new int[] {
-
-        0, 0, 0,
-
-        0, 1, 0,
-
-        0, 0, 0
-
-        });
-
-        FNCC fnnc = new FNCC();
+            for (GPoint p : pp) {
+                System.out.println(p);
+            }
+        }
     }
+
 }

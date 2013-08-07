@@ -1,9 +1,13 @@
 package com.github.axet.lookup.common;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 
+/**
+ * BufferedImage to Gray array converter.
+ * 
+ * @author axet
+ * 
+ */
 public class GrayImage extends SArray {
     public BufferedImage buf;
 
@@ -38,19 +42,9 @@ public class GrayImage extends SArray {
         cy = buf.getHeight();
 
         s = new double[cx * cy];
-
-        // if (buf.getRaster().getDataBuffer() instanceof DataBufferByte) {
-        // p = new ParserByte(((DataBufferByte)
-        // buf.getRaster().getDataBuffer()).getData());
-        // }
-        //
-        // if (buf.getRaster().getDataBuffer() instanceof DataBufferInt) {
-        // p = new ParserInt(((DataBufferInt)
-        // buf.getRaster().getDataBuffer()).getData());
-        // }
     }
 
     public void step(int x, int y) {
-        s[i(x, y)] = grey(x, y);
+        s(x, y, grey(x, y));
     }
 }

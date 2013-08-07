@@ -2,7 +2,7 @@ package com.github.axet.lookup;
 
 import java.io.File;
 
-import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryGrey;
 
 public class OCRTest {
 
@@ -28,7 +28,7 @@ public class OCRTest {
         System.out.println(str);
 
         // recognize using only one family set and rectangle
-        ImageBinary i = new ImageBinary(Capture.load(OCRTest.class, "full.png"));
+        ImageBinaryGrey i = new ImageBinaryGrey(Capture.load(OCRTest.class, "full.png"));
         str = l.recognize(i, 1285, 654, 1343, 677, l.getSymbols("font_1"));
         System.out.println(str);
     }

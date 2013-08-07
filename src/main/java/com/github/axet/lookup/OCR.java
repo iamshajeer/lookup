@@ -16,7 +16,7 @@ import com.github.axet.lookup.common.ClassResources;
 import com.github.axet.lookup.common.FontFamily;
 import com.github.axet.lookup.common.FontSymbol;
 import com.github.axet.lookup.common.FontSymbolLookup;
-import com.github.axet.lookup.common.ImageBinary;
+import com.github.axet.lookup.common.ImageBinaryGrey;
 
 public class OCR extends OCRCore {
 
@@ -111,12 +111,12 @@ public class OCR extends OCRCore {
 
     public String recognize(BufferedImage bi) {
         // bi = prepareImage(bi);
-        ImageBinary i = new ImageBinary(bi);
+        ImageBinaryGrey i = new ImageBinaryGrey(bi);
 
         return recognize(i);
     }
 
-    public String recognize(ImageBinary i) {
+    public String recognize(ImageBinaryGrey i) {
         List<FontSymbol> list = getSymbols();
 
         return recognize(i, 0, 0, i.getWidth() - 1, i.getHeight() - 1, list);
@@ -130,30 +130,30 @@ public class OCR extends OCRCore {
      * @return
      */
     public String recognize(BufferedImage bi, String fontSet) {
-        ImageBinary i = new ImageBinary(bi);
+        ImageBinaryGrey i = new ImageBinaryGrey(bi);
 
         return recognize(i, fontSet);
     }
 
-    public String recognize(ImageBinary i, String fontSet) {
+    public String recognize(ImageBinaryGrey i, String fontSet) {
         List<FontSymbol> list = getSymbols(fontSet);
 
         return recognize(i, 0, 0, i.getWidth() - 1, i.getHeight() - 1, list);
     }
 
-    public String recognize(ImageBinary i, int x1, int y1, int x2, int y2) {
+    public String recognize(ImageBinaryGrey i, int x1, int y1, int x2, int y2) {
         List<FontSymbol> list = getSymbols();
 
         return recognize(i, x1, y1, x2, y2, list);
     }
 
-    public String recognize(ImageBinary i, int x1, int y1, int x2, int y2, String fontFamily) {
+    public String recognize(ImageBinaryGrey i, int x1, int y1, int x2, int y2, String fontFamily) {
         List<FontSymbol> list = getSymbols(fontFamily);
 
         return recognize(i, x1, y1, x2, y2, list);
     }
 
-    public String recognize(ImageBinary i, int x1, int y1, int x2, int y2, List<FontSymbol> list) {
+    public String recognize(ImageBinaryGrey i, int x1, int y1, int x2, int y2, List<FontSymbol> list) {
         List<FontSymbolLookup> all = findAll(list, i, x1, y1, x2, y2);
 
         // bigger first.

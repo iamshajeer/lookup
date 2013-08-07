@@ -4,6 +4,13 @@ import java.awt.image.BufferedImage;
 
 import com.github.axet.lookup.Capture;
 
+/**
+ * Double array wrapper class. Holds a double[] array and provides basic
+ * methods.
+ * 
+ * @author axet
+ * 
+ */
 public class SArray {
     public SArray base;
 
@@ -13,14 +20,18 @@ public class SArray {
     public double s[];
 
     public SArray() {
-
     }
 
-    public SArray(SArray buf) {
-        init(buf);
+    public SArray(int cx, int cy) {
+        if (cx <= 0 || cy <= 0)
+            throw new RuntimeException("wrong dimenssinons");
+
+        this.cx = cx;
+        this.cy = cy;
+        this.s = new double[cx * cy];
     }
 
-    public void init(SArray buf) {
+    public void initBase(SArray buf) {
         base = buf;
 
         cx = buf.cx;
@@ -34,11 +45,15 @@ public class SArray {
             return 0;
         if (y < 0)
             return 0;
-        return s[i(x, y)];
+        return s[y * cx + x];
     }
 
-    public int i(int x, int y) {
-        return y * cx + x;
+    public void s(int x, int y, double v) {
+        if (x < 0)
+            throw new RuntimeException("bad dim");
+        if (y < 0)
+            throw new RuntimeException("bad dim");
+        s[y * cx + x] = v;
     }
 
     /**
@@ -63,8 +78,8 @@ public class SArray {
     }
 
     public double mean(int x1, int y1, int x2, int y2) {
-        int area = (x2 - x1 + 1) * (y2 - y1 + 1);
-        return sigma(x1, y1, x2, y2) / (double) area;
+        double size = (x2 - x1 + 1) * (y2 - y1 + 1);
+        return sigma(x1, y1, x2, y2) / size;
     }
 
     public double mean() {

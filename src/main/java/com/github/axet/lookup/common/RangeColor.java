@@ -1,5 +1,12 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Range Color object. Can hold range color value. (minimum and maximum of
+ * specified color) in the int-rgb value
+ * 
+ * @author axet
+ * 
+ */
 public class RangeColor {
     public int min;
     public int max;

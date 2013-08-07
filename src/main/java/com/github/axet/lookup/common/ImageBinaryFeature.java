@@ -3,14 +3,22 @@ package com.github.axet.lookup.common;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class ImageBinaryFeature extends ImageBinary {
+/**
+ * Inteface for ImageBinaryGrayFeature and ImageBinaryRGBFeature classes
+ * 
+ * @author axet
+ * 
+ */
+public interface ImageBinaryFeature {
 
-    List<FeatureK> k;
+    public List<ImageBinaryChannelFeature> getFeatureChannels();
 
-    public ImageBinaryFeature(BufferedImage img, FeatureSet list) {
-        super(img);
+    public int getWidth();
 
-        k = list.k(image);
-    }
+    public int getHeight();
+
+    public int size();
+
+    public BufferedImage getImage();
 
 }
