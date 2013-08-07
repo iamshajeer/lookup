@@ -1,5 +1,13 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Zero Mean Image is an image where every pixel in the image substracted by
+ * mean value of the image. Mean value of the image is sum of all pixels values
+ * devided by number of pixels.
+ * 
+ * @author axet
+ * 
+ */
 public class ImageZeroMean extends SArray {
 
     double m;

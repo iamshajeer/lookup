@@ -4,6 +4,13 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Container for ImageBinary class for each channel (one gray channel here)
+ * 
+ * @author axet
+ *
+ */
+
 public class ImageBinaryGrey implements ImageBinary {
 
     public GrayImage gi;

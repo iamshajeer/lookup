@@ -2,6 +2,12 @@ package com.github.axet.lookup.common;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * BufferedImage to Gray array converter.
+ * 
+ * @author axet
+ * 
+ */
 public class GrayImage extends SArray {
     public BufferedImage buf;
 

@@ -1,5 +1,11 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Multiply matrix pixel by pixel
+ * 
+ * @author axet
+ * 
+ */
 public class ImageMultiply extends SArray {
 
     SArray m;

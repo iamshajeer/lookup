@@ -2,6 +2,12 @@ package com.github.axet.lookup.common;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * BufferedImage to 3 arrays converter (rgb arrays)
+ * 
+ * @author axet
+ * 
+ */
 public class RGBImage {
     public BufferedImage buf;
 

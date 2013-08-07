@@ -1,14 +1,23 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Haar like Feature rect with it's value k.
+ * 
+ * @author axet
+ * 
+ */
 public class RectK implements Comparable<RectK> {
     public int x1;
     public int y1;
     public int x2;
     public int y2;
 
+    // base rect cx size
     public int cxBase;
+    // base rect cy size
     public int cyBase;
 
+    // sum of the pixels in the area
     public double k;
 
     public RectK(int x, int y) {
@@ -113,12 +122,14 @@ public class RectK implements Comparable<RectK> {
         for (int x = 0; x < s.cx; x++) {
             for (int y = 0; y < s.cy; y++) {
                 boolean test = x >= x1 && x <= x2 && y >= y1 && y <= y2;
-                s.s(x, y, test ? 1 : 0);
-                if (test)
-                    c++;
+                int v = test ? 1 : 0;
+                s.s(x, y, v);
+
+                c += v;
             }
         }
 
+        // for debug purpose
         if (c == 0)
             throw new RuntimeException("empty feature");
 

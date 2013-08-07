@@ -4,6 +4,13 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Container for ImageBinary class for each channel (rgb channels here)
+ * 
+ * @author axet
+ * 
+ */
+
 public class ImageBinaryRGB implements ImageBinary {
 
     public RGBImage image;

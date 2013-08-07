@@ -1,5 +1,12 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Multiply matrix Pixel by Pixel and sum all pixels
+ * 
+ * @author axet
+ * 
+ */
+
 public class ImageMultiplySum {
 
     public ImageMultiply s = new ImageMultiply();
@@ -7,12 +14,6 @@ public class ImageMultiplySum {
     public double sum = 0;
 
     public ImageMultiplySum(SArray image, int xx, int yy, SArray template) {
-        // ImageMultiply s = new ImageMultiply(image.zeroMean, xx, yy,
-        // template.zeroMean);
-        // IntegralImage ss = new IntegralImage(s);
-
-        // speed up
-
         s.init(image, xx, yy, template);
 
         for (int x = 0; x < template.cx; x++) {

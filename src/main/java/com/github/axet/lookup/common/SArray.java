@@ -4,6 +4,13 @@ import java.awt.image.BufferedImage;
 
 import com.github.axet.lookup.Capture;
 
+/**
+ * Double array wrapper class. Holds a double[] array and provides basic
+ * methods.
+ * 
+ * @author axet
+ * 
+ */
 public class SArray {
     public SArray base;
 

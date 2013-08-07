@@ -1,7 +1,9 @@
 package com.github.axet.lookup.common;
 
 /**
- * Sum Table.
+ * Sum Table. Integral sum.
+ * 
+ * http://en.wikipedia.org/wiki/Summed_area_table
  * 
  * @author axet
  * 

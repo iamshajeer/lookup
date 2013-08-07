@@ -3,6 +3,8 @@ package com.github.axet.lookup.common;
 /**
  * Image Energy. Squared Image Function f^2(x,y).
  * 
+ * http://en.wikipedia.org/wiki/Summed_area_table
+ * 
  * @author axet
  * 
  */
