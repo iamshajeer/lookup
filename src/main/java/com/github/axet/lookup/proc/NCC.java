@@ -90,7 +90,7 @@ public class NCC {
 
                 int ii = Math.min(ci.size(), ct.size());
 
-                double gg = 0;
+                double gg = Double.MAX_VALUE;
                 boolean b = true;
 
                 for (int i = 0; i < ii; i++) {
