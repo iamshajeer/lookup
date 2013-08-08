@@ -83,7 +83,9 @@ public class OCRCore {
     // 1.0f == exact match, -1.0f - completely different images
     float threshold = 0.70f;
 
-    public OCRCore() {
+    public OCRCore(float threshold) {
+        this.threshold = threshold;
+
         detector.setLowThreshold(3f);
         detector.setHighThreshold(3f);
         detector.setGaussianKernelWidth(2);
