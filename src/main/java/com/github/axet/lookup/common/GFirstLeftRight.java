@@ -14,9 +14,9 @@ public class GFirstLeftRight implements Comparator<GPoint> {
         // quality first
         int r = LessCompare.compareBigFirst(arg0.g, arg1.g, qualityEqual);
         if (r == 0)
-            r = LessCompare.compareSmallFirst(arg0.x, arg1.x);
-        if (r == 0)
             r = LessCompare.compareSmallFirst(arg0.y, arg1.y);
+        if (r == 0)
+            r = LessCompare.compareSmallFirst(arg0.x, arg1.x);
         if (r == 0)
             r = LessCompare.compareBigFirst(arg0.g, arg1.g);
 
