@@ -39,9 +39,16 @@ public class ImageBinaryGreyScale {
     public void rescale(int s) {
         rescale(project(s));
     }
-    
+
     public double project(int s) {
-        return s / (double) Math.min(image.getWidth(), image.getHeight());
+        double m = (double) Math.min(image.getWidth(), image.getHeight());
+        double q = m / s;
+
+        q = Math.ceil(q);
+
+        q = 1 / q;
+
+        return q;
     }
 
     public void rescale(double s) {

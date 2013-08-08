@@ -1,8 +1,10 @@
 package com.github.axet.lookup;
 
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.List;
 
+import com.github.axet.lookup.common.GFirst;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinaryGreyScale;
 
@@ -20,7 +22,9 @@ public class SNCCTest {
         System.out.println("big");
         {
             ImageBinaryGreyScale st = new ImageBinaryGreyScale(templateBig);
-            List<GPoint> pp = s.lookupAll(si, st, 0.6f, 0.7f);
+            List<GPoint> pp = s.lookupAll(si, st, 0.4f, 0.7f);
+
+            Collections.sort(pp, new GFirst());
 
             for (GPoint p : pp) {
                 System.out.println(p);

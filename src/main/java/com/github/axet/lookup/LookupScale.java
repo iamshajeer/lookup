@@ -86,8 +86,8 @@ public class LookupScale {
         List<GPoint> list = NCC.lookupAll(image.scaleBin, 0, 0, image.scaleBin.getWidth() - 1,
                 image.scaleBin.getHeight() - 1, template.scaleBin, m);
 
-        int mx = (int) (1 / s);
-        int my = (int) (1 / s);
+        int mx = (int) (1 / s) + 1;
+        int my = (int) (1 / s) + 1;
 
         List<GPoint> result = new ArrayList<GPoint>();
 
