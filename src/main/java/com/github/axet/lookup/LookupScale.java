@@ -61,6 +61,24 @@ public class LookupScale {
     }
 
     public List<GPoint> lookupAll(ImageBinaryGreyScale image, ImageBinaryGreyScale template, float m, float mm) {
+        return lookupAll(image, 0, 0, image.scaleBin.getWidth() - 1, image.scaleBin.getHeight() - 1, template, m, mm);
+    }
+
+    public Point lookup(ImageBinaryGreyScale image, int x1, int y1, int x2, int y2, ImageBinaryGreyScale template,
+            float m, float mm) {
+        List<GPoint> list = lookupAll(image, 0, 0, image.scaleBin.getWidth() - 1, image.scaleBin.getHeight() - 1,
+                template, m, mm);
+
+        if (list.size() == 0)
+            throw new NotFound();
+
+        Collections.sort(list, new GFirst());
+
+        return list.get(0);
+    }
+
+    public List<GPoint> lookupAll(ImageBinaryGreyScale image, int x1, int y1, int x2, int y2,
+            ImageBinaryGreyScale template, float m, float mm) {
         if (s == 0) {
             s = template.s;
         }
@@ -83,8 +101,7 @@ public class LookupScale {
             image.rescale(s);
         }
 
-        List<GPoint> list = NCC.lookupAll(image.scaleBin, 0, 0, image.scaleBin.getWidth() - 1,
-                image.scaleBin.getHeight() - 1, template.scaleBin, m);
+        List<GPoint> list = NCC.lookupAll(image.scaleBin, x1, y1, x2, y2, template.scaleBin, m);
 
         int mx = (int) (1 / s) + 1;
         int my = (int) (1 / s) + 1;
