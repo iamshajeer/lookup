@@ -4,7 +4,7 @@
 
   <groupId>com.github.axet</groupId>
   <artifactId>lookup</artifactId>
-  <version>0.1.11</version>
+  <version>0.1.11-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>lookup</name>
 
