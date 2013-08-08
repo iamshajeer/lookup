@@ -3,7 +3,7 @@ package com.github.axet.lookup.common;
 public class LessCompare {
 
     static public int compareBigFirst(double o1, double o2, double val) {
-        if (Math.abs(o1 - o2) < val)
+        if (Math.abs(Math.abs(o1) - Math.abs(o2)) < val)
             return 0;
 
         return compareBigFirst(o1, o2);
@@ -29,7 +29,7 @@ public class LessCompare {
     }
 
     static public int compareBigFirst(int o1, int o2, int val) {
-        if (Math.abs(o1 - o2) < val)
+        if (Math.abs(Math.abs(o1) - Math.abs(o2)) < val)
             return 0;
 
         return compareBigFirst(o1, o2);
