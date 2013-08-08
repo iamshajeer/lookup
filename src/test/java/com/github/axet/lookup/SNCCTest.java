@@ -1,5 +1,6 @@
 package com.github.axet.lookup;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.List;
@@ -19,10 +20,15 @@ public class SNCCTest {
 
         ImageBinaryGreyScale si = new ImageBinaryGreyScale(image);
 
+        ImageBinaryGreyScale stBig = new ImageBinaryGreyScale(templateBig);
+        ImageBinaryGreyScale stSmall = new ImageBinaryGreyScale(templateSmall);
+
+        Long l;
+
         System.out.println("big");
+        l = System.currentTimeMillis();
         {
-            ImageBinaryGreyScale st = new ImageBinaryGreyScale(templateBig);
-            List<GPoint> pp = s.lookupAll(si, st, 0.4f, 0.7f);
+            List<GPoint> pp = s.lookupAll(si, stBig, 0.8f, 0.8f);
 
             Collections.sort(pp, new GFirst());
 
@@ -30,15 +36,33 @@ public class SNCCTest {
                 System.out.println(p);
             }
         }
+        System.out.println(System.currentTimeMillis() - l);
 
         System.out.println("small");
+        l = System.currentTimeMillis();
         {
-            ImageBinaryGreyScale st = new ImageBinaryGreyScale(templateSmall);
-            List<GPoint> pp = s.lookupAll(si, st, 0.6f, 0.8f);
+            List<GPoint> pp = s.lookupAll(si, stSmall, 0.75f, 0.8f);
+
+            Collections.sort(pp, new GFirst());
 
             for (GPoint p : pp) {
                 System.out.println(p);
             }
         }
+        System.out.println(System.currentTimeMillis() - l);
+
+        System.out.println("big");
+        l = System.currentTimeMillis();
+        {
+            List<GPoint> pp = s.lookupAll(si, stBig, 0.8f, 0.8f);
+
+            Collections.sort(pp, new GFirst());
+
+            for (GPoint p : pp) {
+                System.out.println(p);
+            }
+        }
+        System.out.println(System.currentTimeMillis() - l);
+
     }
 }
