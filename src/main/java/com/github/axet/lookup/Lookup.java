@@ -96,15 +96,28 @@ public class Lookup {
     static public BufferedImage scale(BufferedImage bi, double s) {
         int cx = (int) (bi.getWidth() * s);
         int cy = (int) (bi.getHeight() * s);
+
+        Image src = bi.getScaledInstance(cx, cy, Image.SCALE_SMOOTH);
+
         BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
         Graphics2D g = resizedImage.createGraphics();
-
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g.drawImage(bi, 0, 0, cx, cy, null);
+        g.drawImage(src, 0, 0, cx, cy, null);
         g.dispose();
+        return resizedImage;
+    }
+
+    static public BufferedImage scalePower(BufferedImage bi, double s) {
+        double m = 1 / s;
+
+        int cx = (int) (bi.getWidth() / m)+1;
+        int cy = (int) (bi.getHeight() / m)+1;
+
+        BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
+        for (int x = 0; x < bi.getWidth(); x += m) {
+            for (int y = 0; y < bi.getHeight(); y += m) {
+                resizedImage.setRGB((int) (x / m), (int) (y / m), bi.getRGB(x, y));
+            }
+        }
         return resizedImage;
     }
 
