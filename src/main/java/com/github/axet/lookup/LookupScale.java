@@ -70,8 +70,7 @@ public class LookupScale {
             float m, float mm) {
         scale(image, template);
 
-        List<GPoint> list = lookupAll(image, 0, 0, image.scaleBin.getWidth() - 1, image.scaleBin.getHeight() - 1,
-                template, m, mm);
+        List<GPoint> list = lookupAll(image, x1, y1, x2, y2, template, m, mm);
 
         if (list.size() == 0)
             throw new NotFound();
@@ -85,7 +84,8 @@ public class LookupScale {
             ImageBinaryGreyScale template, float m, float mm) {
         scale(image, template);
 
-        List<GPoint> list = NCC.lookupAll(image.scaleBin, x1, y1, x2, y2, template.scaleBin, m);
+        List<GPoint> list = NCC.lookupAll(image.scaleBin, (int) (x1 * s), (int) (y1 * s), (int) (x2 * s),
+                (int) (y2 * s), template.scaleBin, m);
 
         int mx = (int) (1 / s) + 1;
         int my = (int) (1 / s) + 1;
