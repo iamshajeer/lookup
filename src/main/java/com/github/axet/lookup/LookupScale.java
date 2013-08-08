@@ -66,7 +66,7 @@ public class LookupScale {
         return lookupAll(image, 0, 0, image.scaleBin.getWidth() - 1, image.scaleBin.getHeight() - 1, template, m, mm);
     }
 
-    public Point lookup(ImageBinaryGreyScale image, int x1, int y1, int x2, int y2, ImageBinaryGreyScale template,
+    public GPoint lookup(ImageBinaryGreyScale image, int x1, int y1, int x2, int y2, ImageBinaryGreyScale template,
             float m, float mm) {
         scale(image, template);
 
