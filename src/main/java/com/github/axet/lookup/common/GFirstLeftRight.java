@@ -6,7 +6,7 @@ public class GFirstLeftRight implements Comparator<GPoint> {
     double qualityEqual;
 
     public GFirstLeftRight(double qualityEqual) {
-        this.qualityEqual = qualityEqual;
+        this.qualityEqual = 1 - qualityEqual;
     }
 
     @Override
