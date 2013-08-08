@@ -20,7 +20,8 @@ import com.github.axet.lookup.common.ImageBinaryGrey;
 
 public class OCR extends OCRCore {
 
-    public OCR() {
+    public OCR(float threshold) {
+        super(threshold);
     }
 
     /**
