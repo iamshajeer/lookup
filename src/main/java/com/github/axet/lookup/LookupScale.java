@@ -107,6 +107,11 @@ public class LookupScale {
             result.addAll(list2);
         }
 
+        for (GPoint p : result) {
+            p.x += template.image.getWidth() / 2;
+            p.y += template.image.getHeight() / 2;
+        }
+
         return result;
     }
 
