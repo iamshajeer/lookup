@@ -96,8 +96,17 @@ public class LookupScale {
             ImageBinaryGreyScale template) {
         scale(image, template);
 
-        List<GPoint> list = NCC.lookupAll(image.scaleBin, (int) (x1 * s), (int) (y1 * s), (int) (x2 * s),
-                (int) (y2 * s), template.scaleBin, m);
+        int sx1 = (int) (x1 * s);
+        int sy1 = (int) (y1 * s);
+        int sx2 = (int) (x2 * s);
+        int sy2 = (int) (y2 * s);
+
+        if (sy2 >= image.scaleBin.getHeight())
+            sy2 = image.scaleBin.getHeight() - 1;
+        if (sx2 >= image.scaleBin.getWidth())
+            sx2 = image.scaleBin.getWidth() - 1;
+
+        List<GPoint> list = NCC.lookupAll(image.scaleBin, sx1, sy1, sx2, sy2, template.scaleBin, m);
 
         int mx = (int) (1 / s) + 1;
         int my = (int) (1 / s) + 1;
