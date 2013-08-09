@@ -123,10 +123,10 @@ public class LookupScale {
             p2.x = template.image.getWidth() - 1 + p2.x + 2 * mx;
             p2.y = template.image.getHeight() - 1 + p2.y + 2 * my;
 
-            if (p2.x >= image.image.getHeight())
-                p2.x = image.image.getHeight() - 1;
-            if (p2.y >= image.image.getWidth())
-                p2.y = image.image.getWidth() - 1;
+            if (p2.x >= image.image.getWidth())
+                p2.x = image.image.getWidth() - 1;
+            if (p2.y >= image.image.getHeight())
+                p2.y = image.image.getHeight() - 1;
 
             List<GPoint> list2 = NCC.lookupAll(image.image, p1.x, p1.y, p2.x, p2.y, template.image, mm);
 
