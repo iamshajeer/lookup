@@ -16,7 +16,7 @@ public class SNCCTest {
         BufferedImage templateSmall = Capture.load(OCRTest.class, "desktop_feature_small.png");
         BufferedImage templateBig = Capture.load(OCRTest.class, "desktop_feature_big.png");
 
-        LookupScale s = new LookupScale(5);
+        LookupScale s = new LookupScale(5, 0.75f, 0.8f);
 
         ImageBinaryGreyScale si = new ImageBinaryGreyScale(image);
 
@@ -28,7 +28,7 @@ public class SNCCTest {
         System.out.println("big");
         l = System.currentTimeMillis();
         {
-            List<GPoint> pp = s.lookupAll(si, stBig, 0.8f, 0.8f);
+            List<GPoint> pp = s.lookupAll(si, stBig);
 
             Collections.sort(pp, new GFirst());
 
@@ -41,7 +41,7 @@ public class SNCCTest {
         System.out.println("small");
         l = System.currentTimeMillis();
         {
-            List<GPoint> pp = s.lookupAll(si, stSmall, 0.75f, 0.8f);
+            List<GPoint> pp = s.lookupAll(si, stSmall);
 
             Collections.sort(pp, new GFirst());
 
@@ -54,7 +54,7 @@ public class SNCCTest {
         System.out.println("big");
         l = System.currentTimeMillis();
         {
-            List<GPoint> pp = s.lookupAll(si, stBig, 0.8f, 0.8f);
+            List<GPoint> pp = s.lookupAll(si, stBig);
 
             Collections.sort(pp, new GFirst());
 
