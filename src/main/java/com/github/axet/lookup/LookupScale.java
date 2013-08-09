@@ -15,17 +15,30 @@ import com.github.axet.lookup.proc.NCC;
 public class LookupScale {
 
     // minimum scale used
-    double s = 0;
+    public double s = 0;
 
     // in pixels
     int defaultScaleSize;
+    float m;
+    float mm;
 
-    public LookupScale(int scaleSize) {
+    /**
+     * 
+     * @param scaleSize
+     *            ex:5
+     * @param m
+     *            ex:0.70f
+     * @param mm
+     *            ex:0.90f - for big templates, and 0.95f for small templates
+     */
+    public LookupScale(int scaleSize, float m, float mm) {
         this.defaultScaleSize = scaleSize;
+        this.m = m;
+        this.mm = mm;
     }
 
-    public GPoint lookup(BufferedImage i, BufferedImage t, float m, float mm) {
-        List<GPoint> list = lookupAll(i, t, m, mm);
+    public GPoint lookup(BufferedImage i, BufferedImage t) {
+        List<GPoint> list = lookupAll(i, t);
 
         if (list.size() == 0)
             throw new NotFound();
@@ -35,7 +48,7 @@ public class LookupScale {
         return list.get(0);
     }
 
-    public List<GPoint> lookupAll(BufferedImage i, BufferedImage t, float m, float mm) {
+    public List<GPoint> lookupAll(BufferedImage i, BufferedImage t) {
         ImageBinaryGreyScale templateBinary;
         if (s == 0) {
             templateBinary = new ImageBinaryGreyScale(t, defaultScaleSize);
@@ -46,11 +59,11 @@ public class LookupScale {
 
         ImageBinaryGreyScale imageBinary = new ImageBinaryGreyScale(i, s);
 
-        return lookupAll(imageBinary, templateBinary, m, mm);
+        return lookupAll(imageBinary, templateBinary);
     }
 
-    public GPoint lookup(ImageBinaryGreyScale image, ImageBinaryGreyScale template, float m, float mm) {
-        List<GPoint> list = lookupAll(image, template, m, mm);
+    public GPoint lookup(ImageBinaryGreyScale image, ImageBinaryGreyScale template) {
+        List<GPoint> list = lookupAll(image, template);
 
         if (list.size() == 0)
             throw new NotFound();
@@ -60,17 +73,16 @@ public class LookupScale {
         return list.get(0);
     }
 
-    public List<GPoint> lookupAll(ImageBinaryGreyScale image, ImageBinaryGreyScale template, float m, float mm) {
+    public List<GPoint> lookupAll(ImageBinaryGreyScale image, ImageBinaryGreyScale template) {
         scale(image, template);
 
-        return lookupAll(image, 0, 0, image.image.getWidth() - 1, image.image.getHeight() - 1, template, m, mm);
+        return lookupAll(image, 0, 0, image.image.getWidth() - 1, image.image.getHeight() - 1, template);
     }
 
-    public GPoint lookup(ImageBinaryGreyScale image, int x1, int y1, int x2, int y2, ImageBinaryGreyScale template,
-            float m, float mm) {
+    public GPoint lookup(ImageBinaryGreyScale image, int x1, int y1, int x2, int y2, ImageBinaryGreyScale template) {
         scale(image, template);
 
-        List<GPoint> list = lookupAll(image, x1, y1, x2, y2, template, m, mm);
+        List<GPoint> list = lookupAll(image, x1, y1, x2, y2, template);
 
         if (list.size() == 0)
             throw new NotFound();
@@ -81,7 +93,7 @@ public class LookupScale {
     }
 
     public List<GPoint> lookupAll(ImageBinaryGreyScale image, int x1, int y1, int x2, int y2,
-            ImageBinaryGreyScale template, float m, float mm) {
+            ImageBinaryGreyScale template) {
         scale(image, template);
 
         List<GPoint> list = NCC.lookupAll(image.scaleBin, (int) (x1 * s), (int) (y1 * s), (int) (x2 * s),
