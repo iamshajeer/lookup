@@ -83,8 +83,8 @@ public class NCC {
             float m) {
         List<GPoint> list = new ArrayList<GPoint>();
 
-        for (int x = x1; x <= x2 - template.getWidth() - 1; x++) {
-            for (int y = y1; y <= y2 - template.getHeight() - 1; y++) {
+        for (int x = x1; x <= x2 - template.getWidth() + 1; x++) {
+            for (int y = y1; y <= y2 - template.getHeight() + 1; y++) {
                 List<ImageBinaryChannel> ci = image.getChannels();
                 List<ImageBinaryChannel> ct = template.getChannels();
 
