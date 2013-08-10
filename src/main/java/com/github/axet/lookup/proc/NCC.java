@@ -10,7 +10,6 @@ import com.github.axet.lookup.common.GFirst;
 import com.github.axet.lookup.common.GPoint;
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryChannel;
-import com.github.axet.lookup.common.ImageBinaryGrey;
 import com.github.axet.lookup.common.ImageBinaryRGB;
 import com.github.axet.lookup.common.ImageMultiplySum;
 
@@ -68,7 +67,7 @@ public class NCC {
         return lookupAll(image, 0, 0, image.getWidth() - 1, image.getHeight() - 1, template, m);
     }
 
-    static public GPoint lookup(ImageBinaryGrey image, int x1, int y1, int x2, int y2, ImageBinaryGrey template, float m) {
+    static public GPoint lookup(ImageBinary image, int x1, int y1, int x2, int y2, ImageBinary template, float m) {
         List<GPoint> list = lookupAll(image, x1, y1, x2, y2, template, m);
 
         if (list.size() == 0)
