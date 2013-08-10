@@ -110,9 +110,6 @@ public class LookupScale {
         if (sx2 >= image.scaleBin.getWidth())
             sx2 = image.scaleBin.getWidth() - 1;
 
-        // Capture.writeDesktop(image.scaleBuf);
-        // Capture.writeDesktop(template.scaleBuf);
-
         List<GPoint> list = NCC.lookupAll(image.scaleBin, sx1, sy1, sx2, sy2, template.scaleBin, m);
 
         int mx = (int) (1 / s) + 1;
@@ -146,7 +143,7 @@ public class LookupScale {
             GPoint kk = result.get(k);
             for (int j = k + 1; j < result.size(); j++) {
                 GPoint jj = result.get(j);
-                if (cross(template.image, kk, jj)){
+                if (cross(template.image, kk, jj)) {
                     result.remove(jj);
                     j--;
                 }

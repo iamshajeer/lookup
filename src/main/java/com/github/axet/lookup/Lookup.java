@@ -96,17 +96,19 @@ public class Lookup {
     }
 
     static public BufferedImage scale(BufferedImage bi, double s) {
+        bi = filterBlur3(bi);
+
         int cx = (int) (bi.getWidth() * s);
         int cy = (int) (bi.getHeight() * s);
 
-        // Image src = bi.getScaledInstance(cx, cy, Image.SCALE_SMOOTH);
-        //
-        // BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
-        // Graphics2D g = resizedImage.createGraphics();
-        // g.drawImage(src, 0, 0, cx, cy, null);
-        // g.dispose();
+        Image src = bi.getScaledInstance(cx, cy, Image.SCALE_SMOOTH);
 
-        return Scalr.resize(bi, Method.QUALITY, cx, cy);
+        BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(src, 0, 0, cx, cy, null);
+        g.dispose();
+
+        return resizedImage;
     }
 
     static public BufferedImage scalePower(BufferedImage bi, double s) {
@@ -180,7 +182,19 @@ public class Lookup {
         return dest;
     }
 
-    public BufferedImage filterBlur(BufferedImage bi) {
+    static public BufferedImage filterBlur3(BufferedImage bi) {
+        BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+
+        float n = 1f / 9f;
+        Kernel kernel = new Kernel(3, 3, new float[] { n, n, n, n, n, n, n, n, n });
+
+        ConvolveOp op = new ConvolveOp(kernel);
+        op.filter(bi, buff);
+
+        return buff;
+    }
+
+    static public BufferedImage filterBlur25(BufferedImage bi) {
         BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
 
         float n = 1f / 25f;
