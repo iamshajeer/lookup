@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
@@ -12,6 +11,9 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
 
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryChannel;
@@ -97,14 +99,14 @@ public class Lookup {
         int cx = (int) (bi.getWidth() * s);
         int cy = (int) (bi.getHeight() * s);
 
-        Image src = bi.getScaledInstance(cx, cy, Image.SCALE_SMOOTH);
+        // Image src = bi.getScaledInstance(cx, cy, Image.SCALE_SMOOTH);
+        //
+        // BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
+        // Graphics2D g = resizedImage.createGraphics();
+        // g.drawImage(src, 0, 0, cx, cy, null);
+        // g.dispose();
 
-        BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(src, 0, 0, cx, cy, null);
-        g.dispose();
-
-        return resizedImage;
+        return Scalr.resize(bi, Method.QUALITY, cx, cy);
     }
 
     static public BufferedImage scalePower(BufferedImage bi, double s) {
