@@ -6,6 +6,11 @@ usefull for debuging or automating things.
 
 ## OCR functionality
 
+If you need to encode special symbols use UNICODE in the file name. For example if you need to have '\' character (which is prohibited
+in the path and file name) specify %2F.png as a image symbol name.
+
+Sometimes you need specify two different image for one symbol (if image / font symbol varry too mutch). To do so add unicode ZERO WIDTH SPACE symbol to the filename. Like that %2F%E2%80%8B.png will produce '/' symbol as well. 
+
     package com.github.axet.lookup;
     
     import java.io.File;
