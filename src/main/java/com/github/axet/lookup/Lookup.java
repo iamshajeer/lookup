@@ -96,7 +96,7 @@ public class Lookup {
     }
 
     static public BufferedImage scale(BufferedImage bi, double s) {
-        bi = filterBlur3(bi);
+        bi = filterBlur8(bi);
 
         int cx = (int) (bi.getWidth() * s);
         int cy = (int) (bi.getHeight() * s);
@@ -194,12 +194,41 @@ public class Lookup {
         return buff;
     }
 
-    static public BufferedImage filterBlur25(BufferedImage bi) {
+    static public BufferedImage filterBlur5(BufferedImage bi) {
         BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
 
         float n = 1f / 25f;
         Kernel kernel = new Kernel(5, 5, new float[] { n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n,
                 n, n, n, n });
+
+        ConvolveOp op = new ConvolveOp(kernel);
+        op.filter(bi, buff);
+
+        return buff;
+    }
+
+    static public BufferedImage filterBlur8(BufferedImage bi) {
+        BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+
+        float n = 1f / 64f;
+        Kernel kernel = new Kernel(8, 8, new float[] { n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n,
+                n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n,
+                n, n, n, n, n, n, n, n, n, });
+
+        ConvolveOp op = new ConvolveOp(kernel);
+        op.filter(bi, buff);
+
+        return buff;
+    }
+
+    static public BufferedImage filterBlur10(BufferedImage bi) {
+        BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+
+        float n = 1f / 100f;
+        Kernel kernel = new Kernel(10, 10, new float[] { n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n,
+                n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n,
+                n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n,
+                n, n, n, n, n, n, n, n, n, n, n });
 
         ConvolveOp op = new ConvolveOp(kernel);
         op.filter(bi, buff);
