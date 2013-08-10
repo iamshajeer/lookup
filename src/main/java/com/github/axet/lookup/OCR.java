@@ -168,14 +168,14 @@ public class OCR extends OCRCore {
 
         // big images eat small ones
 
-        List<FontSymbolLookup> copy = new ArrayList<FontSymbolLookup>(all);
-
-        for (int k = 0; k < copy.size(); k++) {
-            FontSymbolLookup kk = copy.get(k);
-            for (int j = k + 1; j < copy.size(); j++) {
-                FontSymbolLookup jj = copy.get(j);
-                if (kk.cross(jj))
+        for (int k = 0; k < all.size(); k++) {
+            FontSymbolLookup kk = all.get(k);
+            for (int j = k + 1; j < all.size(); j++) {
+                FontSymbolLookup jj = all.get(j);
+                if (kk.cross(jj)) {
                     all.remove(jj);
+                    j--;
+                }
             }
         }
 

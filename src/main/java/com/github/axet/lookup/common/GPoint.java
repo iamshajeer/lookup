@@ -9,6 +9,7 @@ public class GPoint extends Point {
 
     public GPoint(int x, int y, double g) {
         super(x, y);
+        
         this.g = g;
     }
 

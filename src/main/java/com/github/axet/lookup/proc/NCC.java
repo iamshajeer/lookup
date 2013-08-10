@@ -85,27 +85,9 @@ public class NCC {
 
         for (int x = x1; x <= x2 - template.getWidth() + 1; x++) {
             for (int y = y1; y <= y2 - template.getHeight() + 1; y++) {
-                List<ImageBinaryChannel> ci = image.getChannels();
-                List<ImageBinaryChannel> ct = template.getChannels();
-
-                int ii = Math.min(ci.size(), ct.size());
-
-                double gg = Double.MAX_VALUE;
-                boolean b = true;
-
-                for (int i = 0; i < ii; i++) {
-                    double g = gamma(ci.get(i), ct.get(i), x, y);
-
-                    gg = Math.min(gg, g);
-
-                    if (g < m) {
-                        b = false;
-                    }
-                }
-
-                if (b) {
-                    list.add(new GPoint(x, y, gg));
-                }
+                GPoint g = lookup(image, template, x, y, m);
+                if (g != null)
+                    list.add(g);
             }
         }
 
@@ -121,6 +103,45 @@ public class NCC {
         double di = image.dev2n(xx, yy, xx + template.getWidth() - 1, yy + template.getHeight() - 1);
         double dt = template.dev2n();
         return Math.sqrt(di * dt);
+    }
+
+    static public GPoint lookup(ImageBinary image, ImageBinary template, int x, int y, float m) {
+        List<ImageBinaryChannel> ci = image.getChannels();
+        List<ImageBinaryChannel> ct = template.getChannels();
+
+        int ii = Math.min(ci.size(), ct.size());
+
+        double g = 0;
+
+        for (int i = 0; i < ii; i++) {
+            double gg = gamma(ci.get(i), ct.get(i), x, y);
+
+            if (gg < m)
+                return null;
+
+            g += gg;
+        }
+
+        g /= ii;
+
+        return new GPoint(x, y, g);
+    }
+
+    static public double gamma(ImageBinary image, ImageBinary template, int x, int y) {
+        List<ImageBinaryChannel> ci = image.getChannels();
+        List<ImageBinaryChannel> ct = template.getChannels();
+
+        int ii = Math.min(ci.size(), ct.size());
+
+        double g = 0;
+
+        for (int i = 0; i < ii; i++) {
+            g += gamma(ci.get(i), ct.get(i), x, y);
+        }
+
+        g /= ii;
+
+        return g;
     }
 
     static public double gamma(ImageBinaryChannel image, ImageBinaryChannel template, int xx, int yy) {

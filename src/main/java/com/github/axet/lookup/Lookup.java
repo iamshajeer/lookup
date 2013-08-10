@@ -103,14 +103,15 @@ public class Lookup {
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(src, 0, 0, cx, cy, null);
         g.dispose();
+
         return resizedImage;
     }
 
     static public BufferedImage scalePower(BufferedImage bi, double s) {
         double m = 1 / s;
 
-        int cx = (int) (bi.getWidth() / m)+1;
-        int cy = (int) (bi.getHeight() / m)+1;
+        int cx = (int) (bi.getWidth() / m) + 1;
+        int cy = (int) (bi.getHeight() / m) + 1;
 
         BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
         for (int x = 0; x < bi.getWidth(); x += m) {
