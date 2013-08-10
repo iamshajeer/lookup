@@ -2,6 +2,8 @@ package com.github.axet.lookup.common;
 
 import java.awt.Rectangle;
 
+import org.apache.commons.lang.math.IntRange;
+
 public class FontSymbolLookup {
     public int x;
     public int y;
@@ -27,19 +29,11 @@ public class FontSymbolLookup {
     }
 
     public boolean yCross(FontSymbolLookup f) {
-        int y1 = y;
-        int y2 = y1 + fs.image.getHeight();
+        IntRange r1 = new IntRange(y, y + fs.image.getHeight());
 
-        int yy1 = f.y;
-        int yy2 = yy1 + f.fs.image.getHeight();
+        IntRange r2 = new IntRange(f.y, f.y + f.fs.image.getHeight());
 
-        if (y1 <= yy1 && yy1 <= y2)
-            return true;
-
-        if (y1 <= yy2 && yy2 <= y2)
-            return true;
-
-        return false;
+        return r1.overlapsRange(r2);
     }
 
     public int getWidth() {

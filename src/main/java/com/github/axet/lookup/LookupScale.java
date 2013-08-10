@@ -1,14 +1,18 @@
 package com.github.axet.lookup;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.github.axet.lookup.Lookup.NotFound;
+import com.github.axet.lookup.common.FontSymbolLookup;
 import com.github.axet.lookup.common.GFirst;
+import com.github.axet.lookup.common.GFirstLeftRight;
 import com.github.axet.lookup.common.GPoint;
+import com.github.axet.lookup.common.ImageBinaryGrey;
 import com.github.axet.lookup.common.ImageBinaryGreyScale;
 import com.github.axet.lookup.proc.NCC;
 
@@ -133,12 +137,30 @@ public class LookupScale {
             result.addAll(list2);
         }
 
+        // delete duplicates
+        Collections.sort(result, new GFirstLeftRight(template.image));
+        List<GPoint> copy = new ArrayList<GPoint>(result);
+        for (int k = 0; k < copy.size(); k++) {
+            GPoint kk = copy.get(k);
+            for (int j = k + 1; j < copy.size(); j++) {
+                GPoint jj = copy.get(j);
+                if (cross(template.image, kk, jj))
+                    result.remove(jj);
+            }
+        }
+
         for (GPoint p : result) {
             p.x += template.image.getWidth() / 2;
             p.y += template.image.getHeight() / 2;
         }
 
         return result;
+    }
+
+    boolean cross(ImageBinaryGrey image, GPoint i1, GPoint i2) {
+        Rectangle r1 = new Rectangle(i1.x, i1.y, image.getWidth(), image.getHeight());
+        Rectangle r2 = new Rectangle(i2.x, i2.y, image.getWidth(), image.getHeight());
+        return r1.intersects(r2);
     }
 
     void scale(ImageBinaryGreyScale image, ImageBinaryGreyScale template) {
