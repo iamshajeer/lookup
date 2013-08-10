@@ -12,13 +12,11 @@ import com.github.axet.lookup.common.ImageBinaryScale;
 public class SNCCTest {
 
     public static void main(String[] args) {
-        // BufferedImage image = Capture.load(OCRTest.class, "desktop.png");
-        // BufferedImage template = Capture.load(OCRTest.class,
-        // "desktop_feature_big.png");
-        BufferedImage image = Capture.load("/Users/axet/Desktop/1376156092493.png");
-        BufferedImage template = Capture.load("/Users/axet/Desktop/play_lobby.png");
+        BufferedImage image = Capture.load(OCRTest.class, "desktop.png");
+        BufferedImage template = Capture.load(OCRTest.class, "desktop_feature_big.png");
 
-        LookupScale s = new LookupScale(4, 0.40f, 0.8f);
+        LookupScale s = new LookupScale(4, 0.65f, 0.8f);
+        s.s = 0.2;
 
         ImageBinaryScale si = new ImageBinaryGreyScaleRGB(image);
 
@@ -26,16 +24,18 @@ public class SNCCTest {
 
         Long l;
 
-        l = System.currentTimeMillis();
-        {
-            List<GPoint> pp = s.lookupAll(si, st);
+        for (int i = 0; i < 2; i++) {
+            l = System.currentTimeMillis();
+            {
+                List<GPoint> pp = s.lookupAll(si, st);
 
-            Collections.sort(pp, new GFirst());
+                Collections.sort(pp, new GFirst());
 
-            for (GPoint p : pp) {
-                System.out.println(p);
+                for (GPoint p : pp) {
+                    System.out.println(p);
+                }
             }
+            System.out.println(System.currentTimeMillis() - l);
         }
-        System.out.println(System.currentTimeMillis() - l);
     }
 }
