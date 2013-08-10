@@ -137,6 +137,11 @@ public class Capture {
         return dest;
     }
 
+    // easy call while debuging
+    static public BufferedImage load(String path) {
+        return load(new File(path));
+    }
+
     static public BufferedImage load(File path) {
         BufferedImage img = null;
         try {
