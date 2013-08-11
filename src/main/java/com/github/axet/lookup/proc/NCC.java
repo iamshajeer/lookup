@@ -110,7 +110,7 @@ public class NCC {
 
         int ii = Math.min(ci.size(), ct.size());
 
-        double g = 0;
+        double g = Double.MAX_VALUE;
 
         for (int i = 0; i < ii; i++) {
             double gg = gamma(ci.get(i), ct.get(i), x, y);
@@ -118,10 +118,8 @@ public class NCC {
             if (gg < m)
                 return null;
 
-            g += gg;
+            g = Math.min(g, gg);
         }
-
-        g /= ii;
 
         return new GPoint(x, y, g);
     }
@@ -139,6 +137,21 @@ public class NCC {
         }
 
         g /= ii;
+
+        return g;
+    }
+
+    static public double gammaMin(ImageBinary image, ImageBinary template, int x, int y) {
+        List<ImageBinaryChannel> ci = image.getChannels();
+        List<ImageBinaryChannel> ct = template.getChannels();
+
+        int ii = Math.min(ci.size(), ct.size());
+
+        double g = Double.MAX_VALUE;
+
+        for (int i = 0; i < ii; i++) {
+            g = Math.min(g, gamma(ci.get(i), ct.get(i), x, y));
+        }
 
         return g;
     }

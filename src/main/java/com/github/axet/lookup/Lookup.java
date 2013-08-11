@@ -12,9 +12,6 @@ import java.awt.image.Kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.imgscalr.Scalr;
-import org.imgscalr.Scalr.Method;
-
 import com.github.axet.lookup.common.ImageBinary;
 import com.github.axet.lookup.common.ImageBinaryChannel;
 import com.github.axet.lookup.common.ImageBinaryGrey;
@@ -54,7 +51,7 @@ public class Lookup {
     }
 
     static public BufferedImage edgeImageCrop(BufferedImage b) {
-        b = filterResizeDoubleCanvas(b);
+        b = filterDoubleCanvas(b);
 
         b = Lookup.filterRemoveCanvas(b);
 
@@ -86,8 +83,8 @@ public class Lookup {
     }
 
     static public BufferedImage filterResizeDouble(BufferedImage bi) {
-        int cx = bi.getWidth() * 2;
-        int cy = bi.getHeight() * 2;
+        int cx = bi.getWidth() * 4;
+        int cy = bi.getHeight() * 4;
         BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(bi, 0, 0, cx, cy, null);
@@ -95,8 +92,9 @@ public class Lookup {
         return resizedImage;
     }
 
-    static public BufferedImage scale(BufferedImage bi, double s) {
-        bi = filterBlur8(bi);
+    static public BufferedImage scale(BufferedImage bi, double s, int blurKernel) {
+        bi = filterBlur(bi, blurKernel);
+        bi = filterRemoveBorder(bi, blurKernel / 2);
 
         int cx = (int) (bi.getWidth() * s);
         int cy = (int) (bi.getHeight() * s);
@@ -126,23 +124,37 @@ public class Lookup {
         return resizedImage;
     }
 
-    static public BufferedImage filterResizeDoubleCanvas(BufferedImage bi) {
-        int cx = bi.getWidth() * 3;
-        int cy = bi.getHeight() * 3;
+    static public BufferedImage filterDoubleCanvas(BufferedImage bi) {
+        int cx = bi.getWidth() * 2;
+        int cy = bi.getHeight() * 2;
+
         BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(bi, cx / 3, cx / 3, bi.getWidth(), bi.getHeight(), null);
+        Graphics g = resizedImage.getGraphics();
+        g.drawImage(bi, cx / 4, cy / 4, bi.getWidth(), bi.getHeight(), null);
         g.dispose();
 
         return resizedImage;
     }
 
-    static public BufferedImage filterShrinkDouble(BufferedImage bi) {
+    static public BufferedImage filterRemoveDoubleCanvas(BufferedImage bi) {
         int cx = bi.getWidth() / 2;
         int cy = bi.getHeight() / 2;
+
         BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(bi, 0, 0, cx, cy, null);
+        g.drawImage(bi, 0, 0, cx, cy, cx / 2, cy / 2, cx / 2 + cx, cy / 2 + cy, null);
+        g.dispose();
+
+        return resizedImage;
+    }
+
+    static public BufferedImage filterRemoveBorder(BufferedImage bi, int border) {
+        int cx = bi.getWidth() - border * 2;
+        int cy = bi.getHeight() - border * 2;
+
+        BufferedImage resizedImage = new BufferedImage(cx, cy, bi.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(bi, 0, 0, cx, cy, border, border, border + cx, border + cy, null);
         g.dispose();
 
         return resizedImage;
@@ -182,13 +194,29 @@ public class Lookup {
         return dest;
     }
 
+    static public BufferedImage filterBlur(BufferedImage bi, int blurKernel) {
+        BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+
+        float[] f = new float[blurKernel * blurKernel];
+        float n = 1 / (float) f.length;
+        for (int i = 0; i < f.length; i++)
+            f[i] = n;
+
+        Kernel kernel = new Kernel(blurKernel, blurKernel, f);
+
+        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        op.filter(bi, buff);
+
+        return buff;
+    }
+
     static public BufferedImage filterBlur3(BufferedImage bi) {
         BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
 
         float n = 1f / 9f;
         Kernel kernel = new Kernel(3, 3, new float[] { n, n, n, n, n, n, n, n, n });
 
-        ConvolveOp op = new ConvolveOp(kernel);
+        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
         op.filter(bi, buff);
 
         return buff;

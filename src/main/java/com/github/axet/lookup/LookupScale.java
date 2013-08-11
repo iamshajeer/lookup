@@ -11,8 +11,8 @@ import com.github.axet.lookup.Lookup.NotFound;
 import com.github.axet.lookup.common.GFirst;
 import com.github.axet.lookup.common.GFirstLeftRight;
 import com.github.axet.lookup.common.GPoint;
+import com.github.axet.lookup.common.GSPoint;
 import com.github.axet.lookup.common.ImageBinary;
-import com.github.axet.lookup.common.ImageBinaryGreyScale;
 import com.github.axet.lookup.common.ImageBinaryGreyScaleRGB;
 import com.github.axet.lookup.common.ImageBinaryScale;
 import com.github.axet.lookup.proc.NCC;
@@ -24,26 +24,31 @@ public class LookupScale {
 
     // in pixels
     int defaultScaleSize;
-    float m;
-    float mm;
+    int defaultBlurKernel;
+    float gg;
+    float g;
 
     /**
      * 
      * @param scaleSize
      *            ex:5
-     * @param m
+     * 
+     * @param blurKernel
+     *            ex:10
+     * @param gg
      *            ex:0.70f
-     * @param mm
+     * @param g
      *            ex:0.90f - for big templates, and 0.95f for small templates
      */
-    public LookupScale(int scaleSize, float m, float mm) {
+    public LookupScale(int scaleSize, int blurKernel, float gg, float g) {
         this.defaultScaleSize = scaleSize;
-        this.m = m;
-        this.mm = mm;
+        this.defaultBlurKernel = blurKernel;
+        this.gg = gg;
+        this.g = g;
     }
 
-    public GPoint lookup(BufferedImage i, BufferedImage t) {
-        List<GPoint> list = lookupAll(i, t);
+    public GSPoint lookup(BufferedImage i, BufferedImage t) {
+        List<GSPoint> list = lookupAll(i, t);
 
         if (list.size() == 0)
             throw new NotFound();
@@ -53,22 +58,22 @@ public class LookupScale {
         return list.get(0);
     }
 
-    public List<GPoint> lookupAll(BufferedImage i, BufferedImage t) {
+    public List<GSPoint> lookupAll(BufferedImage i, BufferedImage t) {
         ImageBinaryScale templateBinary;
         if (s == 0) {
-            templateBinary = new ImageBinaryGreyScaleRGB(t, defaultScaleSize);
+            templateBinary = new ImageBinaryGreyScaleRGB(t, defaultScaleSize, defaultBlurKernel);
             s = templateBinary.s;
         } else {
-            templateBinary = new ImageBinaryGreyScaleRGB(t, s);
+            templateBinary = new ImageBinaryGreyScaleRGB(t, s, defaultBlurKernel);
         }
 
-        ImageBinaryScale imageBinary = new ImageBinaryGreyScaleRGB(i, s);
+        ImageBinaryScale imageBinary = new ImageBinaryGreyScaleRGB(i, s, defaultBlurKernel);
 
         return lookupAll(imageBinary, templateBinary);
     }
 
-    public GPoint lookup(ImageBinaryScale image, ImageBinaryScale template) {
-        List<GPoint> list = lookupAll(image, template);
+    public GSPoint lookup(ImageBinaryScale image, ImageBinaryScale template) {
+        List<GSPoint> list = lookupAll(image, template);
 
         if (list.size() == 0)
             throw new NotFound();
@@ -78,16 +83,16 @@ public class LookupScale {
         return list.get(0);
     }
 
-    public List<GPoint> lookupAll(ImageBinaryScale image, ImageBinaryScale template) {
+    public List<GSPoint> lookupAll(ImageBinaryScale image, ImageBinaryScale template) {
         scale(image, template);
 
         return lookupAll(image, 0, 0, image.image.getWidth() - 1, image.image.getHeight() - 1, template);
     }
 
-    public GPoint lookup(ImageBinaryScale image, int x1, int y1, int x2, int y2, ImageBinaryScale template) {
+    public GSPoint lookup(ImageBinaryScale image, int x1, int y1, int x2, int y2, ImageBinaryScale template) {
         scale(image, template);
 
-        List<GPoint> list = lookupAll(image, x1, y1, x2, y2, template);
+        List<GSPoint> list = lookupAll(image, x1, y1, x2, y2, template);
 
         if (list.size() == 0)
             throw new NotFound();
@@ -97,7 +102,7 @@ public class LookupScale {
         return list.get(0);
     }
 
-    public List<GPoint> lookupAll(ImageBinaryScale image, int x1, int y1, int x2, int y2, ImageBinaryScale template) {
+    public List<GSPoint> lookupAll(ImageBinaryScale image, int x1, int y1, int x2, int y2, ImageBinaryScale template) {
         scale(image, template);
 
         int sx1 = (int) (x1 * s);
@@ -110,12 +115,12 @@ public class LookupScale {
         if (sx2 >= image.scaleBin.getWidth())
             sx2 = image.scaleBin.getWidth() - 1;
 
-        List<GPoint> list = NCC.lookupAll(image.scaleBin, sx1, sy1, sx2, sy2, template.scaleBin, m);
+        List<GPoint> list = NCC.lookupAll(image.scaleBin, sx1, sy1, sx2, sy2, template.scaleBin, gg);
 
         int mx = (int) (1 / s) + 1;
         int my = (int) (1 / s) + 1;
 
-        List<GPoint> result = new ArrayList<GPoint>();
+        List<GSPoint> result = new ArrayList<GSPoint>();
 
         for (GPoint p : list) {
             Point p1 = new Point(p);
@@ -132,9 +137,11 @@ public class LookupScale {
             if (p2.y >= image.image.getHeight())
                 p2.y = image.image.getHeight() - 1;
 
-            List<GPoint> list2 = NCC.lookupAll(image.image, p1.x, p1.y, p2.x, p2.y, template.image, mm);
+            List<GPoint> list2 = NCC.lookupAll(image.image, p1.x, p1.y, p2.x, p2.y, template.image, g);
 
-            result.addAll(list2);
+            for (GPoint g : list2) {
+                result.add(new GSPoint(g, p.g));
+            }
         }
 
         // delete duplicates
@@ -170,7 +177,7 @@ public class LookupScale {
         }
 
         if (s == 0) {
-            template.rescale(defaultScaleSize);
+            template.rescale(defaultScaleSize, defaultBlurKernel);
             s = template.s;
         }
 
@@ -180,11 +187,11 @@ public class LookupScale {
             if (ss > s)
                 s = ss;
 
-            template.rescale(s);
+            template.rescale(s, defaultBlurKernel);
         }
 
         if (s != image.s) {
-            image.rescale(s);
+            image.rescale(s, defaultBlurKernel);
         }
     }
 }

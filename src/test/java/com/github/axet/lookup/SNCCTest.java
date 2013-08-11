@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.github.axet.lookup.common.GFirst;
 import com.github.axet.lookup.common.GPoint;
+import com.github.axet.lookup.common.GSPoint;
 import com.github.axet.lookup.common.ImageBinaryGreyScaleRGB;
 import com.github.axet.lookup.common.ImageBinaryScale;
 
@@ -15,8 +16,7 @@ public class SNCCTest {
         BufferedImage image = Capture.load(OCRTest.class, "desktop.png");
         BufferedImage template = Capture.load(OCRTest.class, "desktop_feature_big.png");
 
-        LookupScale s = new LookupScale(4, 0.50f, 0.8f);
-        s.s = 0.2;
+        LookupScale s = new LookupScale(4, 10, 0.60f, 0.9f);
 
         ImageBinaryScale si = new ImageBinaryGreyScaleRGB(image);
 
@@ -27,7 +27,7 @@ public class SNCCTest {
         for (int i = 0; i < 2; i++) {
             l = System.currentTimeMillis();
             {
-                List<GPoint> pp = s.lookupAll(si, st);
+                List<GSPoint> pp = s.lookupAll(si, st);
 
                 Collections.sort(pp, new GFirst());
 

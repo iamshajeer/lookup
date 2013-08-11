@@ -8,10 +8,13 @@ public abstract class ImageBinaryScale {
     public BufferedImage scaleBuf;
     public ImageBinary scaleBin;
 
+    // scale
     public double s = 0;
+    // blur kernel size
+    public int k = 0;
 
-    public void rescale(int s) {
-        rescale(project(s));
+    public void rescale(int s, int k) {
+        rescale(project(s), k);
     }
 
     public double project(int s) {
@@ -25,8 +28,9 @@ public abstract class ImageBinaryScale {
         return q;
     }
 
-    public void rescale(double s) {
+    public void rescale(double s, int k) {
         this.s = s;
+        this.k = k;
 
         rescale();
     }
