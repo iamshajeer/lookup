@@ -10,7 +10,7 @@ public class LookupTest {
         BufferedImage image = Capture.load(OCRTest.class, "cyclopst1.png");
         BufferedImage template = Capture.load(OCRTest.class, "cyclopst3.png");
 
-        List<Point> pp = Lookup.lookupAll(image, template, 0.20f);
+        List<Point> pp = LookupColor.lookupAll(image, template, 0.20f);
 
         for (Point p : pp) {
             System.out.println(p);
