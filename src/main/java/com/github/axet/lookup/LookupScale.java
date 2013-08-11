@@ -22,8 +22,6 @@ public class LookupScale {
     // minimum scale used
     public double s = 0;
 
-    // in pixels
-    int defaultScaleSize;
     int defaultBlurKernel;
     float gg;
     float g;
@@ -40,8 +38,8 @@ public class LookupScale {
      * @param g
      *            ex:0.90f - for big templates, and 0.95f for small templates
      */
-    public LookupScale(int scaleSize, int blurKernel, float gg, float g) {
-        this.defaultScaleSize = scaleSize;
+    public LookupScale(double s, int blurKernel, float gg, float g) {
+        this.s = s;
         this.defaultBlurKernel = blurKernel;
         this.gg = gg;
         this.g = g;
@@ -59,15 +57,8 @@ public class LookupScale {
     }
 
     public List<GSPoint> lookupAll(BufferedImage i, BufferedImage t) {
-        ImageBinaryScale templateBinary;
-        if (s == 0) {
-            templateBinary = new ImageBinaryGreyScaleRGB(t, defaultScaleSize, defaultBlurKernel);
-            s = templateBinary.s;
-        } else {
-            templateBinary = new ImageBinaryGreyScaleRGB(t, s, defaultBlurKernel);
-        }
-
-        ImageBinaryScale imageBinary = new ImageBinaryGreyScaleRGB(i, s, defaultBlurKernel);
+        ImageBinaryScale templateBinary = new ImageBinaryGreyScaleRGB(t);
+        ImageBinaryScale imageBinary = new ImageBinaryGreyScaleRGB(i);
 
         return lookupAll(imageBinary, templateBinary);
     }
@@ -176,17 +167,7 @@ public class LookupScale {
             s = template.s;
         }
 
-        if (s == 0) {
-            template.rescale(defaultScaleSize, defaultBlurKernel);
-            s = template.s;
-        }
-
         if (s != template.s) {
-            double ss = template.project(defaultScaleSize);
-
-            if (ss > s)
-                s = ss;
-
             template.rescale(s, defaultBlurKernel);
         }
 
