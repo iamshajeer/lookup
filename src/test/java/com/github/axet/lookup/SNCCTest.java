@@ -16,7 +16,7 @@ public class SNCCTest {
         BufferedImage image = Capture.load(OCRTest.class, "desktop.png");
         BufferedImage template = Capture.load(OCRTest.class, "desktop_feature_big.png");
 
-        LookupScale s = new LookupScale(4, 10, 0.60f, 0.9f);
+        LookupScale s = new LookupScale(0.2f, 10, 0.60f, 0.9f);
 
         ImageBinaryScale si = new ImageBinaryGreyScaleRGB(image);
 
