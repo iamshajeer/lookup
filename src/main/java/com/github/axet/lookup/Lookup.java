@@ -3,20 +3,14 @@ package com.github.axet.lookup;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.github.axet.lookup.common.ImageBinary;
-import com.github.axet.lookup.common.ImageBinaryChannel;
-import com.github.axet.lookup.common.ImageBinaryGrey;
-import com.github.axet.lookup.common.RangeColor;
 import com.github.axet.lookup.proc.CannyEdgeDetector;
+import com.jhlabs.image.GaussianFilter;
 
 public class Lookup {
 
@@ -93,8 +87,7 @@ public class Lookup {
     }
 
     static public BufferedImage scale(BufferedImage bi, double s, int blurKernel) {
-        bi = filterBlur(bi, blurKernel);
-        bi = filterRemoveBorder(bi, blurKernel / 2);
+        bi = filterGausBlur(bi, blurKernel);
 
         int cx = (int) (bi.getWidth() * s);
         int cy = (int) (bi.getHeight() * s);
@@ -193,7 +186,7 @@ public class Lookup {
 
         return dest;
     }
-
+    
     static public BufferedImage filterBlur(BufferedImage bi, int blurKernel) {
         BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
 
@@ -205,6 +198,15 @@ public class Lookup {
         Kernel kernel = new Kernel(blurKernel, blurKernel, f);
 
         ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        op.filter(bi, buff);
+
+        return buff;
+    }
+
+    static public BufferedImage filterGausBlur(BufferedImage bi, int blurKernel) {
+        BufferedImage buff = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
+
+        GaussianFilter op = new GaussianFilter(blurKernel);
         op.filter(bi, buff);
 
         return buff;
