@@ -1,5 +1,17 @@
 package com.github.axet.lookup.common;
 
+/**
+ * Java Comparator has compare method with 'int compare(o1, o2)' result value.
+ * You should read ita as less algorithm, who is less?
+ * 
+ * o1 < o2
+ * 
+ * -1 points to low value for o1. 0 points for middle / equals. 1 points for o2
+ * low value
+ * 
+ * @author axet
+ * 
+ */
 public class LessCompare {
 
     static public int compareBigFirst(double o1, double o2, double val) {
