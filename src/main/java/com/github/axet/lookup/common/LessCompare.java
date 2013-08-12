@@ -9,6 +9,8 @@ package com.github.axet.lookup.common;
  * -1 points to low value for o1. 0 points for middle / equals. 1 points for o2
  * low value
  * 
+ * if you need opposite (desk order) return opposite values.
+ * 
  * @author axet
  * 
  */
