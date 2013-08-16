@@ -69,7 +69,7 @@ Sometimes you need specify two different image for one symbol (if image / font s
             BufferedImage templateSmall = Capture.load(OCRTest.class, "desktop_feature_small.png");
             BufferedImage templateBig = Capture.load(OCRTest.class, "desktop_feature_big.png");
     
-            LookupScale s = new LookupScale(5, 0.75f, 0.8f);
+            LookupScale s = new LookupScale(0.2f, 10, 0.65f, 0.95f);
     
             ImageBinaryGreyScale si = new ImageBinaryGreyScale(image);
     
@@ -125,5 +125,5 @@ Sometimes you need specify two different image for one symbol (if image / font s
         <dependency>
           <groupId>com.github.axet</groupId>
           <artifactId>lookup</artifactId>
-          <version>0.1.18</version>
+          <version>0.1.29</version>
         </dependency>
