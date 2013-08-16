@@ -192,7 +192,7 @@ public class OCR extends OCRCore {
 
                 // if distance betten end of previous symbol and begining of the
                 // current is larger then a char size, then it is a space
-                if (s.x - (x + cx) > maxCX)
+                if (s.x - (x + cx) >= maxCX)
                     str += " ";
 
                 // if we drop back, then we have a end of line
